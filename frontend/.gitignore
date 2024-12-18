@@ -10,5 +10,5 @@ phpMyAdmin/
 error_log
 *.crt
 .php-cs-fixer.cache
-vendor/
+/vendor/
 build/
