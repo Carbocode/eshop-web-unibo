@@ -1,0 +1,14 @@
+.zed/
+.env
+.vscode/
+.vs/
+imgs/
+files/
+logs/
+phpmyadmin/
+phpMyAdmin/
+error_log
+*.crt
+.php-cs-fixer.cache
+/vendor/
+build/
