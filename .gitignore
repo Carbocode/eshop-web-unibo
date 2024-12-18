@@ -11,4 +11,5 @@ error_log
 *.crt
 .php-cs-fixer.cache
 vendor/
+node_modules/
 build/
