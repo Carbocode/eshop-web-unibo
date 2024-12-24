@@ -31,8 +31,8 @@
     "lcobucci/jwt": "^5.4"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.34",
-    "phpstan/phpstan": "^1.10"
+    "friendsofphp/php-cs-fixer": "^3.65",
+    "phpstan/phpstan": "^2.0"
   },
   "scripts": {
     "fix-style": [
@@ -41,9 +41,6 @@
     ],
     "check-code": [
       "@php ./vendor/bin/phpstan analyse src --level 7"
-    ],
-    "generate-doc": [
-      "vendor/bin/openapi --bootstrap routing.php -o documentation/myvet-api.json src/api/"
     ]
   }
 }
