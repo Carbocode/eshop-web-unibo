@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 
 export default defineConfig({
+  base:'./',
   resolve:{
     alias:{
       '@global':path.resolve(__dirname, 'src/global.css'),
