@@ -1,5 +1,9 @@
 @import "@global";
 
+img{
+    width: 100%;
+}
+
 main header{
     background-color: var(--primary-color);
     color: var(--primary-color-contrast);
@@ -10,11 +14,12 @@ main footer{
     color: var(--dark-color-contrast);
 }
 
-.tifaNazione span{
-    display: inline-block;
+.tifaNazione{
+    margin: 0 5%;
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
     white-space: nowrap;
-    overflow: hidden;
-    position: relative;
     animation: slide 10s linear infinite;
 }
 
@@ -27,3 +32,4 @@ main footer{
         transform: translateX(-100%);
     }
 }
+
