@@ -1,0 +1,126 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Zen+Dots&display=swap");
+
+:root {
+  color-scheme: light dark;
+
+  --primary-color: #cd0e0e;
+  --primary-color-contrast: #fff;
+  --secondary-color: #62929e;
+  --primary-color-contrast: #fff;
+  --background-color: light-dark(#fff, #000);
+  --background-color-contrast: light-dark(#000, #fff);
+  --medium-color: light-dark(#d9d9d9, #414141);
+  --medium-color-contrast: light-dark(#000, #fff);
+  --overlay-color: #212121b5;
+  --primary-color-contrast: #fff;
+
+  --border-radius: 15px;
+
+  --box-shadow: 0px 4px 10px 0px #00000040;
+  --box-shadow-hover: 0px 4px 20px 0px #0000003a;
+  --box-shadow-active: 0px 0px 5px 0px #00000040;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--background-color-contrast);
+}
+
+h1,
+h2,
+h3,
+h4,
+label,
+h5,
+h6,
+button,
+input[type="button"],
+input[type="submit"] {
+  font-family: "Zen Dots", serif;
+  letter-spacing: -6%;
+  font-weight: 400;
+  font-style: normal;
+}
+
+p,
+pre,
+code,
+input,
+textarea {
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+}
+
+p,
+pre,
+code,
+input,
+textarea {
+  color: var(--background-color-contrast);
+  background-color: var(--background-color);
+}
+
+input,
+textarea {
+  color: var(--medium-color-contrast);
+  background-color: var(--medium-color);
+}
+
+h1 {
+  font-size: 64px;
+}
+h2 {
+  font-size: 40px;
+}
+h3 {
+  font-size: 32px;
+}
+h4,
+label {
+  font-size: 24px;
+}
+h5 {
+  font-size: 20px;
+}
+h6 {
+  font-size: 16px;
+}
+
+input[type="number"],
+input[type="text"],
+textarea,
+select {
+  width: clamp(200px, 80vw, 400px);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  box-shadow: var(--box-shadow);
+  border: none;
+  margin: 0px 10px;
+}
+
+button,
+input[type="button"],
+input[type="submit"] {
+  background-color: var(--primary-color);
+  color: var(--primary-color-contrast);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  box-shadow: var(--box-shadow);
+  border: none;
+  margin: 10px;
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  box-shadow: var(--box-shadow-hover);
+}
+
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active {
+  box-shadow: var(--box-shadow-active);
+}
