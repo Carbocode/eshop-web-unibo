@@ -89,6 +89,11 @@ h6 {
   font-size: 16px;
 }
 
+label {
+  padding-inline: 10px;
+  margin-inline: 10px;
+}
+
 input[type="number"],
 input[type="text"],
 textarea,
