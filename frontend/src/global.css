@@ -11,6 +11,8 @@
   --background-color-contrast: light-dark(#000, #fff);
   --medium-color: light-dark(#d9d9d9, #414141);
   --medium-color-contrast: light-dark(#000, #fff);
+  --dark-color:#000;
+  --dark-color-contrast:#fff;
   --overlay-color: #212121b5;
   --primary-color-contrast: #fff;
 

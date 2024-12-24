@@ -1,1 +1,29 @@
 @import "@global";
+
+main header{
+    background-color: var(--primary-color);
+    color: var(--primary-color-contrast);
+}
+
+main footer{
+    background-color: var(--dark-color);
+    color: var(--dark-color-contrast);
+}
+
+.tifaNazione span{
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    animation: slide 10s linear infinite;
+}
+
+/*L'animazione @keyframes slide sposta il testo da destra a sinistra usando translateX*/
+@keyframes slide {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
