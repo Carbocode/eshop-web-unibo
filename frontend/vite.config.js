@@ -27,5 +27,5 @@ export default defineConfig({
     },
     outDir: 'dist', // Cartella per i file di produzione
     assetsDir: 'assets'
-  },
+  }
 });
