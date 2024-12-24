@@ -18,7 +18,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, 'index.html'),
+        index: path.resolve(__dirname, 'index.html'),
+        home: path.resolve(__dirname, 'src/pages/home/index.html'),
         login: path.resolve(__dirname, 'src/pages/login/index.html'),
         register:path.resolve(__dirname, 'src/pages/register/index.html'),
         toolkit:path.resolve(__dirname, 'src/pages/toolkit/index.html')
