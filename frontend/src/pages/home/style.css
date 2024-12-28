@@ -1,22 +1,114 @@
 @import "@global";
+img{
+    width: 100%;
+}
 
+a:hover{
+    text-decoration: none;
+    color: var(--overlay-color);
+}
+
+/*header*/
 main header{
+    display: flex;
+    align-items:center;
+    padding: 10px 20px;
     background-color: var(--primary-color);
     color: var(--primary-color-contrast);
 }
 
-main footer{
-    background-color: var(--dark-color);
-    color: var(--dark-color-contrast);
+main header img{
+    display: flex;
+    gap: 10px;
+    height: 50px; 
+    width: auto; 
+    max-width: 100%; 
 }
 
-.tifaNazione span{
-    display: inline-block;
+main header h3{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-color-contrast);
+}
+
+main header nav{
+    display: flex;
+    gap: 15px;
+    margin-left: auto;
+}
+
+main header nav a{
+    text-decoration: none;
+    color: var(--primary-color-contrast);
+}
+/*parte mondiale*/
+.mondiale{
+    background-color: var(--overlay-color);
+    color: var(--overlay-color-contrast);
+}
+
+.mondiale h2{
+    text-align: center;
+}
+
+.tifaNazione{
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
     white-space: nowrap;
-    overflow: hidden;
-    position: relative;
     animation: slide 10s linear infinite;
 }
+
+.griglianazionali {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: white;
+}
+
+.griglianazionali  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.gruppo {
+    margin-bottom: 20px;
+}
+  
+.gruppo h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    text-align: left;
+}
+  
+.grigliagruppo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+  
+.nazione {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .grigliagruppo {
+      grid-template-columns: repeat(2, 1fr); /* 2 colonne su schermi piccoli */
+    }
+}
+  
+@media (max-width: 480px) {
+    .grigliagruppo {
+      grid-template-columns: 1fr; /* 1 colonna su schermi molto piccoli */
+    }
+}
+  
 
 /*L'animazione @keyframes slide sposta il testo da destra a sinistra usando translateX*/
 @keyframes slide {
@@ -27,3 +119,30 @@ main footer{
         transform: translateX(-100%);
     }
 }
+
+/*footer*/
+main footer{
+    display: flex;
+    align-items:center;
+    padding: 10px 20px;
+    background-color: var(--dark-color);
+    color: var(--dark-color-contrast);
+}
+
+main footer img{
+    display: flex;
+    gap: 10px;
+    height: 50px; 
+    width: auto; 
+    max-width: 100%; 
+}
+
+main footer h3{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--dark-color-contrast);
+}
+
+
+

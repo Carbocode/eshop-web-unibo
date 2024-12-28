@@ -15,7 +15,7 @@
   --dark-color: #000;
   --dark-color-contrast: #fff;
   --overlay-color: #212121b5;
-  --primary-color-contrast: #fff;
+  --overlay-color-contrast: #fff;
 
   --border-radius: 15px;
 
@@ -49,6 +49,7 @@ p,
 pre,
 code,
 input,
+a,
 textarea {
   font-family: "Inter", serif;
   font-optical-sizing: auto;
