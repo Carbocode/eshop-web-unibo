@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Zen+Dots&display=swap");
 @import "@assets/styles/normalize.css";
 
+html {
+  font-size: 16px;
+}
+
 *,
 *:after,
 *:before {
@@ -22,8 +26,10 @@
   --dark-color-contrast: #fff;
   --overlay-color: #212121b5;
   --overlay-color-contrast: #fff;
+  --margin: 1rem;
+  --padding: 0.5rem;
 
-  --border-radius: 15px;
+  --border-radius: 0.7rem;
 
   --box-shadow: 0px 4px 10px 0px #00000040;
   --box-shadow-hover: 0px 4px 20px 0px #0000003a;
@@ -49,25 +55,40 @@ input[type="submit"] {
   letter-spacing: -6%;
   font-weight: 400;
   font-style: normal;
+  margin: 0;
 }
 
 p,
 pre,
-code,
 input,
 a,
 textarea,
-select {
+select,
+small {
   font-family: "Inter", serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
+  margin: 0;
+}
+
+code {
+  background: var(--medium-color);
+  border: 1px solid #ddd;
+  color: #666;
+  page-break-inside: avoid;
+  font-family: monospace;
+  font-size: 16px;
+  max-width: 100%;
+  overflow: auto;
+  display: inline-block;
+  padding-inline: 0.3em;
+  border-radius: 0.3em;
 }
 
 p,
 pre,
-code,
 input,
 textarea {
   color: var(--background-color-contrast);
@@ -82,31 +103,36 @@ select {
 }
 
 h1 {
-  font-size: 64px;
+  font-size: 3.375rem;
 }
 h2 {
-  font-size: 40px;
+  font-size: 2.5rem;
 }
 h3 {
-  font-size: 32px;
+  font-size: 2rem;
 }
-h4,
+h4 {
+  font-size: 1.5rem;
+}
+h5,
 label,
 button,
 input[type="button"],
 input[type="submit"] {
-  font-size: 24px;
-}
-h5 {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 h6 {
-  font-size: 16px;
+  font-size: 1rem;
+}
+small {
+  font-size: 0.75rem;
+  display: block;
 }
 
 label {
-  padding-inline: 10px;
-  margin-inline: 10px;
+  padding-inline: var(--padding);
+  margin-inline: var(--margin);
+  display: block;
 }
 
 input[type="number"],
@@ -115,10 +141,10 @@ textarea,
 select {
   width: clamp(200px, 80vw, 400px);
   border-radius: var(--border-radius);
-  padding: 10px;
+  padding: var(--padding);
   box-shadow: var(--box-shadow);
   border: none;
-  margin: 10px;
+  margin: calc(var(--margin) / 2) var(--margin);
 }
 
 button,
@@ -127,10 +153,10 @@ input[type="submit"] {
   background-color: var(--primary-color);
   color: var(--primary-color-contrast);
   border-radius: var(--border-radius);
-  padding: 10px;
+  padding: var(--padding);
   box-shadow: var(--box-shadow);
   border: none;
-  margin: 10px;
+  margin: var(--margin);
   transition: all 0.2s ease-out;
 }
 
@@ -174,10 +200,10 @@ input[type="radio"] + label {
   background: var(--medium-color);
   color: var(--medium-color-contrast);
   border-radius: 9999px;
-  padding: 10px 20px;
+  padding: var(--padding) calc(var(--padding) * 2);
   box-shadow: var(--box-shadow);
   border: none;
-  margin: 10px;
+  margin: calc(var(--margin) / 2) var(--margin);
   transition: all 0.1s ease-out;
   display: inline-block;
 }
@@ -208,8 +234,8 @@ input[type="radio"]:active + label {
     --background: #fff;
     --disabled: #f6f8ff;
     --disabled-inner: #e1e6f9;
-    --height: 35px;
-    --width: 60px;
+    --height: 2.1em;
+    --width: 3.6em;
     --inner-margin: 3px;
     --border-thickness: 3px;
     appearance: none;
@@ -218,11 +244,14 @@ input[type="radio"]:active + label {
     display: inline-block;
     vertical-align: top;
     position: relative;
-    margin: 0;
+    margin-inline: var(--margin);
     cursor: pointer;
     border: var(--border-thickness) solid var(--primary-color);
     background: var(--background);
     transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+  }
+  input[type="checkbox"] + label {
+    display: inline;
   }
   input[type="checkbox"]:after {
     content: "";
