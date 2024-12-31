@@ -7,6 +7,7 @@ export default defineConfig({
     alias:{
       '@global':path.resolve(__dirname, 'src/global.css'),
       '@assets':path.resolve(__dirname, 'src/assets'),
+      '@pages':path.resolve(__dirname, 'src/pages'),
     }
   },
 
@@ -27,5 +28,23 @@ export default defineConfig({
     },
     outDir: 'dist', // Cartella per i file di produzione
     assetsDir: 'assets'
-  }
+  },
+  plugins: [
+    {
+      name: 'html-alias-resolver',
+      transformIndexHtml(html) {
+        // Mappa gli alias e i percorsi da sostituire
+        const aliasMap = {
+          '@assets': '/src/assets',
+          '@pages': '/src/pages',
+        };
+
+        // Sostituisci gli alias nel contenuto HTML
+        return Object.entries(aliasMap).reduce(
+          (updatedHtml, [alias, path]) => updatedHtml.replace(new RegExp(alias, 'g'), path),
+          html
+        );
+      }
+    }
+  ],
 });
