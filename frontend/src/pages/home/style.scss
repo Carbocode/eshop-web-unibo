@@ -14,8 +14,19 @@ main header {
   display: flex;
   align-items: center;
   padding: 10px 20px;
-  background-color: var(--primary-color);
+
   color: var(--primary-color-contrast);
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: clamp(100vw, 100vw, 100vw);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background: transparent;
+}
+
+main header.scrolled {
+  background: var(--primary-color);
+  box-shadow: var(--box-shadow);
 }
 
 main header img {
@@ -49,16 +60,70 @@ main header nav a {
   color: var(--overlay-color-contrast);
 }
 
+.cover {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Altezza piena del viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.cover img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background: linear-gradient(#00000009 40%, #000000cc);
+  z-index: 2;
+}
+
+.cover h1 {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  margin: 20px;
+}
+
 .mondiale h2 {
   text-align: center;
 }
 
-.tifaNazione {
-  display: flex;
-  gap: 10px;
-  flex-wrap: nowrap;
+.marquee {
+  position: relative;
+  max-width: 100vw;
+  overflow-x: hidden;
+  height: clamp(16px, 3vw, 10vh);
+}
+
+.track {
+  position: absolute;
   white-space: nowrap;
-  animation: slide 10s linear infinite;
+  will-change: transform;
+  animation: marquee 10s linear infinite;
+  font-size: clamp(16px, 3vw, 10vh);
+  font-family: "Zen Dots", serif;
+  letter-spacing: -0.1rem;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .griglianazionali {

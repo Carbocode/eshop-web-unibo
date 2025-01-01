@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Zen+Dots&display=swap");
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 @import "@assets/styles/normalize.css";
 
 html {
@@ -39,6 +40,7 @@ html {
 body {
   background-color: var(--background-color);
   color: var(--background-color-contrast);
+  max-width: 100vw;
 }
 
 h1,
@@ -52,7 +54,7 @@ button,
 input[type="button"],
 input[type="submit"] {
   font-family: "Zen Dots", serif;
-  letter-spacing: -6%;
+  letter-spacing: -0.1rem;
   font-weight: 400;
   font-style: normal;
   margin: 0;
