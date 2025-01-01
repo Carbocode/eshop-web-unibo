@@ -52,12 +52,32 @@ main header nav a{
     text-align: center;
 }
 
-.tifaNazione{
+.photoslideshow{
     display: flex;
-    gap: 10px;
+    gap: 50px;
     flex-wrap: nowrap;
     white-space: nowrap;
-    animation: slide 10s linear infinite;
+    overflow-x:scroll; 
+}
+
+.tifaNazioneContainer {
+    width: 100%;
+    overflow: hidden; 
+    position: relative;
+}
+
+.tifaNazione{
+    display:flex;
+    gap: 30px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    animation: slide 7s linear infinite;
+}
+
+.photoslideshow img {
+    flex-shrink: 0;
+    width: 800px; 
+    height: 500px; 
 }
 
 .griglianazionali {
@@ -97,6 +117,39 @@ main header nav a{
     text-align: center;
 }
 
+.leghe-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #fff;
+}
+  
+.lega {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Spazio tra il logo e la lista */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow)
+}
+  
+.logo {
+    width: 80px;
+    height: auto;
+    object-fit: contain;
+}
+  
+.squadre {
+    list-style: none; /* Rimuove i puntini */
+    padding: 0;
+    margin: 0;
+}
+  
+.squadre li {
+    margin-bottom: 5px;
+}
+
+/*@media per le griglie dei gruppi*/
 @media (max-width: 768px) {
     .grigliagruppo {
       grid-template-columns: repeat(2, 1fr); /* 2 colonne su schermi piccoli */
