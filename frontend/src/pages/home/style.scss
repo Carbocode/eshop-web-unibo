@@ -1,4 +1,4 @@
-@import "@global";
+@use "@global" as global;
 
 img {
   width: 100%;
@@ -89,6 +89,7 @@ main header nav a {
 }
 
 .cover h1 {
+  color: var(--primary-color-contrast);
   position: absolute;
   z-index: 3;
   bottom: 0;
