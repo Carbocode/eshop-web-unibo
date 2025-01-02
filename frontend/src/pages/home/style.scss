@@ -12,7 +12,8 @@ a:hover {
 
 /*header*/
 main header {
-  @include mixins.flex-row;
+  display: flex;
+  align-items: center;
   padding: 10px 20px;
 
   color: var(--primary-color-contrast);
@@ -29,19 +30,23 @@ main header {
     }
 
     img {
-      @include mixins.flex-row($gap: 10px);
+      display: flex;
+      gap: 10px;
       height: 50px;
       width: auto;
       max-width: 100%;
     }
 
     h3 {
-      @include mixins.flex-row;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       color: var(--primary-color-contrast);
     }
 
     nav {
-      @include mixins.flex-row($gap: 15px);
+      display: flex;
+      gap: 15px;
       margin-left: auto;
         a {
           text-decoration: none;
@@ -54,7 +59,9 @@ main header {
   position: relative;
   width: 100%;
   height: 100vh; /* Altezza piena del viewport */
-  @include mixins.flex-row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   overflow: hidden;
 
@@ -112,7 +119,8 @@ main header {
     }
 
     .photoslideshow{
-      @include mixins.flex-row($gap: 50px);
+      display: flex;
+      gap: 50px;
       flex-wrap: nowrap;
       white-space: nowrap;
       overflow-x:scroll; 
@@ -167,12 +175,15 @@ main header {
 }
 
 .leghe-container {
-  @include mixins.flex-row($gap: 20px);
+  display: flex;
   flex-direction: column;
+  gap: 20px;
   background-color: #fff;
 
     .lega {
-      @include mixins.flex-row($gap: 20px,$align-items: center);
+      display: flex;
+      align-items: center;
+      gap: 20px; 
       padding: 10px;
       border-radius: 8px;
       box-shadow: var(--box-shadow);
@@ -196,19 +207,23 @@ main header {
 
 /*footer*/
 main footer {
-  @include mixins.flex-row($align-items: center);
+  display: flex;
+  align-items: center;
   padding: 10px 20px;
   background-color: var(--dark-color);
   color: var(--dark-color-contrast);
     img {
-      @include mixins.flex-row($gap: 10px);
+      display: flex;
+      gap: 10px;
       height: 50px;
       width: auto;
       max-width: 100%;
     }
 
     h3 {
-      @include mixins.flex-row;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       color: var(--dark-color-contrast);
     }
 }
