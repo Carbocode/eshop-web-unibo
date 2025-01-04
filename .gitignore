@@ -3,6 +3,7 @@
 .vscode/
 .vs/
 imgs/
+*.DS_Store
 files/
 logs/
 phpmyadmin/
