@@ -149,7 +149,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-color: #fff;
+  background-color: var(--background-color);
 
   .lega {
     display: flex;
