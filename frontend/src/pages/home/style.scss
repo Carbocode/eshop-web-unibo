@@ -23,7 +23,7 @@ main header {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   background: transparent;
 
-    .scrolled {
+    &.scrolled {
       background: var(--primary-color);
       box-shadow: var(--box-shadow);
     }
@@ -43,14 +43,16 @@ main header {
       color: var(--primary-color-contrast);
     }
 
+    a {
+      text-decoration: none;
+      color: var(--primary-color-contrast);
+    }
+
     nav {
       display: flex;
       gap: 15px;
       margin-left: auto;
-        a {
-          text-decoration: none;
-          color: var(--primary-color-contrast);
-        }
+        
     }
 }
 
