@@ -1,116 +1,266 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        .checkout-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            display: flex;
-            width: 80%;
-            border: 1px solid #ccc;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .form-container, .items-container {
+
+        .checkout-form {
             flex: 1;
-            margin: 10px;
         }
-        .form-container {
-            border-right: 1px solid #ccc;
-            padding-right: 20px;
+
+        .order-summary {
+            width: 400px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
         }
-        .items-container {
-            padding-left: 20px;
-        }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
+
         .form-group input {
             width: 100%;
             padding: 8px;
-            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .form-group button {
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: #fff;
+
+        .breadcrumb {
+            padding: 20px;
+            background: #f8f8f8;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .summary-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .summary-details {
+            flex: 1;
+        }
+
+        .summary-price {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .totals {
+            margin-top: 20px;
+            border-top: 2px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .total-row.final {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 10px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .pay-button {
+            background: #c41e3a;
+            color: white;
+            padding: 12px 24px;
             border: none;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 1.1em;
             cursor: pointer;
+            margin-top: 20px;
         }
-        .form-group button:hover {
-            background-color: #218838;
-        }
-        .items-list {
-            list-style: none;
-            padding: 0;
-        }
-        .items-list li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+
+        .pay-button:hover {
+            background: #a01830;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-container">
-            <h2>Credit Card Information</h2>
-            <div class="form-group">
-                <label for="card-name">Name on Card</label>
-                <input type="text" id="card-name" required>
-            </div>
-            <div class="form-group">
-                <label for="card-number">Card Number</label>
-                <input type="text" id="card-number" required>
-            </div>
-            <div class="form-group">
-                <label for="expiry-date">Expiry Date</label>
-                <input type="text" id="expiry-date" placeholder="MM/YY" required>
-            </div>
-            <div class="form-group">
-                <label for="cvv">CVV</label>
-                <input type="text" id="cvv" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
-            </div>
+    <div class="breadcrumb">
+        Carrello > Checkout > Informazioni
+    </div>
+
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <h2>Informazioni Carta</h2>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label>Numero Carta</label>
+                    <input type="text" id="cardNumber" placeholder="Card Number" required>
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label>MM/YY</label>
+                        <input type="text" id="cardExpiry" placeholder="MM/YY" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>CVV</label>
+                        <input type="text" id="cardCvv" placeholder="CVV" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nome Intestatario Carta</label>
+                    <input type="text" id="cardName" required>
+                </div>
+                <h2>Indirizzo Spedizione</h2>
+                <div class="form-group">
+                    <label>Paese</label>
+                    <input type="text" value="Italia" readonly>
+                </div>
+                <div class="form-group">
+                    <label>CAP</label>
+                    <input type="text" id="postalCode" required>
+                </div>
+                <div class="form-group">
+                    <label>Indirizzo</label>
+                    <input type="text" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label>Numero di telefono</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <button type="submit" class="pay-button">Paga €<span id="totalAmount">0.00</span></button>
+            </form>
         </div>
-        <div class="items-container">
-            <h2>Items</h2>
-            <ul class="items-list" id="items-list">
-                <!-- Items will be loaded here via jQuery -->
-            </ul>
+
+        <div class="order-summary" id="orderSummary">
+            <!-- Will be populated by JavaScript -->
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Example items data
-            const items = [
-                { name: "Item 1", price: "$10" },
-                { name: "Item 2", price: "$20" },
-                { name: "Item 3", price: "$30" }
-            ];
+        const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+        
+        async function loadOrderSummary() {
+            try {
+                const response = await fetch('/cart/summary', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayOrderSummary(data);
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                console.error('Error loading order summary:', error);
+            }
+        }
 
-            // Append items to the list
-            items.forEach(item => {
-                $('#items-list').append(`<li>${item.name} - ${item.price}</li>`);
-            });
+        function displayOrderSummary(data) {
+            const summaryContainer = document.getElementById('orderSummary');
+            const totalAmountSpan = document.getElementById('totalAmount');
+            
+            let html = '<h2>Maglia Napoli</h2>';
+            
+            // Display items
+            html += data.items.map(item => `
+                <div class="summary-item">
+                    <img src="${item.image_url}" alt="${item.team_name}">
+                    <div class="summary-details">
+                        <div>${item.team_name} - ${item.edition_name}</div>
+                        <div>Size: ${item.size}</div>
+                        <div>Quantity: ${item.quantity}</div>
+                    </div>
+                    <div class="summary-price">€${item.subtotal}</div>
+                </div>
+            `).join('');
+
+            // Display totals
+            html += `
+                <div class="totals">
+                    <div class="total-row">
+                        <span>Prezzo Articoli</span>
+                        <span>€${data.summary.subtotal}</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Prezzo Spedizione</span>
+                        <span>€5</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Prezzo Totale</span>
+                        <span>€${data.summary.total + 5}</span>
+                    </div>
+                </div>
+            `;
+
+            summaryContainer.innerHTML = html;
+            totalAmountSpan.textContent = (data.summary.total + 5).toFixed(2);
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                cardNumber: document.getElementById('cardNumber').value,
+                cardExpiry: document.getElementById('cardExpiry').value,
+                cardCvv: document.getElementById('cardCvv').value,
+                cardName: document.getElementById('cardName').value,
+                address: document.getElementById('address').value,
+                postalCode: document.getElementById('postalCode').value,
+                phone: document.getElementById('phone').value
+            };
+
+            try {
+                const response = await fetch('/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Order placed successfully!');
+                    window.location.href = '/order-confirmation';
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                alert('Error processing checkout: ' + error.message);
+            }
         });
+
+        // Load order summary when page loads
+        loadOrderSummary();
     </script>
 </body>
 </html>

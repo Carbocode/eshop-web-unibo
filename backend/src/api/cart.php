@@ -1,5 +1,4 @@
 <?php
-require 'vendor/autoload.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -9,7 +8,7 @@ class CartController {
     private $customer_id;
 
     public function __construct() {
-        $this->db = new PDO("mysql:host=localhost;dbname=soccer_tshirt_shop", "root", "your_password");
+        $this->db = new PDO("mysql:host=localhost:3306;dbname=soccer_tshirt_shop", "root", "toor");
         $this->jwt_secret = getenv('JWT_SECRET');
     }
 

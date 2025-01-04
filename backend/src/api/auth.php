@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -9,7 +9,7 @@ class AuthController {
     private $jwt_secret;
 
     public function __construct() {
-        $this->db = new PDO("mysql:host=localhost;dbname=soccer_tshirt_shop", "root", "your_password");
+        $this->db = new PDO("mysql:host=localhost;dbname=soccer_tshirt_shop", "root", "toor");
         $this->jwt_secret = getenv('JWT_SECRET');
     }
 
@@ -159,31 +159,43 @@ class AuthController {
         }
     }
 }
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    //header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Allow-Credentials: true');    
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); 
+}   
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers:{$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 
+    exit(0);
+} 
 // Routes
 $auth = new AuthController();
 $request = $_SERVER['REQUEST_URI'];
-
 switch ($request) {
-    case '/register':
+    case '/auth/register':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $auth->registerCustomer();
         }
         break;
         
-    case '/login':
+    case '/auth/login':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $auth->loginCustomer();
         }
         break;
         
-    case '/admin/register':
+    case '/auth/admin/register':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $auth->registerAdmin();
         }
         break;
         
-    case '/admin/login':
+    case '/auth/admin/login':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $auth->loginAdmin();
         }
