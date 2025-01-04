@@ -1,4 +1,18 @@
-@use '../../global' as global;
+@use "../../global" as global;
+
+header {
+  position: fixed;
+
+  background: transparent;
+  color: var(--primary-color-contrast);
+
+  box-shadow: none;
+
+  &.scrolled {
+    background: var(--primary-color);
+    box-shadow: var(--box-shadow);
+  }
+}
 
 img {
   width: 100%;
@@ -19,31 +33,31 @@ a:hover {
   text-align: center;
   overflow: hidden;
 
-    img {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-    }
+  img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+  }
 
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100%;
-      background: linear-gradient(#00000009 40%, #000000cc);
-      z-index: 2;
-    }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background: linear-gradient(#00000009 40%, #000000cc);
+    z-index: 2;
+  }
 
-    h1 {
-      color: var(--primary-color-contrast);
-      position: absolute;
-      z-index: 3;
-      bottom: 0;
-      left: 0;
-      margin: 20px;
-    }
+  h1 {
+    color: var(--primary-color-contrast);
+    position: absolute;
+    z-index: 3;
+    bottom: 0;
+    left: 0;
+    margin: 20px;
+  }
 }
 
 /*parte mondiale*/
@@ -51,81 +65,84 @@ a:hover {
   background-color: var(--overlay-color);
   color: var(--overlay-color-contrast);
 
+  h2 {
+    text-align: center;
+  }
+
+  .marquee {
+    position: relative;
+    max-width: 100vw;
+    overflow-x: hidden;
+    height: clamp(16px, 3vw, 10vh);
+  }
+
+  .track {
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 10s linear infinite;
+    font-size: clamp(16px, 3vw, 10vh);
+    font-family: "Zen Dots", serif;
+    letter-spacing: -0.1rem;
+  }
+
+  .photoslideshow {
+    display: flex;
+    gap: 50px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: scroll;
+    img {
+      flex-shrink: 0;
+      width: 800px;
+      height: 500px;
+    }
+  }
+
+  .griglianazionali {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: white;
     h2 {
       text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
     }
 
-    .marquee {
-      position: relative;
-      max-width: 100vw;
-      overflow-x: hidden;
-      height: clamp(16px, 3vw, 10vh);
-    }
+    .gruppo {
+      margin-bottom: 20px;
+      h3 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        text-align: left;
+      }
 
-    .track {
-      position: absolute;
-      white-space: nowrap;
-      will-change: transform;
-      animation: marquee 10s linear infinite;
-      font-size: clamp(16px, 3vw, 10vh);
-      font-family: "Zen Dots", serif;
-      letter-spacing: -0.1rem;
-    }
-
-    .photoslideshow{
-      display: flex;
-      gap: 50px;
-      flex-wrap: nowrap;
-      white-space: nowrap;
-      overflow-x:scroll; 
-        img {
-          flex-shrink: 0;
-          width: 800px; 
-          height: 500px; 
-        }
-    }
-
-    .griglianazionali {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      color: white;
-        h2 {
+      .grigliagruppo {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        .nazione {
+          margin: 5px 0;
+          padding: 10px;
+          border-radius: 5px;
+          width: 100%;
           text-align: center;
-          margin-bottom: 20px;
-          font-size: 2rem;
         }
 
-        .gruppo {
-          margin-bottom: 20px;
-            h3 {
-              margin-bottom: 10px;
-              font-size: 1.5rem;
-              text-align: left;
-            }
-
-            .grigliagruppo {
-              display: grid;
-              grid-template-columns: repeat(4, 1fr);
-              gap: 10px;
-                .nazione {
-                  margin: 5px 0;
-                  padding: 10px;
-                  border-radius: 5px;
-                  width: 100%;
-                  text-align: center;
-                }
-
-                @media (max-width: 768px) {
-                  grid-template-columns: repeat(2, 1fr); /* 2 colonne su schermi piccoli */
-                }
-
-                @media (max-width: 480px) {
-                  grid-template-columns: 1fr; /* 1 colonna su schermi molto piccoli */
-                }
-            }
+        @media (max-width: 768px) {
+          grid-template-columns: repeat(
+            2,
+            1fr
+          ); /* 2 colonne su schermi piccoli */
         }
+
+        @media (max-width: 480px) {
+          grid-template-columns: 1fr; /* 1 colonna su schermi molto piccoli */
+        }
+      }
     }
+  }
 }
 
 .leghe-container {
@@ -134,29 +151,29 @@ a:hover {
   gap: 20px;
   background-color: #fff;
 
-    .lega {
-      display: flex;
-      align-items: center;
-      gap: 20px; 
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: var(--box-shadow);
+  .lega {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
 
-      .logo {
-        width: 80px;
-        height: auto;
-        object-fit: contain;
-      }
+    .logo {
+      width: 80px;
+      height: auto;
+      object-fit: contain;
+    }
 
-      .squadre {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-          li {
-            margin-bottom: 5px;
-          }
+    .squadre {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        margin-bottom: 5px;
       }
     }
+  }
 }
 
 /*L'animazione @keyframes slide sposta il testo da destra a sinistra usando translateX*/
