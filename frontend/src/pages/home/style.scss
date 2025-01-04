@@ -1,4 +1,4 @@
-@use "@global" as global;
+@use '../../global' as global;
 
 img {
   width: 100%;
@@ -22,42 +22,36 @@ main header {
   width: clamp(100vw, 100vw, 100vw);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   background: transparent;
-}
 
-main header.scrolled {
-  background: var(--primary-color);
-  box-shadow: var(--box-shadow);
-}
+    .scrolled {
+      background: var(--primary-color);
+      box-shadow: var(--box-shadow);
+    }
 
-main header img {
-  display: flex;
-  gap: 10px;
-  height: 50px;
-  width: auto;
-  max-width: 100%;
-}
+    img {
+      display: flex;
+      gap: 10px;
+      height: 50px;
+      width: auto;
+      max-width: 100%;
+    }
 
-main header h3 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--primary-color-contrast);
-}
+    h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--primary-color-contrast);
+    }
 
-main header nav {
-  display: flex;
-  gap: 15px;
-  margin-left: auto;
-}
-
-main header nav a {
-  text-decoration: none;
-  color: var(--primary-color-contrast);
-}
-/*parte mondiale*/
-.mondiale {
-  background-color: var(--overlay-color);
-  color: var(--overlay-color-contrast);
+    nav {
+      display: flex;
+      gap: 15px;
+      margin-left: auto;
+        a {
+          text-decoration: none;
+          color: var(--primary-color-contrast);
+        }
+    }
 }
 
 .cover {
@@ -69,111 +63,168 @@ main header nav a {
   align-items: center;
   text-align: center;
   overflow: hidden;
+
+    img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100%;
+      background: linear-gradient(#00000009 40%, #000000cc);
+      z-index: 2;
+    }
+
+    h1 {
+      color: var(--primary-color-contrast);
+      position: absolute;
+      z-index: 3;
+      bottom: 0;
+      left: 0;
+      margin: 20px;
+    }
 }
 
-.cover img {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
+/*parte mondiale*/
+.mondiale {
+  background-color: var(--overlay-color);
+  color: var(--overlay-color-contrast);
+
+    h2 {
+      text-align: center;
+    }
+
+    .marquee {
+      position: relative;
+      max-width: 100vw;
+      overflow-x: hidden;
+      height: clamp(16px, 3vw, 10vh);
+    }
+
+    .track {
+      position: absolute;
+      white-space: nowrap;
+      will-change: transform;
+      animation: marquee 10s linear infinite;
+      font-size: clamp(16px, 3vw, 10vh);
+      font-family: "Zen Dots", serif;
+      letter-spacing: -0.1rem;
+    }
+
+    .photoslideshow{
+      display: flex;
+      gap: 50px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      overflow-x:scroll; 
+        img {
+          flex-shrink: 0;
+          width: 800px; 
+          height: 500px; 
+        }
+    }
+
+    .griglianazionali {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      color: white;
+        h2 {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 2rem;
+        }
+
+        .gruppo {
+          margin-bottom: 20px;
+            h3 {
+              margin-bottom: 10px;
+              font-size: 1.5rem;
+              text-align: left;
+            }
+
+            .grigliagruppo {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 10px;
+                .nazione {
+                  margin: 5px 0;
+                  padding: 10px;
+                  border-radius: 5px;
+                  width: 100%;
+                  text-align: center;
+                }
+
+                @media (max-width: 768px) {
+                  grid-template-columns: repeat(2, 1fr); /* 2 colonne su schermi piccoli */
+                }
+
+                @media (max-width: 480px) {
+                  grid-template-columns: 1fr; /* 1 colonna su schermi molto piccoli */
+                }
+            }
+        }
+    }
 }
 
-.cover::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100%;
-  background: linear-gradient(#00000009 40%, #000000cc);
-  z-index: 2;
+.leghe-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #fff;
+
+    .lega {
+      display: flex;
+      align-items: center;
+      gap: 20px; 
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: var(--box-shadow);
+
+      .logo {
+        width: 80px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .squadre {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+          li {
+            margin-bottom: 5px;
+          }
+      }
+    }
 }
 
-.cover h1 {
-  color: var(--primary-color-contrast);
-  position: absolute;
-  z-index: 3;
-  bottom: 0;
-  left: 0;
-  margin: 20px;
-}
+/*footer*/
+main footer {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--dark-color);
+  color: var(--dark-color-contrast);
+    img {
+      display: flex;
+      gap: 10px;
+      height: 50px;
+      width: auto;
+      max-width: 100%;
+    }
 
-.mondiale h2 {
-  text-align: center;
-}
-
-.marquee {
-  position: relative;
-  max-width: 100vw;
-  overflow-x: hidden;
-  height: clamp(16px, 3vw, 10vh);
-}
-
-.track {
-  position: absolute;
-  white-space: nowrap;
-  will-change: transform;
-  animation: marquee 10s linear infinite;
-  font-size: clamp(16px, 3vw, 10vh);
-  font-family: "Zen Dots", serif;
-  letter-spacing: -0.1rem;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0%);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.griglianazionali {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  color: white;
-}
-
-.griglianazionali h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 2rem;
-}
-
-.gruppo {
-  margin-bottom: 20px;
-}
-
-.gruppo h3 {
-  margin-bottom: 10px;
-  font-size: 1.5rem;
-  text-align: left;
-}
-
-.grigliagruppo {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-.nazione {
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .grigliagruppo {
-    grid-template-columns: repeat(2, 1fr); /* 2 colonne su schermi piccoli */
-  }
-}
-
-@media (max-width: 480px) {
-  .grigliagruppo {
-    grid-template-columns: 1fr; /* 1 colonna su schermi molto piccoli */
-  }
+    h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--dark-color-contrast);
+    }
 }
 
 /*L'animazione @keyframes slide sposta il testo da destra a sinistra usando translateX*/
@@ -186,26 +237,11 @@ main header nav a {
   }
 }
 
-/*footer*/
-main footer {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: var(--dark-color);
-  color: var(--dark-color-contrast);
-}
-
-main footer img {
-  display: flex;
-  gap: 10px;
-  height: 50px;
-  width: auto;
-  max-width: 100%;
-}
-
-main footer h3 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--dark-color-contrast);
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
