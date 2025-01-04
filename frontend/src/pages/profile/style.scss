@@ -1,0 +1,57 @@
+@use "../../global.scss" as global;
+
+.profilo-container {
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    max-width: 600px;
+    margin: 20px auto;
+
+    .profilo-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .fotoProfilo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .infoProfilo{
+            h4 {
+                margin: 0;
+                color: var(--background-color-contrast);
+            }
+
+            p {
+                margin: 5px 0 0;
+                color: var(--background-color-contrast);
+            }
+        }
+    }
+
+    .dettagliProfilo {
+        margin-bottom: 20px;
+    }
+}
+
+.statisticheProfilo {
+    display: flex;
+    justify-content: space-between;
+
+    .statistiche {
+        text-align: center;
+    
+        p {
+            margin: 5px 0 0;
+            font-weight: bold;
+        }
+    }
+}
+
+
+ 
