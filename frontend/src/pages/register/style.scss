@@ -1,1 +1,12 @@
 @use "@global" as global;
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: clamp(0px, 90vw, 500px);
+  margin: 40px auto;
+
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}

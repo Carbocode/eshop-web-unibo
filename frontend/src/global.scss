@@ -18,7 +18,7 @@ html {
   --primary-color: #cd0e0e;
   --primary-color-contrast: #fff;
   --secondary-color: #62929e;
-  --primary-color-contrast: #fff;
+  --secondary-color-contrast: #fff;
   --background-color: light-dark(#fff, #000);
   --background-color-contrast: light-dark(#000, #fff);
   --medium-color: light-dark(#d9d9d9, #414141);
@@ -52,6 +52,7 @@ label,
 h5,
 h6,
 button,
+.button,
 input[type="button"],
 input[type="submit"] {
   font-family: "Zen Dots", serif;
@@ -120,6 +121,7 @@ h4 {
 h5,
 label,
 button,
+.button,
 input[type="button"],
 input[type="submit"] {
   font-size: 1.25rem;
@@ -138,11 +140,13 @@ label {
   display: block;
 }
 
+input[type="tel"],
+input[type="password"],
+input[type="email"],
 input[type="number"],
 input[type="text"],
 textarea,
 select {
-  width: clamp(200px, 80vw, 400px);
   border-radius: var(--border-radius);
   padding: var(--padding);
   box-shadow: var(--box-shadow);
@@ -151,6 +155,7 @@ select {
 }
 
 button,
+.button,
 input[type="button"],
 input[type="submit"] {
   background-color: var(--primary-color);
@@ -161,6 +166,13 @@ input[type="submit"] {
   border: none;
   margin: var(--margin);
   transition: all 0.2s ease-out;
+  display: block;
+  text-align: center;
+
+  &.secondary {
+    background-color: var(--secondary-color);
+    color: var(--secondary-color-contrast);
+  }
 
   &:hover {
     box-shadow: var(--box-shadow-hover);
