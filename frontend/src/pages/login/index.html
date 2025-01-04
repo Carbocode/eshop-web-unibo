@@ -6,56 +6,40 @@
     <title>Login - Soccer Shop</title>
 
     <link rel="icon" href="@assets/icons/favicon.ico" type="image/x-icon" />
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-50">
-    <div class="min-h-screen flex items-center justify-center">
-      <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg">
-        <h2 class="text-3xl font-bold text-center text-gray-800">
-          Soccer Shop Login
-        </h2>
+  <body>
+    <header>
+      <img src="@assets/icons/favicon.ico" alt="icona logo" />
+      <a href="#"><h3>Elprimerofootballer</h3></a>
+      <nav>
+        <a href="@pages/toolkit/">Squadre</a>
+        <a href="#">Leghe</a>
+        <a href="#">Nazionali</a>
+        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+      </nav>
+    </header>
 
-        <div
-          id="error-message"
-          class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-        ></div>
+    <form id="login-form">
+      <h2>Login</h2>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" autocomplete="username" />
 
-        <form id="login-form" class="mt-8 space-y-6">
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700"
-              >Email</label
-            >
-            <input
-              id="email"
-              type="email"
-              required
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
+      <label for="email">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        autocomplete="current-password"
+      />
+      <input type="submit" value="Login" />
+      <a class="button secondary">Sign Up</a>
+    </form>
 
-          <div>
-            <label
-              for="password"
-              class="block text-sm font-medium text-gray-700"
-              >Password</label
-            >
-            <input
-              id="password"
-              type="password"
-              required
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
+    <footer>
+      <img src="@assets/icons/favicon.ico" alt="icona logo" />
+      <h3>Elprimerofootballer</h3>
+    </footer>
 
-          <button
-            type="submit"
-            class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Sign In
-          </button>
-        </form>
-      </div>
-    </div>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
