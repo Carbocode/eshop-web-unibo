@@ -1,113 +1,24 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Checkout</title>
-    <style>
-        .checkout-container {
-            display: flex;
-            padding: 20px;
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .checkout-form {
-            flex: 1;
-        }
-
-        .order-summary {
-            width: 400px;
-            background: #f8f8f8;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .breadcrumb {
-            padding: 20px;
-            background: #f8f8f8;
-            margin-bottom: 20px;
-        }
-
-        .summary-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .summary-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-
-        .summary-details {
-            flex: 1;
-        }
-
-        .summary-price {
-            text-align: right;
-            font-weight: bold;
-        }
-
-        .totals {
-            margin-top: 20px;
-            border-top: 2px solid #ddd;
-            padding-top: 20px;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .total-row.final {
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-top: 10px;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-        }
-
-        .pay-button {
-            background: #c41e3a;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            width: 100%;
-            font-size: 1.1em;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .pay-button:hover {
-            background: #a01830;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Checkout - Soccer Shop</title>
+        <link rel="icon" href="@assets/icons/favicon.ico" type="image/x-icon" />
+      </head>
 <body>
+    <header>
+        <img src="@assets/icons/favicon.ico" alt="icona logo" />
+        <a href="@pages/home/"><h3>Elprimerofootballer</h3></a>
+        <nav>
+          <a href="@pages/toolkit/">Squadre</a>
+          <a href="#">Leghe</a>
+          <a href="#">Nazionali</a>
+          <a href="@pages/login/"><i class="fa-solid fa-circle-user"></i></a>
+          <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+        </nav>
+      </header>
     <div class="breadcrumb">
         Carrello > Checkout > Informazioni
     </div>
@@ -159,108 +70,11 @@
             <!-- Will be populated by JavaScript -->
         </div>
     </div>
-
-    <script>
-        const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
-        
-        async function loadOrderSummary() {
-            try {
-                const response = await fetch('/cart/summary', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const data = await response.json();
-                
-                if (response.ok) {
-                    displayOrderSummary(data);
-                } else {
-                    throw new Error(data.error);
-                }
-            } catch (error) {
-                console.error('Error loading order summary:', error);
-            }
-        }
-
-        function displayOrderSummary(data) {
-            const summaryContainer = document.getElementById('orderSummary');
-            const totalAmountSpan = document.getElementById('totalAmount');
-            
-            let html = '<h2>Maglia Napoli</h2>';
-            
-            // Display items
-            html += data.items.map(item => `
-                <div class="summary-item">
-                    <img src="${item.image_url}" alt="${item.team_name}">
-                    <div class="summary-details">
-                        <div>${item.team_name} - ${item.edition_name}</div>
-                        <div>Size: ${item.size}</div>
-                        <div>Quantity: ${item.quantity}</div>
-                    </div>
-                    <div class="summary-price">€${item.subtotal}</div>
-                </div>
-            `).join('');
-
-            // Display totals
-            html += `
-                <div class="totals">
-                    <div class="total-row">
-                        <span>Prezzo Articoli</span>
-                        <span>€${data.summary.subtotal}</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Prezzo Spedizione</span>
-                        <span>€5</span>
-                    </div>
-                    <div class="total-row final">
-                        <span>Prezzo Totale</span>
-                        <span>€${data.summary.total + 5}</span>
-                    </div>
-                </div>
-            `;
-
-            summaryContainer.innerHTML = html;
-            totalAmountSpan.textContent = (data.summary.total + 5).toFixed(2);
-        }
-
-        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                cardNumber: document.getElementById('cardNumber').value,
-                cardExpiry: document.getElementById('cardExpiry').value,
-                cardCvv: document.getElementById('cardCvv').value,
-                cardName: document.getElementById('cardName').value,
-                address: document.getElementById('address').value,
-                postalCode: document.getElementById('postalCode').value,
-                phone: document.getElementById('phone').value
-            };
-
-            try {
-                const response = await fetch('/checkout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-                
-                if (response.ok) {
-                    alert('Order placed successfully!');
-                    window.location.href = '/order-confirmation';
-                } else {
-                    throw new Error(data.error);
-                }
-            } catch (error) {
-                alert('Error processing checkout: ' + error.message);
-            }
-        });
-
-        // Load order summary when page loads
-        loadOrderSummary();
-    </script>
+    <footer>
+        <img src="@assets/icons/favicon.ico" alt="icona logo" />
+        <h3>Elprimerofootballer</h3>
+      </footer>
+  
+    <script type="module" src="./main.js"></script>
 </body>
 </html>
