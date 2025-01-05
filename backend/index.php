@@ -1,41 +1,71 @@
 <?php
+
+// Error reporting
 require 'error.php';
+
+// Composer autoloader
 require 'vendor/autoload.php';
-// index.php - Main router
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+// Load environment variables
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
-$dotenv->required(['JWT_SECRET']);
-$test = getenv('JWT_SECRET');
+$dotenv->required(['JWT_SECRET', 'DB_USER', 'DB_PWD', 'DB_PORT']);
+
+// Load application files
+require_once __DIR__ . '/src/config/database.php';
+require_once __DIR__ . '/src/utils/ApiResponse.php';
+require_once __DIR__ . '/src/middleware/Auth.php';
+require_once __DIR__ . '/src/controllers/BaseController.php';
+require_once __DIR__ . '/src/controllers/AuthController.php';
+require_once __DIR__ . '/src/controllers/CartController.php';
+require_once __DIR__ . '/src/controllers/CheckoutController.php';
+require_once __DIR__ . '/src/controllers/TeamsController.php';
+
+// Initialize authentication
+Auth::init();
+
+// Set CORS headers
+ApiResponse::setCorsHeaders();
+
+// Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-$request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+// Route the request
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-switch ($request) {
-    case '/auth/login':
-        require __DIR__ . '/src/api/auth.php';
-        break;
-    case '/auth/register':
-        require __DIR__ . '/src/api/auth.php';
-        break;
-    case '/cart':
-    case '/cart/summary':
-        require __DIR__ . '/src/api/cart.php';
-        break;
-    case '/checkout':
-        require __DIR__ . '/src/api/checkout.php';
-        break;
-    case '/info':
-        echo phpinfo();
-        break;
-    default:
-        http_response_code(404);
-        echo $request;
-        echo json_encode(['error' => 'Not Found']);
-        break;
+try {
+    switch (true) {
+        case strpos($uri, '/auth') === 0:
+            $controller = new AuthController();
+            break;
+            
+        case strpos($uri, '/cart') === 0:
+            $controller = new CartController();
+            break;
+            
+        case strpos($uri, '/checkout') === 0:
+            $controller = new CheckoutController();
+            break;
+            
+        case strpos($uri, '/teams') === 0:
+            $controller = new TeamsController();
+            break;
+            
+        case $uri === '/info':
+            phpinfo();
+            exit;
+            
+        default:
+            ApiResponse::error('Not Found', 404);
+    }
+
+    $controller->processRequest();
+    
+} catch (Exception $e) {
+    ApiResponse::error(
+        $e->getMessage(),
+        $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500
+    );
 }
-?>

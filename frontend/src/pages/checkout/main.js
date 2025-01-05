@@ -11,7 +11,7 @@ async function loadOrderSummary() {
         const data = await response.json();
         
         if (response.ok) {
-            displayOrderSummary(data);
+            displayOrderSummary(data.data);
         } else {
             throw new Error(data.error);
         }
