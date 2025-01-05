@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Utils;
+
 class ApiResponse {
     public static function success($data = null, $message = null, $code = 200) {
         http_response_code($code);

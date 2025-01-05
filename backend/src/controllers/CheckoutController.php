@@ -1,5 +1,7 @@
 <?php
-
+namespace App\Controllers;
+use App\Utils\ApiResponse;
+use Exception;
 class CheckoutController extends BaseController {
     public function processCheckout() {
         $this->authenticate('customer');

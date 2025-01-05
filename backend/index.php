@@ -20,6 +20,16 @@ require_once __DIR__ . '/src/controllers/AuthController.php';
 require_once __DIR__ . '/src/controllers/CartController.php';
 require_once __DIR__ . '/src/controllers/CheckoutController.php';
 require_once __DIR__ . '/src/controllers/TeamsController.php';
+require_once __DIR__ . '/src/controllers/OrderController.php';
+
+// Import required classes
+use App\Utils\ApiResponse;
+use App\Middleware\Auth;
+use App\Controllers\AuthController;
+use App\Controllers\CartController;
+use App\Controllers\CheckoutController;
+use App\Controllers\TeamsController;
+use App\Controllers\OrderController;
 
 // Initialize authentication
 Auth::init();
@@ -51,6 +61,10 @@ try {
             
         case strpos($uri, '/teams') === 0:
             $controller = new TeamsController();
+            break;
+
+        case strpos($uri, '/orders') === 0:
+            $controller = new OrderController();
             break;
             
         case $uri === '/info':

@@ -1,5 +1,14 @@
-
 <?php
+
+namespace App\Controllers;
+
+use PDO;
+use PDOException;
+use Exception;
+use App\Middleware\Auth;
+use App\Config\Database;
+use App\Utils\ApiResponse;
+
 /**
  * BaseController is an abstract class that provides common functionality for all controllers.
  * It includes methods for database transactions, user authentication, and handling HTTP requests.
@@ -55,11 +64,11 @@ abstract class BaseController {
     }
 
     protected function fetchAll($query, $params = []) {
-        return $this->executeQuery($query, $params)->fetchAll();
+        return $this->executeQuery($query, $params)->fetchAll(PDO::FETCH_OBJ);
     }
 
     protected function fetch($query, $params = []) {
-        return $this->executeQuery($query, $params)->fetch();
+        return $this->executeQuery($query, $params)->fetch(PDO::FETCH_OBJ);
     }
 
     protected function fetchColumn($query, $params = []) {

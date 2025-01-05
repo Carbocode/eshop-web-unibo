@@ -1,7 +1,8 @@
 <?php
-
+namespace App\Middleware;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use \Exception;
 
 class Auth {
     private static $jwt_secret;

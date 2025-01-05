@@ -1,5 +1,8 @@
 <?php
-
+namespace App\Controllers;
+use App\Utils\ApiResponse;
+use App\Middleware\Auth;
+use Exception;
 class AuthController extends BaseController {
     public function registerCustomer() {
         $data = ApiResponse::getRequestData();

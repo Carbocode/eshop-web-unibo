@@ -1,5 +1,7 @@
 <?php
-
+namespace App\Controllers;
+use App\Utils\ApiResponse;
+use Exception;
 class CartController extends BaseController {
     public function getCartItems() {
         $this->authenticate('customer');

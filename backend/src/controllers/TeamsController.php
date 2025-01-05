@@ -1,5 +1,7 @@
 <?php
-
+namespace App\Controllers;
+use App\Utils\ApiResponse;
+use Exception;
 class TeamsController extends BaseController {
     public function getTeams() {
         $country = isset($_GET['country']) ? $_GET['country'] : null;
