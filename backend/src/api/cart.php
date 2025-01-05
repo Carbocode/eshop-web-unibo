@@ -8,8 +8,8 @@ class CartController {
     private $customer_id;
 
     public function __construct() {
-        $this->db = new PDO("mysql:host=localhost:3306;dbname=soccer_tshirt_shop", "root", "toor");
-        $this->jwt_secret = getenv('JWT_SECRET');
+        $this->db = new PDO("mysql:host=localhost:". $_ENV['DB_PORT'] .";dbname=soccer_tshirt_shop", $_ENV['DB_USER'], $_ENV['DB_PWD']);
+        $this->jwt_secret = $_ENV['JWT_SECRET'];
     }
 
     private function authenticateCustomer() {

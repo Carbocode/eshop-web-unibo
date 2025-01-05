@@ -9,8 +9,8 @@ class AuthController {
     private $jwt_secret;
 
     public function __construct() {
-        $this->db = new PDO("mysql:host=localhost;dbname=soccer_tshirt_shop", "root", "toor");
-        $this->jwt_secret = getenv('JWT_SECRET');
+        $this->db = new PDO("mysql:host=localhost;dbname=soccer_tshirt_shop", $_ENV['DB_USER'] , $_ENV['DB_PWD']);
+        $this->jwt_secret = $_ENV['JWT_SECRET'];
     }
 
     public function registerCustomer() {
