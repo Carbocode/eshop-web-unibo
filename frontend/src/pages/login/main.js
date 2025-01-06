@@ -5,7 +5,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
   const errorDiv = document.getElementById("error-message");
 
   try {
-    const response = await fetch("/login", {
+    const response = await fetch("http://localhost:8000/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -15,9 +15,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     });
 
     const data = await response.json();
-
     if (response.ok) {
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.data.token);
       window.location.href = "/dashboard";
     } else {
       errorDiv.textContent = data.error;

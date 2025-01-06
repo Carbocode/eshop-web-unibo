@@ -1,0 +1,83 @@
+@use "@global" as global;
+.checkout-container {
+    display: flex;
+    padding: 20px;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.checkout-form {
+    flex: 1;
+}
+
+.order-summary {
+    width: 400px;
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+
+.breadcrumb {
+    padding: 20px;
+    background: #f8f8f8;
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.summary-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.summary-details {
+    flex: 1;
+}
+
+.summary-price {
+    text-align: right;
+    font-weight: bold;
+}
+
+.totals {
+    margin-top: 20px;
+    border-top: 2px solid #ddd;
+    padding-top: 20px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.total-row.final {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+header {
+    position: fixed;
+    top: 0;
+}
+footer {
+    bottom: 0;
+    width: 100%;
+    margin-top: 50px;
+}
