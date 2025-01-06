@@ -56,7 +56,6 @@ button,
 input[type="button"],
 input[type="submit"] {
   font-family: "Zen Dots", serif;
-  letter-spacing: -0.1rem;
   font-weight: 400;
   font-style: normal;
   margin: 0;
@@ -152,6 +151,7 @@ select {
   box-shadow: var(--box-shadow);
   border: none;
   margin: calc(var(--margin) / 2) var(--margin);
+  width: 100%;
 }
 
 button,
