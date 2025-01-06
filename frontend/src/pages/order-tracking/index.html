@@ -4,112 +4,93 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Tracking - Elprimero</title>
-    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="@assets/icons/favicon.ico" />
   </head>
   <body>
-    <div class="container">
-      <main class="order-tracking">
-        <!-- Order Status Section -->
-        <section class="order-status">
-          <h1>Order Status</h1>
-          <div class="status-timeline">
-            <div class="timeline-step">
-              <div class="step-icon">
-                <span class="material-icons">shopping_cart</span>
-              </div>
-              <div class="step-content">
-                <h3>Order Placed</h3>
-                <p class="date" data-status="placed"></p>
-              </div>
+    <header>
+      <a href="@pages/home/">
+        <img src="@assets/icons/favicon.ico" alt="icona logo" />
+        <h3>Elprimerofootballer</h3>
+      </a>
+      <nav>
+        <a href="@pages/toolkit/">Squadre</a>
+        <a href="#">Leghe</a>
+        <a href="#">Nazionali</a>
+        <a href="@pages/login/"><i class="fa-solid fa-circle-user"></i></a>
+        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+      </nav>
+    </header>
+
+    <main class="order-tracking">
+      <h2>Shipping Details</h2>
+      <br />
+      <!-- Order Status Section -->
+      <section class="steps-container">
+        <li class="">
+          <i class="fa-solid fa-circle-check"></i>
+          <h5>Placed</h5>
+        </li>
+        <li class="active">
+          <i class="fa-solid fa-warehouse"></i>
+          <h5>Processing</h5>
+        </li>
+        <li class="">
+          <i class="fa-solid fa-truck"></i>
+          <h5>Shipped</h5>
+        </li>
+        <li class="">
+          <i class="fa-solid fa-house"></i>
+          <h5>Delivered</h5>
+        </li>
+      </section>
+
+      <!-- Shipping Details Section -->
+      <section class="shipping-details">
+        <div class="details-content">
+          <div class="shipping-address">
+            <h3>Delivery Address</h3>
+            <p class="address-line" data-address="name"></p>
+            <p class="address-line" data-address="street"></p>
+            <p class="address-line" data-address="city-state"></p>
+            <p class="address-line" data-address="country"></p>
+          </div>
+          <div class="delivery-info">
+            <h3>Delivery Information</h3>
+            <p>Tracking Number: <span data-tracking="number"></span></p>
+            <p>Estimated Delivery: <span data-tracking="eta"></span></p>
+            <p>Shipping Method: <span data-tracking="method"></span></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Order Summary Section -->
+      <section class="order-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-content">
+          <div class="order-items" data-order="items">
+            <!-- Items will be dynamically inserted here -->
+          </div>
+          <div class="order-totals">
+            <div class="subtotal">
+              <span>Subtotal</span>
+              <span data-total="subtotal"></span>
             </div>
-            <div class="timeline-step">
-              <div class="step-icon">
-                <span class="material-icons">inventory</span>
-              </div>
-              <div class="step-content">
-                <h3>Processing</h3>
-                <p class="date" data-status="processing"></p>
-              </div>
+            <div class="shipping">
+              <span>Shipping</span>
+              <span data-total="shipping"></span>
             </div>
-            <div class="timeline-step">
-              <div class="step-icon">
-                <span class="material-icons">local_shipping</span>
-              </div>
-              <div class="step-content">
-                <h3>Shipped</h3>
-                <p class="date" data-status="shipped"></p>
-              </div>
+            <div class="tax">
+              <span>Tax</span>
+              <span data-total="tax"></span>
             </div>
-            <div class="timeline-step">
-              <div class="step-icon">
-                <span class="material-icons">check_circle</span>
-              </div>
-              <div class="step-content">
-                <h3>Delivered</h3>
-                <p class="date" data-status="delivered"></p>
-              </div>
+            <div class="total">
+              <span>Total</span>
+              <span data-total="final"></span>
             </div>
           </div>
-        </section>
-
-        <!-- Shipping Details Section -->
-        <section class="shipping-details">
-          <h2>Shipping Details</h2>
-          <div class="details-content">
-            <div class="shipping-address">
-              <h3>Delivery Address</h3>
-              <p class="address-line" data-address="name"></p>
-              <p class="address-line" data-address="street"></p>
-              <p class="address-line" data-address="city-state"></p>
-              <p class="address-line" data-address="country"></p>
-            </div>
-            <div class="delivery-info">
-              <h3>Delivery Information</h3>
-              <p>Tracking Number: <span data-tracking="number"></span></p>
-              <p>Estimated Delivery: <span data-tracking="eta"></span></p>
-              <p>Shipping Method: <span data-tracking="method"></span></p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Order Summary Section -->
-        <section class="order-summary">
-          <h2>Order Summary</h2>
-          <div class="summary-content">
-            <div class="order-items" data-order="items">
-              <!-- Items will be dynamically inserted here -->
-            </div>
-            <div class="order-totals">
-              <div class="subtotal">
-                <span>Subtotal</span>
-                <span data-total="subtotal"></span>
-              </div>
-              <div class="shipping">
-                <span>Shipping</span>
-                <span data-total="shipping"></span>
-              </div>
-              <div class="tax">
-                <span>Tax</span>
-                <span data-total="tax"></span>
-              </div>
-              <div class="total">
-                <span>Total</span>
-                <span data-total="final"></span>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <!-- Loading State -->
-      <div class="loading-overlay" aria-hidden="true">
-        <div class="loader"></div>
-      </div>
-
-      <!-- Error State -->
-      <div class="error-message" aria-live="polite"></div>
-    </div>
+        </div>
+      </section>
+    </main>
     <script type="module" src="./main.js"></script>
   </body>
 </html>

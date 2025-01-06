@@ -67,7 +67,9 @@ select,
 small,
 input,
 a,
-textarea {
+textarea,
+span,
+div {
   font-family: "Inter", serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -90,12 +92,9 @@ code {
   border-radius: 0.3em;
 }
 
-p,
-pre,
 input,
 textarea {
   color: var(--background-color-contrast);
-  background-color: var(--background-color);
 }
 
 input,
@@ -338,22 +337,29 @@ header {
   background: var(--primary-color);
   box-shadow: var(--box-shadow);
 
-  img {
-    display: flex;
-    gap: 10px;
-    height: 50px;
-    width: auto;
-    max-width: 100%;
-  }
-
   h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: var(--primary-color-contrast);
+
+    @media (max-width: 900px) {
+      display: none;
+    }
   }
 
   a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    img {
+      gap: 10px;
+      height: 50px;
+      width: auto;
+      max-width: 100%;
+    }
+
     text-decoration: none;
     color: var(--primary-color-contrast);
   }
