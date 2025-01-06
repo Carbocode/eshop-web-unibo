@@ -1,1 +1,50 @@
 @use "@global" as global;
+
+main {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+
+    h3 {
+        margin-bottom: 20px;
+    }
+
+    .prodotto-container {
+        display: flex;
+        gap: 40px;
+
+        img {
+            width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .prodotto-dettagli {
+            flex-grow: 1;
+        }
+
+        .dettagli {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+
+            .dettagli-item {
+                flex: 1;
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+
+    .versione,
+    .azioni,
+    .taglie {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+    }
+}

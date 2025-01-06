@@ -4,11 +4,91 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Home - Elprimero</title>
+    <title>Product - Elprimero</title>
 
     <link rel="icon" href="@assets/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
+    <header>
+      <img src="@assets/icons/favicon.ico" alt="icona logo" />
+      <a href="@pages/home/"><h3>Elprimerofootballer</h3></a>
+      <nav>
+        <a href="@pages/toolkit/">Squadre</a>
+        <a href="#">Leghe</a>
+        <a href="#">Nazionali</a>
+        <a href="@pages/login/"><i class="fa-solid fa-circle-user"></i></a>
+        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+      </nav>
+    </header>
+
+    <main>
+      <h3>Napoli</h3>
+      <div class="prodotto-container">
+          <div class="prodotto-image">
+              <img src="maglia-napoli.png" alt="Maglia Napoli">
+          </div>
+          <div class="prodotto-dettagli">
+              <div class="dettagli">
+                  <div class="dettagli-item">
+                      <label for="annata">Annata</label>
+                      <select id="annata">
+                          <option>24/25</option>
+                      </select>
+                  </div>
+                  <div class="dettagli-item">
+                      <label>Versione</label>
+                      <div class="versione">
+                        <input type="radio" id="1" name="versione" value="1" checked />
+                        <label for="1">1</label>
+                        <input type="radio" id="2" name="versione" value="2" />
+                        <label for="2">2</label>
+                        <input type="radio" id="3" name="versione" value="3" />
+                        <label for="3">3</label>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="dettagli">
+                  <div class="dettagli-item">
+                      <label for="numero">Numero</label>
+                      <input type="number" id="numero" value="69">
+                  </div>
+                  <div class="dettagli-item">
+                      <label for="nome">Nome</label>
+                      <input type="text" id="nome" value="Bossetti">
+                  </div>
+              </div>
+
+              <div class="dettagli">
+                  <label>Taglia</label>
+                  <div class="taglie">
+                    <input type="radio" id="XS" name="Taglia" value="XS"  />
+                    <label for="XS">XS</label>
+                    <input type="radio" id="S" name="Taglia" value="S" />
+                    <label for="S">S</label>
+                    <input type="radio" id="M" name="Taglia" value="M" />
+                    <label for="M">M</label>
+                    <input type="radio" id="L" name="Taglia" value="L" checked />
+                    <label for="L">L</label>
+                    <input type="radio" id="XL" name="Taglia" value="XL" />
+                    <label for="XL">XL</label>
+                    <input type="radio" id="XXL" name="Taglia" value="XXL" />
+                    <label for="XXL">XXL</label>
+                  </div>
+              </div>
+
+              <div class="azioni">
+                  <button class="secondary">AGGIUNGI AL CARRELLO</button>
+                  <button class="primary">COMPRA ORA</button>
+              </div>
+          </div>
+      </div>
+    </main>
+
+    <footer>
+        <img src="@assets/icons/favicon.ico" alt="icona logo" />
+        <h3>Elprimerofootballer</h3>
+    </footer>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
