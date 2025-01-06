@@ -10,3 +10,8 @@ form {
   border-radius: var(--border-radius);
   padding: 1rem;
 }
+
+.split-input {
+  display: flex;
+  gap: 16px;
+}
