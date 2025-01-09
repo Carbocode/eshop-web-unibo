@@ -32,6 +32,15 @@ class TeamsController extends BaseController {
             ApiResponse::error('Failed to fetch teams', 500);
         }
     }
+    public function getNationalTeams(){
+        $query = "SELECT * FROM teams WHERE type='national'";
+        try{
+            $teams = $this->fetchAll($query, $params);
+            ApiResponse::success(['teams' => $teams]);
+        }catch{
+            ApiResponse::error('Failed to fetch teams', 500);
+        }
+    }
 
     /**
      * Processes incoming HTTP requests and routes them to appropriate handlers.
@@ -40,10 +49,16 @@ class TeamsController extends BaseController {
      * @return void
      */
     public function processRequest() {
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $handlers = [
-            'GET' => [$this, 'getTeams']
+            '/teams' => [
+                'GET' => [$this, 'getTeams'],
+            ],
+            '/teams/national' => [
+                'GET' => [$this, 'getNationalTeams']
+            ]
         ];
 
-        $this->handleRequest($_SERVER['REQUEST_METHOD'], $handlers);
+        $this->handleRequest($_SERVER['REQUEST_METHOD'], $handlers[$uri]);
     }
 }

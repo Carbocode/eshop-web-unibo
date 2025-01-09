@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 try {
+    //Se l'uri inizia con X chiamiamo XController
     switch (true) {
         case strpos($uri, '/auth') === 0:
             $controller = new AuthController();
@@ -74,7 +75,7 @@ try {
         default:
             ApiResponse::error('Not Found', 404);
     }
-
+    //ogni controller ha una funzione processrequest che chiama l'handler adatto in base all'uri
     $controller->processRequest();
     
 } catch (Exception $e) {

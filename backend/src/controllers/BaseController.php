@@ -23,6 +23,14 @@ abstract class BaseController {
     protected $userType;
 
     /**
+     * Processes incoming HTTP requests and routes them to appropriate handlers.
+     * Currently only handles GET requests to retrieve team data.
+     * 
+     * @return void
+     */
+    abstract protected function processRequest();
+
+    /**
      * Constructor initializes the database connection.
      */
     public function __construct() {
@@ -134,6 +142,7 @@ abstract class BaseController {
 
     /**
      * Handles HTTP requests by routing to appropriate handlers based on method.
+     * Usually called by processRequest
      *
      * @param string $method The HTTP method (GET, POST, etc.)
      * @param array $handlers Array of handler functions keyed by HTTP method
