@@ -2,7 +2,21 @@
 namespace App\Controllers;
 use App\Utils\ApiResponse;
 use Exception;
+
+/**
+ * CartController handles all shopping cart operations including
+ * viewing, adding, updating, and removing items from the cart.
+ * Also provides order summary functionality.
+ */
 class CartController extends BaseController {
+    /**
+     * Retrieves all items in the customer's cart with detailed information.
+     * Includes team name, edition name, price, and quantity for each item.
+     * Calculates the total cart value.
+     * 
+     * @throws Exception When authentication fails
+     * @return void
+     */
     public function getCartItems() {
         $this->authenticate('customer');
         
@@ -28,6 +42,13 @@ class CartController extends BaseController {
         ]);
     }
 
+    /**
+     * Adds a new item to the customer's cart or updates quantity if item already exists.
+     * Performs stock validation before adding items.
+     * 
+     * @throws Exception When stock is insufficient or authentication fails
+     * @return void
+     */
     public function addToCart() {
         $this->authenticate('customer');
         $data = ApiResponse::getRequestData();
@@ -78,6 +99,14 @@ class CartController extends BaseController {
         }
     }
 
+    /**
+     * Updates the quantity of an item in the cart.
+     * If quantity is set to 0 or less, the item is removed from the cart.
+     * Performs stock validation before updating.
+     * 
+     * @throws Exception When item not found, stock insufficient, or authentication fails
+     * @return void
+     */
     public function updateCartItem() {
         $this->authenticate('customer');
         $data = ApiResponse::getRequestData();
@@ -123,6 +152,12 @@ class CartController extends BaseController {
         }
     }
 
+    /**
+     * Removes an item from the customer's cart.
+     * 
+     * @throws Exception When item not found or authentication fails
+     * @return void
+     */
     public function removeFromCart() {
         $this->authenticate('customer');
         $data = ApiResponse::getRequestData();
@@ -140,6 +175,14 @@ class CartController extends BaseController {
         ApiResponse::success(null, 'Item removed from cart');
     }
 
+    /**
+     * Retrieves a detailed order summary including all items,
+     * their individual prices, quantities, and subtotals.
+     * Calculates overall subtotal and total.
+     * 
+     * @throws Exception When authentication fails
+     * @return void
+     */
     public function getOrderSummary() {
         $this->authenticate('customer');
         
@@ -171,6 +214,13 @@ class CartController extends BaseController {
         ]);
     }
 
+    /**
+     * Processes incoming HTTP requests and routes them to appropriate handlers.
+     * Handles all cart-related endpoints including viewing, adding, updating,
+     * and removing items, as well as retrieving order summaries.
+     * 
+     * @return void
+     */
     public function processRequest() {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];

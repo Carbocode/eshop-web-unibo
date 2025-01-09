@@ -2,7 +2,31 @@
 namespace App\Controllers;
 use App\Utils\ApiResponse;
 use Exception;
+
+/**
+ * CheckoutController handles the order checkout process.
+ * Manages the conversion of cart items into orders, including
+ * stock verification, order creation, and cart cleanup.
+ */
 class CheckoutController extends BaseController {
+    /**
+     * Processes the checkout of items in the customer's cart.
+     * 
+     * This method performs several operations in a transaction:
+     * 1. Verifies cart is not empty
+     * 2. Checks stock availability for all items
+     * 3. Creates a new order
+     * 4. Creates order items
+     * 5. Updates product stock quantities
+     * 6. Clears the customer's cart
+     * 
+     * @throws Exception When:
+     *  - Cart is empty (400)
+     *  - Insufficient stock for any item (400)
+     *  - Authentication fails
+     *  - Database operations fail
+     * @return void
+     */
     public function processCheckout() {
         $this->authenticate('customer');
         $data = ApiResponse::getRequestData();
@@ -83,6 +107,12 @@ class CheckoutController extends BaseController {
         }
     }
 
+    /**
+     * Processes incoming HTTP requests and routes them to appropriate handlers.
+     * Currently only handles the POST /checkout endpoint for processing orders.
+     * 
+     * @return void
+     */
     public function processRequest() {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];

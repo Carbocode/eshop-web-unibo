@@ -6,7 +6,17 @@ use Exception;
 use PDOException;
 use App\Utils\ApiResponse;
 
+/**
+ * OrderController handles order-related operations including
+ * retrieving order details and updating order statuses.
+ */
 class OrderController extends BaseController {
+    /**
+     * Processes incoming HTTP requests and routes them to appropriate handlers.
+     * Handles GET requests for order details and PUT requests for status updates.
+     * 
+     * @return void
+     */
     public function processRequest() {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -38,6 +48,12 @@ class OrderController extends BaseController {
         }
     }
 
+    /**
+     * Extracts order ID from the URI path.
+     * 
+     * @param string $uri The request URI
+     * @return string|null The order ID if found, null otherwise
+     */
     private function getOrderIdFromUri($uri) {
         if (preg_match('/\/orders\/(\d+)/', $uri, $matches)) {
             return $matches[1];
@@ -45,6 +61,14 @@ class OrderController extends BaseController {
         return null;
     }
 
+    /**
+     * Retrieves detailed information about a specific order.
+     * Includes order items, shipping details, and total calculations.
+     * 
+     * @param string $orderId The ID of the order to retrieve
+     * @throws Exception When order not found or database error occurs
+     * @return void
+     */
     private function getOrder($orderId) {
         try {
             // Validate order ID
@@ -121,6 +145,14 @@ class OrderController extends BaseController {
         }
     }
 
+    /**
+     * Updates the status of a specific order.
+     * 
+     * @param string $orderId The ID of the order to update
+     * @param string $status The new status to set. Must be one of: placed, processing, shipped, delivered
+     * @throws Exception When order not found, invalid status, or database error occurs
+     * @return void
+     */
     private function updateOrderStatus($orderId, $status) {
         try {
             // Validate status

@@ -22,10 +22,20 @@ abstract class BaseController {
     protected $userId;
     protected $userType;
 
+    /**
+     * Constructor initializes the database connection.
+     */
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
+    /**
+     * Authenticates the current user and sets user properties.
+     *
+     * @param string|null $requiredType Optional user type required for authentication
+     * @return object User object containing userId and type
+     * @throws Exception If authentication fails
+     */
     protected function authenticate($requiredType = null) {
         try {
             $user = Auth::authenticateUser($requiredType);
@@ -37,22 +47,39 @@ abstract class BaseController {
         }
     }
 
+    /**
+     * Begins a database transaction.
+     */
     protected function beginTransaction() {
         $this->db->beginTransaction();
     }
 
+    /**
+     * Commits the current database transaction if one is active.
+     */
     protected function commit() {
         if ($this->db->inTransaction()) {
             $this->db->commit();
         }
     }
 
+    /**
+     * Rolls back the current database transaction if one is active.
+     */
     protected function rollback() {
         if ($this->db->inTransaction()) {
             $this->db->rollBack();
         }
     }
 
+    /**
+     * Executes a prepared SQL query with parameters.
+     *
+     * @param string $query The SQL query to execute
+     * @param array $params Array of parameters to bind to the query
+     * @return \PDOStatement The executed PDO statement
+     * @throws Exception If the query fails
+     */
     protected function executeQuery($query, $params = []) {
         try {
             $stmt = $this->db->prepare($query);
@@ -63,22 +90,55 @@ abstract class BaseController {
         }
     }
 
+    /**
+     * Fetches all rows from a query result as objects.
+     *
+     * @param string $query The SQL query to execute
+     * @param array $params Array of parameters to bind to the query
+     * @return array Array of objects representing the result rows
+     */
     protected function fetchAll($query, $params = []) {
         return $this->executeQuery($query, $params)->fetchAll(PDO::FETCH_OBJ);
     }
 
+    /**
+     * Fetches a single row from a query result as an object.
+     *
+     * @param string $query The SQL query to execute
+     * @param array $params Array of parameters to bind to the query
+     * @return object|false Object representing the result row or false if no row found
+     */
     protected function fetch($query, $params = []) {
         return $this->executeQuery($query, $params)->fetch(PDO::FETCH_OBJ);
     }
 
+    /**
+     * Fetches a single column from a query result.
+     *
+     * @param string $query The SQL query to execute
+     * @param array $params Array of parameters to bind to the query
+     * @return mixed The value of the column
+     */
     protected function fetchColumn($query, $params = []) {
         return $this->executeQuery($query, $params)->fetchColumn();
     }
 
+    /**
+     * Gets the ID of the last inserted row.
+     *
+     * @return string The last insert ID
+     */
     protected function lastInsertId() {
         return $this->db->lastInsertId();
     }
 
+    /**
+     * Handles HTTP requests by routing to appropriate handlers based on method.
+     *
+     * @param string $method The HTTP method (GET, POST, etc.)
+     * @param array $handlers Array of handler functions keyed by HTTP method
+     * @throws Exception If handler execution fails
+     */
     protected function handleRequest($method, $handlers) {
         if (!isset($handlers[$method])) {
             ApiResponse::error('Method not allowed', 405);

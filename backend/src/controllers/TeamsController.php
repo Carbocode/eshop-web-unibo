@@ -2,7 +2,18 @@
 namespace App\Controllers;
 use App\Utils\ApiResponse;
 use Exception;
+
+/**
+ * TeamsController handles operations related to team data retrieval.
+ * Provides functionality to fetch teams with optional country filtering.
+ */
 class TeamsController extends BaseController {
+    /**
+     * Retrieves a list of teams, optionally filtered by country.
+     * 
+     * @throws Exception When database query fails
+     * @return void
+     */
     public function getTeams() {
         $country = isset($_GET['country']) ? $_GET['country'] : null;
         
@@ -22,6 +33,12 @@ class TeamsController extends BaseController {
         }
     }
 
+    /**
+     * Processes incoming HTTP requests and routes them to appropriate handlers.
+     * Currently only handles GET requests to retrieve team data.
+     * 
+     * @return void
+     */
     public function processRequest() {
         $handlers = [
             'GET' => [$this, 'getTeams']
