@@ -24,13 +24,6 @@ The system follows a modern PHP-based REST API architecture with the following k
 - **Authentication**: JWT-based authentication system
 - **File Storage**: Local storage for images with URL references
 
-### System Components Diagram
-```
-┌─────────────┐         ┌─────────────┐         ┌─────────────┐
-│   Frontend  │ ───────▶│   Backend   │ ───────▶│  Database   │
-│  (JS/SCSS)  │◀─────── │  (PHP API)  │◀─────── │   (MySQL)   │
-└─────────────┘         └─────────────┘         └─────────────┘
-```
 
 ## Database Schema
 
@@ -262,42 +255,9 @@ ApiResponse::success($data, 'Success message', 200);
 - 404: Not Found
 - 500: Internal Server Error
 
-## Performance & Scalability
-
-### Database Optimization
-- Proper indexing on frequently queried columns
-- Foreign key constraints for data integrity
-- Connection pooling through PDO
-
-### Caching Considerations
-- Implement Redis/Memcached for session storage
-- Cache frequently accessed product data
-- Implement API response caching
-
-## Development Guidelines
-
-### Code Style
-- PSR-4 autoloading standard
-- PHP CS Fixer configuration
-- PHPStan Level 7 analysis
-
-### Version Control
-- Feature branch workflow
-- Pull request reviews
-- Semantic versioning
-
-### Testing
-- Unit tests for business logic
-- Integration tests for API endpoints
-- End-to-end testing for critical flows
 
 ## Deployment
 
-### Production Requirements
-- PHP 8.3+ production environment
-- MySQL database server
-- Web server (Apache/Nginx)
-- SSL certificate for HTTPS
 
 ### Deployment Steps
 1. Pull latest code from main branch
@@ -309,10 +269,6 @@ ApiResponse::success($data, 'Success message', 200);
 
 ## Maintenance
 
-### Monitoring
-- Log API errors and exceptions
-- Monitor database performance
-- Track API response times
 
 ### Backup Procedures
 - Daily database backups
@@ -341,9 +297,3 @@ ApiResponse::success($data, 'Success message', 200);
    - Check server logs
    - Verify request format
    - Validate input data
-
-### Debug Mode
-Enable debug mode in development:
-```php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
