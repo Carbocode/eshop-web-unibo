@@ -10,16 +10,30 @@
   </head>
   <body>
     <header>
-      <a href="@pages/home/">
-        <img src="@assets/icons/favicon.ico" alt="icona logo" />
-        <h3>Elprimerofootballer</h3>
+      <a href="@pages/home/" aria-label="Go to Home page">
+        <img src="@assets/icons/favicon.ico" alt="website logo" />
+        <h1>Elprimerofootballer</h1>
       </a>
       <nav>
-        <a href="@pages/toolkit/">Squadre</a>
-        <a href="#">Leghe</a>
-        <a href="#">Nazionali</a>
-        <a href="@pages/login/"><i class="fa-solid fa-circle-user"></i></a>
-        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="@pages/toolkit/" aria-label="View all squads">Squadre</a>
+        <a
+          href="@pages/products-view/?leagues"
+          aria-label="Go to football leagues"
+        >
+          Leghe
+        </a>
+        <a
+          href="@pages/products-view/?nationals"
+          aria-label="Go to national teams"
+        >
+          Nazionali
+        </a>
+        <a href="@pages/login/" aria-label=" View your Account or Login">
+          <i class="fa-solid fa-circle-user"></i>
+        </a>
+        <a href="@pages/cart/" aria-label="View Items added to your cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
       </nav>
     </header>
     <main>
@@ -211,8 +225,13 @@
     </main>
 
     <footer>
-      <img src="@assets/icons/favicon.ico" alt="icona logo" />
-      <h3>Elprimerofootballer</h3>
+      <img src="@assets/icons/favicon.ico" alt="website logo" />
+      <hr />
+      <p>
+        Website made for <span lang="it">"Tecnologie Web"</span> exam at
+        <abbr title="University of Bologna">UNIBO</abbr>
+      </p>
+      <a href="https://github.com/Carbocode/eshop-web-unibo">source code</a>
     </footer>
     <script type="module" src="./main.js"></script>
   </body>

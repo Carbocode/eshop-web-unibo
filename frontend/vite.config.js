@@ -24,6 +24,18 @@ export default defineConfig({
         login: path.resolve(__dirname, "src/pages/login/index.html"),
         register: path.resolve(__dirname, "src/pages/register/index.html"),
         toolkit: path.resolve(__dirname, "src/pages/toolkit/index.html"),
+        "order-tracking": path.resolve(
+          __dirname,
+          "src/pages/order-tracking/index.html"
+        ),
+        "products-view": path.resolve(
+          __dirname,
+          "src/pages/products-view/index.html"
+        ),
+        profile: path.resolve(__dirname, "src/pages/profile/index.html"),
+        product: path.resolve(__dirname, "src/pages/product/index.html"),
+        checkout: path.resolve(__dirname, "src/pages/checkout/index.html"),
+        cart: path.resolve(__dirname, "src/pages/cart/index.html"),
       },
     },
     outDir: "dist", // Cartella per i file di produzione

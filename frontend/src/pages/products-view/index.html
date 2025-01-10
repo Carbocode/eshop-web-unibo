@@ -10,21 +10,35 @@
   </head>
   <body>
     <header>
-      <a href="@pages/home/">
-        <img src="@assets/icons/favicon.ico" alt="icona logo" />
-        <h3>Elprimerofootballer</h3>
+      <a href="@pages/home/" aria-label="Go to Home page">
+        <img src="@assets/icons/favicon.ico" alt="website logo" />
+        <h1>Elprimerofootballer</h1>
       </a>
       <nav>
-        <a href="@pages/toolkit/">Squadre</a>
-        <a href="#">Leghe</a>
-        <a href="#">Nazionali</a>
-        <a href="@pages/login/"><i class="fa-solid fa-circle-user"></i></a>
-        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="@pages/toolkit/" aria-label="View all squads">Squadre</a>
+        <a
+          href="@pages/products-view/?leagues"
+          aria-label="Go to football leagues"
+        >
+          Leghe
+        </a>
+        <a
+          href="@pages/products-view/?nationals"
+          aria-label="Go to national teams"
+        >
+          Nazionali
+        </a>
+        <a href="@pages/login/" aria-label=" View your Account or Login">
+          <i class="fa-solid fa-circle-user"></i>
+        </a>
+        <a href="@pages/cart/" aria-label="View Items added to your cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
       </nav>
     </header>
 
     <main>
-      <h1>Serie A</h1>
+      <h2>Serie A</h2>
       <div class="squadre-container">
         <div class="squadra"><img src="juventus.png" alt="Juventus" /></div>
         <div class="squadra"><img src="inter.png" alt="Inter" /></div>

@@ -337,7 +337,8 @@ header {
   background: var(--primary-color);
   box-shadow: var(--box-shadow);
 
-  h3 {
+  h1 {
+    font-size: 2em;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -372,11 +373,10 @@ header {
 }
 
 footer {
-  display: flex;
-  align-items: center;
   padding: 10px 20px;
   background-color: var(--dark-color);
   color: var(--dark-color-contrast);
+  text-align: center;
   img {
     display: flex;
     gap: 10px;
