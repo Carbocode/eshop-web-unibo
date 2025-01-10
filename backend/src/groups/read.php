@@ -1,4 +1,7 @@
 <?php
+header("Access-Control-Allow-Origin:*");
+header("Access-Control-Allow-Headers:*");
+
 // Configurazione del database
 $host = 'localhost:3306';
 $user = 'root';
