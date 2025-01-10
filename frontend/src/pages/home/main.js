@@ -87,16 +87,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function renderLeagues(leagues, container) {
   leagues.forEach((league) => {
-    // Crea il contenitore della lega
     const leagueDiv = document.createElement("div");
     leagueDiv.classList.add("lega");
 
-    // Aggiungi il logo della lega
+    // Aggiungi il link e il logo della lega
+    const leagueLink = document.createElement("a");
+    leagueLink.href = `/src/pages/products/?id=${league.league_id}`; // Cambia con il percorso reale per la lega
+    leagueLink.title = `Vai alla pagina della lega ${league.league_name}`;
+
     const leagueLogo = document.createElement("img");
     leagueLogo.src = league.league_logo;
     leagueLogo.alt = `${league.league_name} Logo`;
     leagueLogo.classList.add("logo");
-    leagueDiv.appendChild(leagueLogo);
+
+    leagueLink.appendChild(leagueLogo);
+    leagueDiv.appendChild(leagueLink);
 
     // Aggiungi la lista delle squadre
     const teamList = document.createElement("ul");
@@ -105,9 +110,12 @@ function renderLeagues(leagues, container) {
     league.teams.forEach((team) => {
       const teamItem = document.createElement("li");
 
-      // Aggiungi il nome della squadra
-      const teamName = document.createTextNode(team.team_name);
-      teamItem.appendChild(teamName);
+      // Crea il link per la squadra
+      const teamLink = document.createElement("a");
+      teamLink.href = `/src/pages/product/?id=${team.team_id}`; // Cambia l'URL con il corretto percorso per la squadra
+      teamLink.textContent = team.team_name;
+
+      teamItem.appendChild(teamLink);
       teamList.appendChild(teamItem);
     });
 

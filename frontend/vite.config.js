@@ -28,10 +28,7 @@ export default defineConfig({
           __dirname,
           "src/pages/order-tracking/index.html"
         ),
-        "products-view": path.resolve(
-          __dirname,
-          "src/pages/products-view/index.html"
-        ),
+        products: path.resolve(__dirname, "src/pages/products/index.html"),
         profile: path.resolve(__dirname, "src/pages/profile/index.html"),
         product: path.resolve(__dirname, "src/pages/product/index.html"),
         checkout: path.resolve(__dirname, "src/pages/checkout/index.html"),

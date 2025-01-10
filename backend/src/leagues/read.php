@@ -17,8 +17,8 @@ header('Content-Type: application/json');
 $conn = new mysqli($host, $user, $password, $database);
 
 if ($conn->connect_error) {
-    echo json_encode(["error" => "Errore di connessione: " . $conn->connect_error]);
-    exit;
+  echo json_encode(["error" => "Errore di connessione: " . $conn->connect_error]);
+  exit;
 }
 
 // Query per ottenere tutte le squadre di tutte le leghe
@@ -27,6 +27,7 @@ $sql = "
       t.team_id AS team_id,
       t.name AS team_name,
       t.logo AS team_logo,
+      l.id_league AS league_id,
       l.logo AS league_logo,
       l.name AS league_name,
       c.name AS country_name
@@ -42,28 +43,29 @@ $sql = "
 $result = $conn->query($sql);
 
 if (!$result) {
-    echo json_encode(["error" => "Errore del server: " . $conn->error]);
-    $conn->close();
-    exit;
+  echo json_encode(["error" => "Errore del server: " . $conn->error]);
+  $conn->close();
+  exit;
 }
 
 $leagues = [];
 
 while ($row = $result->fetch_assoc()) {
-    $league_name = $row['league_name'];
-    if (!isset($leagues[$league_name])) {
-        $leagues[$league_name] = [
-            'league_name' => $league_name,
-            'league_logo' => $row['league_logo'],
-            'teams' => []
-        ];
-    }
-    $leagues[$league_name]['teams'][] = [
-        'team_id' => $row['team_id'],
-        'team_name' => $row['team_name'],
-        'team_logo' => $row['team_logo'],
-        'country_name' => $row['country_name']
+  $league_name = $row['league_name'];
+  if (!isset($leagues[$league_name])) {
+    $leagues[$league_name] = [
+      'league_name' => $league_name,
+      'league_id' => $row['league_id'],
+      'league_logo' => $row['league_logo'],
+      'teams' => []
     ];
+  }
+  $leagues[$league_name]['teams'][] = [
+    'team_id' => $row['team_id'],
+    'team_name' => $row['team_name'],
+    'team_logo' => $row['team_logo'],
+    'country_name' => $row['country_name']
+  ];
 }
 
 // Riorganizza le leghe in un array numerico
