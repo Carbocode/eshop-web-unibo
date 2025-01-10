@@ -21,31 +21,12 @@ class OrderController extends BaseController {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $orderId = $this->getOrderIdFromUri($uri);
-
-        switch ($method) {
-            case 'GET':
-                if ($orderId) {
-                    $this->getOrder($orderId);
-                } else {
-                    ApiResponse::error('Order ID is required', 400);
-                }
-                break;
-
-            case 'PUT':
-                if ($orderId) {
-                    $data = ApiResponse::getRequestData();
-                    if (!isset($data['status'])) {
-                        ApiResponse::error('Status is required', 400);
-                    }
-                    $this->updateOrderStatus($orderId, $data['status']);
-                } else {
-                    ApiResponse::error('Order ID is required', 400);
-                }
-                break;
-
-            default:
-                ApiResponse::error('Method not allowed', 405);
-        }
+        $handlers = array(
+            'GET' => [$this,'getOrder'],
+            'PUT' => [$this,'updateOrderSatus']
+        );
+        $this->handleRequest($method,$handlers);
+        return;
     }
 
     /**
@@ -69,8 +50,11 @@ class OrderController extends BaseController {
      * @throws Exception When order not found or database error occurs
      * @return void
      */
-    private function getOrder($orderId) {
+    private function getOrder($orderId = null) {
         try {
+            if($orderId==null){
+                $orderId = $this->getOrderIdFromUri(parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH));
+            }
             // Validate order ID
             if (!$orderId) {
                 ApiResponse::error("Order ID is required", 400);

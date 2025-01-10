@@ -35,9 +35,9 @@ class TeamsController extends BaseController {
     public function getNationalTeams(){
         $query = "SELECT * FROM teams WHERE type='national'";
         try{
-            $teams = $this->fetchAll($query, $params);
+            $teams = $this->fetchAll($query);
             ApiResponse::success(['teams' => $teams]);
-        }catch{
+        }catch(Exception $e) {
             ApiResponse::error('Failed to fetch teams', 500);
         }
     }
