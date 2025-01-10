@@ -6,38 +6,35 @@ use Exception;
 use PDOException;
 use App\Utils\ApiResponse;
 
+/**
+ * OrderController handles order-related operations including
+ * retrieving order details and updating order statuses.
+ */
 class OrderController extends BaseController {
+    /**
+     * Processes incoming HTTP requests and routes them to appropriate handlers.
+     * Handles GET requests for order details and PUT requests for status updates.
+     * 
+     * @return void
+     */
     public function processRequest() {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $orderId = $this->getOrderIdFromUri($uri);
-
-        switch ($method) {
-            case 'GET':
-                if ($orderId) {
-                    $this->getOrder($orderId);
-                } else {
-                    ApiResponse::error('Order ID is required', 400);
-                }
-                break;
-
-            case 'PUT':
-                if ($orderId) {
-                    $data = ApiResponse::getRequestData();
-                    if (!isset($data['status'])) {
-                        ApiResponse::error('Status is required', 400);
-                    }
-                    $this->updateOrderStatus($orderId, $data['status']);
-                } else {
-                    ApiResponse::error('Order ID is required', 400);
-                }
-                break;
-
-            default:
-                ApiResponse::error('Method not allowed', 405);
-        }
+        $handlers = array(
+            'GET' => [$this,'getOrder'],
+            'PUT' => [$this,'updateOrderSatus']
+        );
+        $this->handleRequest($method,$handlers);
+        return;
     }
 
+    /**
+     * Extracts order ID from the URI path.
+     * 
+     * @param string $uri The request URI
+     * @return string|null The order ID if found, null otherwise
+     */
     private function getOrderIdFromUri($uri) {
         if (preg_match('/\/orders\/(\d+)/', $uri, $matches)) {
             return $matches[1];
@@ -45,8 +42,19 @@ class OrderController extends BaseController {
         return null;
     }
 
-    private function getOrder($orderId) {
+    /**
+     * Retrieves detailed information about a specific order.
+     * Includes order items, shipping details, and total calculations.
+     * 
+     * @param string $orderId The ID of the order to retrieve
+     * @throws Exception When order not found or database error occurs
+     * @return void
+     */
+    private function getOrder($orderId = null) {
         try {
+            if($orderId==null){
+                $orderId = $this->getOrderIdFromUri(parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH));
+            }
             // Validate order ID
             if (!$orderId) {
                 ApiResponse::error("Order ID is required", 400);
@@ -121,6 +129,14 @@ class OrderController extends BaseController {
         }
     }
 
+    /**
+     * Updates the status of a specific order.
+     * 
+     * @param string $orderId The ID of the order to update
+     * @param string $status The new status to set. Must be one of: placed, processing, shipped, delivered
+     * @throws Exception When order not found, invalid status, or database error occurs
+     * @return void
+     */
     private function updateOrderStatus($orderId, $status) {
         try {
             // Validate status

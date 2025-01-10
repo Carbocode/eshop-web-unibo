@@ -3,7 +3,18 @@ namespace App\Controllers;
 use App\Utils\ApiResponse;
 use App\Middleware\Auth;
 use Exception;
+
+/**
+ * AuthController handles all authentication-related operations including
+ * customer and admin registration and login functionality.
+ */
 class AuthController extends BaseController {
+    /**
+     * Registers a new customer in the system.
+     * 
+     * @throws Exception When registration fails
+     * @return void
+     */
     public function registerCustomer() {
         $data = ApiResponse::getRequestData();
         ApiResponse::validateRequest(['email', 'password', 'firstName', 'lastName', 'phone'], $data);
@@ -39,6 +50,12 @@ class AuthController extends BaseController {
         }
     }
 
+    /**
+     * Authenticates a customer and generates a JWT token.
+     * 
+     * @throws Exception When authentication fails
+     * @return void
+     */
     public function loginCustomer() {
         $data = ApiResponse::getRequestData();
         ApiResponse::validateRequest(['email', 'password'], $data);
@@ -58,6 +75,13 @@ class AuthController extends BaseController {
         ApiResponse::success(['token' => $token]);
     }
 
+    /**
+     * Registers a new admin user in the system.
+     * Requires super admin privileges to execute.
+     * 
+     * @throws Exception When registration fails or insufficient privileges
+     * @return void
+     */
     public function registerAdmin() {
         if (!Auth::isSuperAdmin()) {
             ApiResponse::error('Insufficient privileges', 403);
@@ -96,6 +120,13 @@ class AuthController extends BaseController {
         }
     }
 
+    /**
+     * Authenticates an admin user and generates a JWT token.
+     * The token includes the admin's role and has an extended expiration time.
+     * 
+     * @throws Exception When authentication fails
+     * @return void
+     */
     public function loginAdmin() {
         $data = ApiResponse::getRequestData();
         ApiResponse::validateRequest(['email', 'password'], $data);
@@ -115,6 +146,13 @@ class AuthController extends BaseController {
         ApiResponse::success(['token' => $token]);
     }
 
+    /**
+     * Processes incoming HTTP requests and routes them to appropriate handlers.
+     * Handles all authentication-related endpoints including customer and admin
+     * registration and login.
+     * 
+     * @return void
+     */
     public function processRequest() {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
