@@ -8,41 +8,54 @@
   </head>
   <body>
     <header>
-      <a href="@pages/home/">
-        <img src="@assets/icons/favicon.ico" alt="icona logo" />
-        <h3>Elprimerofootballer</h3>
+      <a href="@pages/home/" aria-label="Go to Home page">
+        <img src="@assets/icons/favicon.ico" alt="website logo" />
+        <h1>Elprimerofootballer</h1>
       </a>
       <nav>
-        <a href="@pages/toolkit/">Squadre</a>
-        <a href="#">Leghe</a>
-        <a href="#">Nazionali</a>
-        <a href="@pages/login/"><i class="fa-solid fa-circle-user"></i></a>
-        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="@pages/toolkit/" aria-label="View all squads">Squadre</a>
+        <a
+          href="@pages/products-view/?leagues"
+          aria-label="Go to football leagues"
+        >
+          Leghe
+        </a>
+        <a
+          href="@pages/products-view/?nationals"
+          aria-label="Go to national teams"
+        >
+          Nazionali
+        </a>
+        <a href="@pages/login/" aria-label=" View your Account or Login">
+          <i class="fa-solid fa-circle-user"></i>
+        </a>
+        <a href="@pages/cart/" aria-label="View Items added to your cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
       </nav>
     </header>
 
     <main class="order-tracking">
       <h2>Shipping Details</h2>
       <br />
-      <!-- Order Status Section -->
-      <section class="steps-container">
+      <ol class="steps-container" aria-label="Stato dell'ordine">
         <li class="">
           <i class="fa-solid fa-circle-check"></i>
-          <h5>Placed</h5>
+          <p>Placed</p>
         </li>
         <li class="active">
           <i class="fa-solid fa-warehouse"></i>
-          <h5>Processing</h5>
+          <p>Processing</p>
         </li>
         <li class="">
           <i class="fa-solid fa-truck"></i>
-          <h5>Shipped</h5>
+          <p>Shipped</p>
         </li>
         <li class="">
           <i class="fa-solid fa-house"></i>
-          <h5>Delivered</h5>
+          <p>Delivered</p>
         </li>
-      </section>
+      </ol>
 
       <!-- Shipping Details Section -->
       <section class="shipping-details">
@@ -65,7 +78,7 @@
 
       <!-- Order Summary Section -->
       <section class="order-summary">
-        <h2>Order Summary</h2>
+        <h3>Order Summary</h3>
         <div class="summary-content">
           <div class="order-items" data-order="items">
             <!-- Items will be dynamically inserted here -->

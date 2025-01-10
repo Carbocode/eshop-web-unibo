@@ -15,12 +15,17 @@ main {
   }
 }
 
-.steps-container {
+ol.steps-container {
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
   overflow: hidden;
-  font-size: 0.875rem;
+
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--medium-color);
+  color: var(--medium-color-contrast);
+  margin-bottom: 2rem;
 
   background: var(--medium-color);
   color: var(--medium-color-contrast);
