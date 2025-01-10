@@ -80,9 +80,11 @@ a:hover {
       white-space: nowrap;
       will-change: transform;
       animation: marquee 10s linear infinite;
-      font-size: clamp(16px, 3vw, 10vh);
-      font-family: "Zen Dots", serif;
-      letter-spacing: -0.1rem;
+      .content {
+        font-size: clamp(16px, 3vw, 10vh) !important;
+        font-family: "Zen Dots", serif !important;
+        letter-spacing: -0.1rem !important;
+      }
     }
   }
 
@@ -96,6 +98,7 @@ a:hover {
       flex-shrink: 0;
       width: 800px;
       height: 500px;
+      object-fit: contain;
     }
   }
 
