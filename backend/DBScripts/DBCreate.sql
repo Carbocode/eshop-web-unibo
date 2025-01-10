@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS soccer_tshirt_shop;
-USE soccer_tshirt_shop;
+CREATE DATABASE IF NOT EXISTS elprimerofootballer;
+USE elprimerofootballer;
 
 CREATE TABLE teams (
     team_id INT PRIMARY KEY AUTO_INCREMENT,

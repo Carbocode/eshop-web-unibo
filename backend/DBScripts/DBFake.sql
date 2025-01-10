@@ -1,4 +1,4 @@
-use soccer_tshirt_shop;
+use elprimerofootballer;
 -- Teams data
 INSERT INTO teams (name, image_url, type, country) VALUES
 ('Napoli', 'https://example.com/napoli.jpg', 'club', 'Italy'),
