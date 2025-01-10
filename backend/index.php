@@ -11,20 +11,10 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 $dotenv->required(['JWT_SECRET', 'DB_USER', 'DB_PWD', 'DB_PORT']);
 
-// Load application files
-require_once __DIR__ . '/src/config/database.php';
-require_once __DIR__ . '/src/utils/ApiResponse.php';
-require_once __DIR__ . '/src/middleware/Auth.php';
-require_once __DIR__ . '/src/controllers/BaseController.php';
-require_once __DIR__ . '/src/controllers/AuthController.php';
-require_once __DIR__ . '/src/controllers/CartController.php';
-require_once __DIR__ . '/src/controllers/CheckoutController.php';
-require_once __DIR__ . '/src/controllers/TeamsController.php';
-require_once __DIR__ . '/src/controllers/OrderController.php';
-
 // Import required classes
 use App\Utils\ApiResponse;
 use App\Middleware\Auth;
+use App\Config\Database;
 use App\Controllers\AuthController;
 use App\Controllers\CartController;
 use App\Controllers\CheckoutController;
