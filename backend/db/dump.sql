@@ -21,28 +21,6 @@ SET time_zone = "+00:00";
 -- Database: `elprimerofootballer`
 --
 
---
--- Dumping data for table `addresses`
---
-
-INSERT INTO `addresses` (`address_id`, `customer_id`, `street_address`, `city`, `state`, `postal_code`, `country`, `is_default`) VALUES
-(1, 1, 'Via Roma 123', 'Rome', 'Lazio', '00100', 'Italy', 1),
-(2, 2, 'Via Milano 456', 'Milan', 'Lombardy', '20100', 'Italy', 1);
-
---
--- Dumping data for table `admins`
---
-
-INSERT INTO `admins` (`admin_id`, `image_url`, `email`, `password_hash`, `first_name`, `last_name`, `role`, `created_at`) VALUES
-(1, 'https://example.com/admin.jpg', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', 'User', 'super_admin', '2025-01-10 14:34:34');
-
---
--- Dumping data for table `cart_items`
---
-
-INSERT INTO `cart_items` (`cart_item_id`, `customer_id`, `tshirt_id`, `quantity`) VALUES
-(1, 1, 1, 2),
-(2, 2, 3, 1);
 
 --
 -- Dumping data for table `countries`
