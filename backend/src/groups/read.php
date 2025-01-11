@@ -4,18 +4,18 @@ require '../config/middleware.php';
 // Query per ottenere i gruppi e le nazioni
 $sql = "
     SELECT 
-      g.id_group AS group_id,
+      g.group_id AS group_id,
       g.name AS group_name,
-      c.id_country AS country_id,
+      c.country_id AS country_id,
       c.name AS country_name,
       c.flag AS country_flag
     FROM 
       groups g
     JOIN 
-      groups_nations gn ON g.id_group = gn.id_group
+      groups_nations gn ON g.group_id = gn.group_id
     JOIN 
-      countries c ON gn.id_country = c.id_country
-    ORDER BY g.id_group, c.name;
+      countries c ON gn.country_id = c.country_id
+    ORDER BY g.group_id, c.name;
 ";
 
 $result = $conn->query($sql);

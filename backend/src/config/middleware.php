@@ -63,7 +63,7 @@ function log_exception(\Throwable $e)
  */
 function log_error($num, $str, $file, $line)
 {
-    log_exception(new \ErrorException($str, INTERNAL_SERVER_ERROR, $num, $file, $line));
+    log_exception(new \ErrorException($str, 500, $num, $file, $line));
 
     return true;
 }
@@ -78,7 +78,7 @@ function check_for_fatal()
     $error = error_get_last();
     if ($error != null) {
         if ($error['type'] == E_ERROR) {
-            log_exception(new \ErrorException($error['message'], INTERNAL_SERVER_ERROR, $error['type'], $error['file'], $error['line']));
+            log_exception(new \ErrorException($error['message'], 500, $error['type'], $error['file'], $error['line']));
         }
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2025 at 05:25 PM
+-- Generation Time: Jan 11, 2025 at 05:36 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -174,8 +174,8 @@ CREATE TABLE `teams` (
   `team_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `logo` varchar(255) NOT NULL DEFAULT 'https://www.gravatar.com/avatar/',
-  `id_country` int(11) NOT NULL,
-  `id_league` int(11) DEFAULT NULL
+  `country_id` int(11) NOT NULL,
+  `league_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -285,8 +285,8 @@ ALTER TABLE `sizes`
 --
 ALTER TABLE `teams`
   ADD PRIMARY KEY (`team_id`),
-  ADD KEY `country` (`id_country`),
-  ADD KEY `id_league` (`id_league`);
+  ADD KEY `country` (`country_id`),
+  ADD KEY `id_league` (`league_id`);
 
 --
 -- Indexes for table `tshirts`
@@ -410,8 +410,8 @@ ALTER TABLE `order_items`
 -- Constraints for table `teams`
 --
 ALTER TABLE `teams`
-  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`id_country`) REFERENCES `countries` (`country_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `teams_ibfk_2` FOREIGN KEY (`id_league`) REFERENCES `leagues` (`league_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `teams_ibfk_2` FOREIGN KEY (`league_id`) REFERENCES `leagues` (`league_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tshirts`

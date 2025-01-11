@@ -7,16 +7,16 @@ $sql = "
       t.team_id AS team_id,
       t.name AS team_name,
       t.logo AS team_logo,
-      l.id_league AS league_id,
+      l.league_id AS league_id,
       l.logo AS league_logo,
       l.name AS league_name,
       c.name AS country_name
     FROM 
       teams t
     INNER JOIN 
-      leagues l ON t.id_league = l.id_league
+      leagues l ON t.league_id = l.league_id
     INNER JOIN 
-      countries c ON t.id_country = c.id_country
+      countries c ON t.country_id = c.country_id
     ORDER BY l.name, t.name;
 ";
 
