@@ -1,6 +1,6 @@
+@use "@fortawesome/fontawesome-free/css/all.min.css" as fontawesome;
+@use "@assets/styles/normalize.scss" as normalize;
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Zen+Dots&display=swap");
-@import "@fortawesome/fontawesome-free/css/all.min.css";
-@import "@assets/styles/normalize.css";
 
 html {
   font-size: 16px;
@@ -51,6 +51,7 @@ h4,
 label,
 h5,
 h6,
+legend,
 button,
 .button,
 input[type="button"],
@@ -119,6 +120,7 @@ h4 {
 h5,
 label,
 button,
+legend,
 .button,
 input[type="button"],
 input[type="submit"] {
@@ -149,7 +151,7 @@ select {
   padding: var(--padding);
   box-shadow: var(--box-shadow);
   border: none;
-  margin: calc(var(--margin) / 2) var(--margin);
+  margin: calc(var(--margin) / 2) 0;
   width: 100%;
 }
 
@@ -321,6 +323,15 @@ input[type="radio"] {
     &:disabled:not(:checked):after {
       opacity: 0.6;
     }
+  }
+}
+
+fieldset {
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  border: 0;
+  margin: var(--margin);
+  legend {
   }
 }
 

@@ -1,25 +1,5 @@
 <?php
-// Configurazione del database
-$host = 'localhost:3306';
-$user = 'root';
-$password = '';
-$database = 'elprimerofootballer';
-
-// Abilita la visualizzazione degli errori PHP
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// Imposta l'header della risposta JSON
-header('Content-Type: application/json');
-
-// Connessione al database
-$conn = new mysqli($host, $user, $password, $database);
-
-if ($conn->connect_error) {
-  echo json_encode(["error" => "Errore di connessione: " . $conn->connect_error]);
-  exit;
-}
+require '../config/middleware.php';
 
 // Query per ottenere tutte le squadre di tutte le leghe
 $sql = "

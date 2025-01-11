@@ -38,19 +38,23 @@
 
     <form id="login-form">
       <h2>Login</h2>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" autocomplete="username" />
+      <fieldset>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" autocomplete="username" />
 
-      <label for="email">Password:</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        autocomplete="current-password"
-      />
-      <input type="submit" value="Login" />
+        <label for="email">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          autocomplete="current-password"
+        />
+      </fieldset>
+
+      <input type="submit" value="Accedi" />
+
       <a class="button secondary" href="@pages/register/">
-        Sign Up <i class="fa-solid fa-user-plus"></i>
+        Registrati <i class="fa-solid fa-user-plus"></i>
       </a>
     </form>
 

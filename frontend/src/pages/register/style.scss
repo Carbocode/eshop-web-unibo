@@ -1,17 +1,20 @@
 @use "@global" as global;
 
 form {
+  width: clamp(0px, 90vw, 600px);
+  margin: 40px auto;
   display: flex;
   flex-direction: column;
-  width: clamp(0px, 90vw, 500px);
-  margin: 40px auto;
-
-  box-shadow: var(--box-shadow);
-  border-radius: var(--border-radius);
-  padding: 1rem;
 }
 
 .split-input {
   display: flex;
   gap: 16px;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
+  & > * {
+    flex-grow: 1;
+  }
 }
