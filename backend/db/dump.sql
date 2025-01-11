@@ -70,8 +70,8 @@ INSERT INTO `countries` (`country_id`, `name`, `flag`) VALUES
 --
 
 INSERT INTO `customers` (`customer_id`, `email`, `password`, `full_name`, `phone`, `admin`, `address`, `city`, `province`, `zip`, `country`) VALUES
-(1, 'john.doe@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'John', '+1234567890', 0, '', '', '', '', ''),
-(2, 'jane.smith@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Jane', '+0987654321', 0, '', '', '', '', '');
+(1, 'john.doe@example.com', '$2y$10$NGZjdsr8XtTs5MDxuh5/VuKySzof6IQ2e8YLZUMrcNJ1rIc7N7oua', 'John', '+1234567890', 0, '', '', '', '', ''),
+(2, 'jane.smith@example.com', '$2y$10$NGZjdsr8XtTs5MDxuh5/VuKySzof6IQ2e8YLZUMrcNJ1rIc7N7oua', 'Jane', '+0987654321', 0, '', '', '', '', '');
 
 --
 -- Dumping data for table `editions`

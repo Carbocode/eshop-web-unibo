@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $data['password'];
 
     // Recupera l'utente dal database
-    $stmt = $conn->prepare("SELECT customer_id, password_hash FROM customers WHERE email = ?");
+    $stmt = $conn->prepare("SELECT `customer_id`, `password` FROM customers WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->bind_result($customerId, $hashedPassword);
@@ -43,7 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
 
             // Imposta il cookie con il token JWT
-            setcookie('auth_token', $jwt, time() + (60 * 60), '/', '', true, true);
+            setcookie('auth_token', $jwt,[
+                'expires' => time() + 60*60,
+                'path' => '/',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
 
             http_response_code(200);
             echo json_encode(["message" => "Login effettuato con successo."]);
