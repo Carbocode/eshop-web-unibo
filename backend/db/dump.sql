@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 10, 2025 at 06:29 PM
+-- Generation Time: Jan 11, 2025 at 05:45 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -21,12 +21,11 @@ SET time_zone = "+00:00";
 -- Database: `elprimerofootballer`
 --
 
-
 --
 -- Dumping data for table `countries`
 --
 
-INSERT INTO `countries` (`id_country`, `name`, `flag`) VALUES
+INSERT INTO `countries` (`country_id`, `name`, `flag`) VALUES
 (1, 'Italy', 'https://flagpedia.net/data/flags/w1160/it.webp'),
 (2, 'Argentina', 'https://flagpedia.net/data/flags/w1160/ar.webp'),
 (3, 'Morocco', 'https://flagpedia.net/data/flags/w1160/ma.webp'),
@@ -46,33 +45,33 @@ INSERT INTO `countries` (`id_country`, `name`, `flag`) VALUES
 (17, 'Japan', 'https://flagpedia.net/data/flags/w1160/jp.webp'),
 (18, 'South Korea', 'https://flagpedia.net/data/flags/w1160/kr.webp'),
 (19, 'Greece', 'https://flagpedia.net/data/flags/w1160/gr.webp'),
-(20, 'Albania', '0'),
-(21, 'Croatia', '0'),
-(22, 'Ukraine', '0'),
-(23, 'Senegal', '0'),
-(24, 'Nigeria', '0'),
-(25, 'Gabon', '0'),
-(26, 'Algeria', '0'),
-(27, 'South Africa', '0'),
-(28, 'Tunisia', '0'),
-(29, 'England', '0'),
-(30, 'Wales', '0'),
-(31, 'Scotland', '0'),
-(32, 'Ireland', '0'),
-(33, 'Denmark', '0'),
-(34, 'Switzerland', '0'),
-(35, 'Sweden', '0'),
-(36, 'Iceland', '0'),
-(37, 'Canada', '0'),
-(38, 'Colombia', '0');
+(20, 'Albania', 'https://flagpedia.net/data/flags/w1160/al.webp'),
+(21, 'Croatia', 'https://flagpedia.net/data/flags/w1160/hr.webp'),
+(22, 'Ukraine', 'https://flagpedia.net/data/flags/w1160/ua.webp'),
+(23, 'Senegal', 'https://flagpedia.net/data/flags/w1160/sn.webp'),
+(24, 'Nigeria', 'https://flagpedia.net/data/flags/w1160/ng.webp'),
+(25, 'Gabon', 'https://flagpedia.net/data/flags/w1160/ga.webp'),
+(26, 'Algeria', 'https://flagpedia.net/data/flags/w1160/dz.webp'),
+(27, 'South Africa', 'https://flagpedia.net/data/flags/w1160/za.webp'),
+(28, 'Tunisia', 'https://flagpedia.net/data/flags/w1160/tn.webp'),
+(29, 'England', 'https://flagpedia.net/data/flags/w1160/gb-eng.webp'),
+(30, 'Wales', 'https://flagpedia.net/data/flags/w1160/gb-wls.webp'),
+(31, 'Scotland', 'https://flagpedia.net/data/flags/w1160/gb-sct.webp'),
+(32, 'Ireland', 'https://flagpedia.net/data/flags/w1160/ie.webp'),
+(33, 'Denmark', 'https://flagpedia.net/data/flags/w1160/ie.webp'),
+(34, 'Switzerland', 'https://flagpedia.net/data/flags/w1160/ch.webp'),
+(35, 'Sweden', 'https://flagpedia.net/data/flags/w1160/se.webp'),
+(36, 'Iceland', 'https://flagpedia.net/data/flags/w1160/is.webp'),
+(37, 'Canada', 'https://flagpedia.net/data/flags/w1160/ca.webp'),
+(38, 'Colombia', 'https://flagpedia.net/data/flags/w1160/co.webp');
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`customer_id`, `email`, `password_hash`, `image_url`, `first_name`, `last_name`, `phone`) VALUES
-(1, 'john.doe@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://example.com/john.jpg', 'John', 'Doe', '+1234567890'),
-(2, 'jane.smith@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://example.com/jane.jpg', 'Jane', 'Smith', '+0987654321');
+INSERT INTO `customers` (`customer_id`, `email`, `password`, `full_name`, `phone`, `admin`, `address`, `city`, `province`, `zip`, `country`) VALUES
+(1, 'john.doe@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'John', '+1234567890', 0, '', '', '', '', ''),
+(2, 'jane.smith@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Jane', '+0987654321', 0, '', '', '', '', '');
 
 --
 -- Dumping data for table `editions`
@@ -89,7 +88,7 @@ INSERT INTO `editions` (`edition_id`, `name`, `year`, `description`) VALUES
 -- Dumping data for table `groups`
 --
 
-INSERT INTO `groups` (`id_group`, `name`) VALUES
+INSERT INTO `groups` (`group_id`, `name`) VALUES
 (1, 'A'),
 (2, 'B'),
 (3, 'C'),
@@ -103,7 +102,7 @@ INSERT INTO `groups` (`id_group`, `name`) VALUES
 -- Dumping data for table `groups_nations`
 --
 
-INSERT INTO `groups_nations` (`id_group`, `id_country`) VALUES
+INSERT INTO `groups_nations` (`group_id`, `country_id`) VALUES
 (1, 1),
 (1, 2),
 (1, 3),
@@ -141,7 +140,7 @@ INSERT INTO `groups_nations` (`id_group`, `id_country`) VALUES
 -- Dumping data for table `leagues`
 --
 
-INSERT INTO `leagues` (`id_league`, `name`, `logo`) VALUES
+INSERT INTO `leagues` (`league_id`, `name`, `logo`) VALUES
 (1, 'Serie A', 'https://cdn.footystats.org/img/competitions/italy-serie-a.png'),
 (2, 'Premier League', 'https://cdn.footystats.org/img/competitions/england-premier-league.png'),
 (3, 'Bundesliga', 'https://cdn.footystats.org/img/competitions/germany-bundesliga.png'),
@@ -149,13 +148,35 @@ INSERT INTO `leagues` (`id_league`, `name`, `logo`) VALUES
 (5, 'Ligue 1', 'https://cdn.footystats.org/img/competitions/france-ligue-1.png');
 
 --
+-- Dumping data for table `order_status`
+--
+
+INSERT INTO `order_status` (`status_id`, `status`, `icon`) VALUES
+(1, 'Pagato', 'fa-circle-check'),
+(2, 'In Lavorazione', 'fa-warehouse'),
+(3, 'Spedito', 'fa-truck'),
+(4, 'Consegnato', 'fa-house');
+
+--
+-- Dumping data for table `sizes`
+--
+
+INSERT INTO `sizes` (`size_id`, `name`) VALUES
+(1, 'XS'),
+(2, 'S'),
+(3, 'M'),
+(4, 'L'),
+(5, 'XL'),
+(6, 'XXL');
+
+--
 -- Dumping data for table `teams`
 --
 
-INSERT INTO `teams` (`team_id`, `name`, `logo`, `id_country`, `id_league`) VALUES
-(1, 'Napoli', 'https://www.gravatar.com/avatar/', 1, 1),
-(2, 'Inter', 'https://www.gravatar.com/avatar/', 1, 1),
-(3, 'Milan', 'https://www.gravatar.com/avatar/', 1, 1),
+INSERT INTO `teams` (`team_id`, `name`, `logo`, `country_id`, `league_id`) VALUES
+(1, 'Napoli', 'https://example.com/napoli.jpg', 1, 1),
+(2, 'Inter', 'https://example.com/inter.jpg', 1, 1),
+(3, 'Milan', 'https://example.com/milan.jpg', 1, 1),
 (6, 'Albania', 'https://www.gravatar.com/avatar/', 20, NULL),
 (7, 'Argentina', 'https://www.gravatar.com/avatar/', 2, NULL),
 (8, 'Italy', 'https://www.gravatar.com/avatar/', 1, NULL),
@@ -215,11 +236,19 @@ INSERT INTO `teams` (`team_id`, `name`, `logo`, `id_country`, `id_league`) VALUE
 -- Dumping data for table `tshirts`
 --
 
-INSERT INTO `tshirts` (`tshirt_id`, `team_id`, `edition_id`, `size`, `price`, `stock_quantity`, `image_url`) VALUES
-(1, 1, 1, 'M', 89.99, 50, 'https://www.gravatar.com/avatar/'),
-(2, 1, 2, 'L', 89.99, 30, 'https://www.gravatar.com/avatar/'),
-(3, 2, 1, 'S', 89.99, 25, 'https://www.gravatar.com/avatar/'),
-(4, 3, 1, 'XL', 89.99, 20, 'https://www.gravatar.com/avatar/');
+INSERT INTO `tshirts` (`tshirt_id`, `team_id`, `edition_id`, `price`, `image_url`) VALUES
+(1, 1, 1, 0, 'https://example.com/napoli-home.jpg'),
+(2, 1, 2, 0, 'https://example.com/napoli-away.jpg'),
+(3, 2, 1, 0, 'https://example.com/inter-home.jpg'),
+(4, 3, 1, 0, 'https://example.com/milan-home.jpg');
+
+--
+-- Dumping data for table `warehouse`
+--
+
+INSERT INTO `warehouse` (`item_id`, `tshirt_id`, `size_id`, `availability`) VALUES
+(1, 3, 3, 1),
+(2, 3, 4, 2);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
