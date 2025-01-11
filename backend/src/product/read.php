@@ -38,11 +38,9 @@ $sql = "
         ts.tshirt_id,
         ts.size,
         ts.price,
-        ts.stock_quantity,
         ts.image_url,
         t.team_id,
         t.name AS team_name,
-        t.logo AS team_logo,
         e.edition_id,
         e.year AS edition_year,
         e.description AS edition_description
@@ -76,7 +74,6 @@ while ($row = $result->fetch_assoc()) {
         'team' => [
             'team_id' => $row['team_id'],
             'team_name' => $row['team_name'],
-            'team_logo' => $row['team_logo']
         ],
         'edition' => [
             'edition_id' => $row['edition_id'],
