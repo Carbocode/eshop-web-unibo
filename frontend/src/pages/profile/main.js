@@ -1,9 +1,17 @@
+import { getToken } from "@common";
 import "./style.scss";
+let token = getToken();
 
 // Function to fetch user profile data
 async function fetchProfileData() {
   try {
-    const response = await fetch('http://localhost:8000/src/api/accounts/read.php');
+    const response = await fetch('http://localhost:8000/src/api/accounts/read.php',{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    });
     if (!response.ok) throw new Error('Failed to fetch profile data');
     const data = await response.json();
     return data;
@@ -16,7 +24,12 @@ async function fetchProfileData() {
 // Function to fetch user orders
 async function fetchOrders() {
   try {
-    const response = await fetch('http://localhost:8000/src/api/orders/read.php');
+    const response = await fetch('http://localhost:8000/src/api/orders/read.php', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
     if (!response.ok) throw new Error('Failed to fetch orders');
     const data = await response.json();
     return data;
@@ -49,7 +62,7 @@ function updateProfileUI(profile, orders) {
 async function initProfile() {
   const profile = await fetchProfileData();
   const orders = await fetchOrders();
-  updateProfileUI(profile, orders);
+  updateProfileUI(profile, orders.orders);
 }
 
 // Load profile data when page loads

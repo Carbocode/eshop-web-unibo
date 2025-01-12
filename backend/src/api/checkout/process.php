@@ -1,6 +1,7 @@
 <?php
 require '../../middleware/preflight.php';
 require '../../../vendor/autoload.php';
+require '../../middleware/auth.php';
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
@@ -25,22 +26,10 @@ if ($conn->connect_error) {
     exit;
 }
 
-function getCurrentId() {
-    $headers = getallheaders();
-    try {
-        $token = explode(' ', $headers['Authorization'])[1];
-        $decoded = JWT::decode($token, new Key(JWT_SECRET,'HS256'));
-        return $decoded->sub;
-    } catch (Exception $e) {
-        throw new Exception('Invalid token', 401);
-    }
-}
-
-function processCheckout($conn) {
+function processCheckout($conn,  $id) {
     try {
         // Authenticate customer
-        $customer_id = getCurrentId();
-        
+        $customer_id = $id;        
         // Process checkout logic
         $cart_items = getCartItems($conn, $customer_id);
         if (empty($cart_items)) {
@@ -151,7 +140,7 @@ function clearCart($conn, $customer_id) {
     $stmt->execute();
 }
 if($_SERVER['REQUEST_METHOD']=='GET'){
-    echo(json_encode(getCartItems($conn, getCurrentId()))); //temporaneo perche quello di so non va
+    echo(json_encode(getCartItems($conn, $_TOKEN['sub']))); //temporaneo perche quello di so non va
     $conn->close();
     exit;
 
@@ -162,6 +151,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $conn->close();
     exit;
 }
-processCheckout($conn);
+processCheckout($conn, $_TOKEN['sub']);
 
 $conn->close();

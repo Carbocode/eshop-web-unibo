@@ -20,7 +20,6 @@ if (isset($headers['Authorization'])) {
         // Verifica che il token non sia scaduto
         if ($decoded->exp < time()) {
             die("Token scaduto");
-            exit;
         }
 
         // Se il token è valido, imposta la variabile $_TOKEN con il payload del token
