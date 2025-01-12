@@ -10,7 +10,7 @@ document
 
     try {
       const response = await fetch(
-        "https://localhost:8000/src/accounts/session/create.php",
+        "http://localhost:8000/src/api/accounts/session/create.php",
         {
           method: "POST",
           headers: {

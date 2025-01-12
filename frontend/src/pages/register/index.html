@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,31 +37,12 @@
     </header>
 
     <form id="register-form">
-      <h2>Register</h2>
+      <h2>Registra un Profilo</h2>
       <fieldset>
-        <legend>Personal Info</legend>
+        <legend>Informazioni Personali</legend>
 
-        <div class="split-input">
-          <div>
-            <label for="firstName">First Name:</label>
-            <input
-              type="text"
-              id="firstName"
-              name="firtstName"
-              autocomplete="given-name"
-            />
-          </div>
-
-          <div>
-            <label for="lastName">Last Name:</label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              autocomplete="family-name"
-            />
-          </div>
-        </div>
+        <label for="fullName">Nome Completo</label>
+        <input type="text" id="fullName" name="fullName" autocomplete="name" />
 
         <label for="email">Email:</label>
         <input type="text" id="email" name="email" autocomplete="email" />
@@ -74,14 +55,14 @@
           autocomplete="new-password"
         />
 
-        <label for="phone">Phone:</label>
+        <label for="phone">Telefono:</label>
         <input type="tel" id="phone" name="phone" autocomplete="tel" />
       </fieldset>
 
       <fieldset>
-        <legend>Shipping Info</legend>
+        <legend>Indirizzo di Spedizione</legend>
 
-        <label for="address">Address:</label>
+        <label for="address">Indirizzo:</label>
         <input
           type="text"
           id="address"
@@ -91,7 +72,7 @@
 
         <div class="split-input">
           <div>
-            <label for="city">City:</label>
+            <label for="city">Città:</label>
             <input
               type="text"
               id="city"
@@ -101,7 +82,7 @@
           </div>
 
           <div>
-            <label for="province">Province:</label>
+            <label for="province">Provincia:</label>
             <input
               type="text"
               id="province"
@@ -113,7 +94,7 @@
 
         <div class="split-input">
           <div>
-            <label for="zip">ZIP:</label>
+            <label for="zip">CAP:</label>
             <input
               type="text"
               id="zip"
@@ -122,7 +103,7 @@
             />
           </div>
           <div>
-            <label for="country">Country:</label>
+            <label for="country">Paese:</label>
             <input
               type="text"
               id="country"
@@ -133,7 +114,7 @@
         </div>
       </fieldset>
 
-      <input type="submit" value="Register" />
+      <input type="submit" value="Registrati" />
     </form>
 
     <footer>
