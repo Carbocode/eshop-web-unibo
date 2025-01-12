@@ -10,15 +10,34 @@
   </head>
   <body>
     <header>
-      <img src="@assets/icons/favicon.ico" alt="icona logo" />
-      <a href="@pages/home/"><h3>Elprimerofootballer</h3></a>
-      <nav>
-        <a href="@pages/toolkit/">Squadre</a>
-        <a href="#">Leghe</a>
-        <a href="#">Nazionali</a>
-        <a href="@pages/login/"><i class="fa-solid fa-circle-user"></i></a>
-        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
-      </nav>
+      <a href="@pages/home/" aria-label="Vai alla home">
+        <img src="@assets/icons/favicon.ico" alt="website logo" />
+        <h1>Elprimerofootballer</h1>
+      </a>
+      <div>
+        <input type="checkbox" id="menu-toggle" />
+        <label for="menu-toggle" class="menu-icon"></label>
+        <nav>
+          <a href="@pages/toolkit/" aria-label="View tutte le squadre"
+            >Squadre</a
+          >
+          <a href="@pages/products/?leagues" aria-label="Vedi tutte le Leghe">
+            Leghe
+          </a>
+          <a
+            href="@pages/products/?nationals"
+            aria-label="Vedi le maglie di tutte le Nazionali"
+          >
+            Nazionali
+          </a>
+          <a href="@pages/login/" aria-label="Accedi o Entra nel tuo account">
+            <i class="fa-solid fa-circle-user"></i>
+          </a>
+          <a href="@pages/cart/" aria-label="Vedi gli oggetti nel tuo carello">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </a>
+        </nav>
+      </div>
     </header>
 
     <main></main>
