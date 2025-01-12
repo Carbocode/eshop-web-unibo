@@ -1,91 +1,126 @@
 import "./style.scss";
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const teamId = getTeamIdFromURL(); // Recupera l'id_team dall'URL
-    const prodottoContainer = document.querySelector('.prodotto-container');
+    const teamId = getTeamIdFromURL();
+    const productContainer = document.querySelector('.prodotto-container');
+
+    console.log('Fetching data for team ID:', teamId); // Debug log
 
     try {
-        const response = await fetch(`http://localhost:8000/src/api/product/read.php?id_team=${teamId}`);
-        const tshirt = await response.json(); 
+        const response = await fetch(`http://localhost:8000/src/api/product/read.php?id=${teamId}`);
+        console.log('Response status:', response.status); // Debug log
+        
+        const data = await response.json();
+        console.log('Received data:', data); // Debug log
 
-        if (response.ok && tshirt) {
-            renderTshirt(tshirt, prodottoContainer);
+        if (response.ok && data && !data.error) {
+            if (data.tshirts && data.tshirts.length > 0) {
+                renderTeamTshirt(data, productContainer);
+            } else {
+                productContainer.innerHTML = `
+                    <div class="error-message">
+                        <p>Nessuna t-shirt disponibile per il team selezionato.</p>
+                        <p>Team ID: ${teamId}</p>
+                    </div>`;
+            }
         } else {
-            prodottoContainer.innerHTML = `<p>Nessuna t-shirt disponibile per il team selezionato.</p>`;
+            // Handle backend error or empty data
+            productContainer.innerHTML = `
+                <div class="error-message">
+                    <p>Errore nel caricamento dei dati:</p>
+                    <p>${data.error || 'Nessuna t-shirt disponibile'}</p>
+                    <p>Team ID: ${teamId}</p>
+                    ${data.debug ? `<pre>${JSON.stringify(data.debug, null, 2)}</pre>` : ''}
+                </div>`;
         }
     } catch (error) {
-        prodottoContainer.innerHTML = `<p>Errore nel caricamento dei dati: ${error.message}</p>`;
+        console.error('Fetch error:', error);
+        productContainer.innerHTML = `
+            <div class="error-message">
+                <p>Errore nel caricamento dei dati:</p>
+                <p>${error.message}</p>
+                <p>Team ID: ${teamId}</p>
+            </div>`;
     }
 });
 
-// Funzione per recuperare l'id_team dall'URL
 function getTeamIdFromURL() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('id_team') || 1; // Default a 1 se non specificato
+    return params.get('id') || '1'; 
 }
 
-// Funzione per renderizzare la t-shirt
-function renderTshirt(tshirt, container) {
-    console.log(tshirt);
+function renderTeamTshirt(teamData, container) {
+    const tshirt = teamData.tshirts[0]; // Seleziona solo la prima t-shirt
     const tshirtHTML = `
-        <div class="prodotto-card">
-            <div class="prodotto-image">
-                <img src="${tshirt.image_url}" alt="T-shirt ${tshirt.team.team_name}" />
-            </div>
-            <div class="prodotto-dettagli">
-                <h3>${tshirt.team.team_name}</h3>
-                <p>Edizione: ${tshirt.edition.year}</p>
+        <div class="prodotto-image">
+            <img src="${tshirt.image_url}" alt="T-shirt ${teamData.team_name}" />
+        </div>
+        <div class="prodotto-dettagli">
+            <div class="dettagli">
+                <div class="dettagli-item">
+                    <label for="annata">Annata</label>
+                    <select id="annata">
+                        <option>${tshirt.edition_year}</option>
+                    </select>
+                </div>
                 <div class="dettagli-item">
                     <label>Versione</label>
                     <div class="versione">
-                        ${renderVersionOptions(tshirt.versions)}
+                        ${renderVersionOptions(tshirt.edition_id)}
                     </div>
                 </div>
-                <p>Taglia: ${tshirt.size}</p>
-                <p>Prezzo: €${tshirt.price.toFixed(2)}</p>
-                <p>Disponibilità: ${tshirt.availability}</p>
-                <div class="azioni">
-                    <button class="secondary" onclick="addToCart(${tshirt.tshirt_id})">AGGIUNGI AL CARRELLO</button>
-                    <button class="primary" onclick="buyNow(${tshirt.tshirt_id})">COMPRA ORA</button>
+            </div>
+
+            <div class="dettagli">
+                <div class="dettagli-item">
+                    <label for="numero">Numero</label>
+                    <input type="number" id="numero" value="69" />
                 </div>
+                <div class="dettagli-item">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" value="Bossetti" />
+                </div>
+            </div>
+
+            <div class="dettagli">
+                <label>Taglia</label>
+                <div class="taglie">
+                    ${renderSizeOptions(tshirt.sizes)}
+                </div>
+            </div>
+
+            <div class="azioni">
+                <button class="secondary" onclick="addToCart('${tshirt.tshirt_id}')">AGGIUNGI AL CARRELLO</button>
+                <button class="primary" onclick="buyNow('${tshirt.tshirt_id}')">COMPRA ORA</button>
             </div>
         </div>
     `;
-    container.innerHTML = tshirtHTML; 
 
-    // Aggiunge l'evento di cambio versione
-    const versionInputs = document.querySelectorAll('input[name="versione"]');
-    versionInputs.forEach((input) =>
-        input.addEventListener('change', () => updateVersionDetails(versions, input.value))
-    );
+    container.innerHTML = tshirtHTML; // Renderizza solo una t-shirt
 }
 
-
-// Funzione per rendere le opzioni di versione dinamiche
-function renderVersionOptions(versions) {
-    return versions
-        .map(
-            (version, index) => `
-            <input type="radio" id="version-${index}" name="versione" value="${index}" ${index === 0 ? 'checked' : ''} />
-            <label for="version-${index}">${version.name}</label>
-        `
-        )
-        .join('');
+function renderVersionOptions(editionId) {
+    const versions = [1, 2, 3]; // Esempio di versioni, puoi sostituirle con quelle reali
+    return versions.map(version => `
+        <input type="radio" id="${version}" name="versione" value="${version}" ${editionId === version ? 'checked' : ''} />
+        <label for="${version}">${version}</label>
+    `).join('');
 }
 
-// Funzione per aggiornare i dettagli in base alla versione selezionata
-function updateVersionDetails(versions, selectedIndex) {
-    const selectedVersion = versions[selectedIndex];
-    document.getElementById('prezzo').innerText = `Prezzo: €${selectedVersion.price.toFixed(2)}`;
-    document.getElementById('disponibilita').innerText = `Disponibilità: ${selectedVersion.availability}`;
+function renderSizeOptions(sizes) {
+    return sizes.map((size, index) => `
+        <input type="radio" id="${size.size_name}" name="Taglia" value="${size.size_name}" ${index === 0 ? 'checked' : ''} />
+        <label for="${size.size_name}">${size.size_name}</label>
+    `).join('');
 }
 
-// Funzione per aggiungere al carrello (placeholder)
-function addToCart(tshirtId) {
-    alert(`T-shirt ${tshirtId} aggiunta al carrello!`);
-}
+// Funzioni di gestione carrello e acquisto (solo esempio)
+window.addToCart = function(tshirtId) {
+    const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
+    alert(`T-shirt ${tshirtId} taglia ${selectedSize} aggiunta al carrello!`);
+};
 
-// Funzione per comprare subito (placeholder)
-function buyNow(tshirtId) {
-    alert(`Acquisto immediato della T-shirt ${tshirtId}!`);
-}
+window.buyNow = function(tshirtId) {
+    const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
+    alert(`Acquisto immediato della T-shirt ${tshirtId} taglia ${selectedSize}!`);
+};
