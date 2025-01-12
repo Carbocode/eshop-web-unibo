@@ -2,11 +2,7 @@
 
 require '../../../vendor/autoload.php';
 require '../../middleware/auth.php';
-
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-
-echo var_dump($_TOKEN);
+require '../../middleware/preflight.php';
 
 // Recupera i dettagli del cliente dal database
 $sql = "SELECT customer_id, email, full_name, phone, admin, address, city, province, zip, country FROM customers WHERE customer_id = ?";
@@ -18,7 +14,7 @@ if (!$stmt) {
 }
 
 // Associa il parametro e esegui la query
-$stmt->bind_param('i', $customerId);
+$stmt->bind_param('i', $_TOKEN['sub']);
 $stmt->execute();
 $result = $stmt->get_result();
 
