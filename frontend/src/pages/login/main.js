@@ -22,19 +22,9 @@ document
 
       if (response.ok) {
         const result = await response.json();
-        // Imposta un cookie chiamato "auth_token" che scade in 7 giorni
-        const d = new Date();
-        d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 giorni in millisecondi
-        const expires = "expires=" + d.toUTCString();
-        document.cookie =
-          "auth_token=" +
-          result.token +
-          ";expires=" +
-          expires +
-          "; path=/; secure; samesite=Strict";
-
+        localStorage.setItem("auth_token", result.token);
         alert(result.message); // Opzionale: mostra un messaggio di successo
-        window.location.href = "/home"; // Reindirizza alla home
+        window.location.href = "/src/pages/home/"; // Reindirizza alla home
       } else {
         const error = await response.json();
         alert(error.error || "Errore durante il login.");

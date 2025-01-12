@@ -1,5 +1,6 @@
 import "./style.scss";
-const token = getCookies("auth_token"); // Assuming token is stored in localStorage
+import {getToken} from "@common";
+const token = getToken() // Assuming token is stored in localStorage
 
 async function loadOrderSummary() {
     try {
@@ -141,26 +142,11 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
             alert('Order placed successfully!');
             window.location.href = '/home';
         } else {
-            throw new Error(data.error);
+            throw new Error(data);
         }
     } catch (error) {
         alert('Error processing checkout: ' + error.message);
     }
 });
-function getCookies(name){
-    var name = name + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-}
 // Load order summary when page loads
 loadOrderSummary();

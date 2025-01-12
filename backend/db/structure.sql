@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2025 at 05:36 PM
+-- Generation Time: Jan 12, 2025 at 07:05 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -125,7 +125,10 @@ CREATE TABLE `orders` (
   `subtotal` float NOT NULL,
   `shipping_cost` float NOT NULL,
   `tax` float NOT NULL,
-  `total` float NOT NULL
+  `total` float NOT NULL,
+  `tracking_number` varchar(50) NOT NULL,
+  `delivery` datetime NOT NULL,
+  `shipping_agent` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

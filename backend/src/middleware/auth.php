@@ -6,9 +6,12 @@ use Firebase\JWT\Key;
 // Chiave segreta per il JWT
 $jwtSecret = 'tuasegretatokenkey';
 
+$headers = getallheaders();
+
 // Recupera il token dal cookie
-if (isset($_COOKIE['auth_token'])) {
-    $jwt = $_COOKIE['auth_token'];
+if (isset($headers['Authorization'])) {
+    $authHeader = $headers['Authorization'];
+    $jwt = str_replace('Bearer ', '', $authHeader);
 
     try {
         // Decodifica il token
@@ -17,7 +20,6 @@ if (isset($_COOKIE['auth_token'])) {
         // Verifica che il token non sia scaduto
         if ($decoded->exp < time()) {
             die("Token scaduto");
-            exit;
         }
 
         // Se il token è valido, imposta la variabile $_TOKEN con il payload del token

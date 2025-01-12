@@ -1,8 +1,8 @@
 <?php
-
+require '../../middleware/preflight.php';
 require '../../../vendor/autoload.php';
 require '../../middleware/auth.php';
-require '../../middleware/preflight.php';
+
 
 // Recupera i dettagli del cliente dal database
 $sql = "SELECT customer_id, email, full_name, phone, admin, address, city, province, zip, country FROM customers WHERE customer_id = ?";

@@ -6,6 +6,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@global": path.resolve(__dirname, "src/global.scss"),
+      "@common": path.resolve(__dirname, "src/commonfunc.js"),
       "@assets": path.resolve(__dirname, "src/assets"),
       "@pages": path.resolve(__dirname, "src/pages"),
     },

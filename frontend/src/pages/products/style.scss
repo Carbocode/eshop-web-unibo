@@ -1,31 +1,47 @@
 @use "@global" as global;
 
-main{
-    padding: 20px 2%;
+main {
+  padding: 20px 2%;
 }
 
-.squadre-container {
+.teams-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; /* Spaziatura tra gli elementi */
+  padding: 16px;
+
+  .team {
+    text-align: center;
+
+    img {
+      box-shadow: var(--box-shadow);
+      border-radius: var(--border-radius);
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+    }
+    .team-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--padding);
+    }
+  }
+
+  .squadra {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px var(--box-shadow);
     display: flex;
     justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    align-items: center;
+    background-color: var(--background-color);
 
-    .squadra {
-        width: 100px;
-        height: 100px;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0 10px var(--box-shadow);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--background-color);
-    
-        img {
-            max-width: 80%;
-            max-height: 80%;
-        }
+    img {
+      max-width: 80%;
+      max-height: 80%;
     }
+  }
 }
-
-
