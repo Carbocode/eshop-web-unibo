@@ -29,6 +29,7 @@ document
         document.cookie =
           "auth_token=" +
           result.token +
+          ";expires=" +
           expires +
           "; path=/; secure; samesite=Strict";
 
