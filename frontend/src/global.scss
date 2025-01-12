@@ -109,13 +109,13 @@ h1 {
   font-size: 3.375rem;
 }
 h2 {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
 }
 h3 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 h4 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 h5,
 label,
@@ -124,7 +124,7 @@ legend,
 .button,
 input[type="button"],
 input[type="submit"] {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 }
 h6 {
   font-size: 1rem;
@@ -331,13 +331,12 @@ fieldset {
   border-radius: var(--border-radius);
   border: 0;
   margin: var(--margin);
-  legend {
-  }
 }
 
 header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 20px;
 
   top: 0;
@@ -365,6 +364,7 @@ header {
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
+
     img {
       gap: 10px;
       height: 50px;
@@ -376,10 +376,106 @@ header {
     color: var(--primary-color-contrast);
   }
 
-  nav {
+  div {
     display: flex;
-    gap: 15px;
-    margin-left: auto;
+    align-items: center;
+
+    & > * {
+      position: absolute !important;
+      right: 16px;
+    }
+
+    .menu-icon {
+      display: none !important;
+      font-size: 2em;
+      cursor: pointer;
+    }
+
+    #menu-toggle {
+      appearance: none;
+      height: 2rem;
+      width: 2rem;
+      margin: 0;
+
+      background: transparent !important;
+      &::after {
+        content: "";
+        background-color: transparent;
+      }
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+      margin-left: auto;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        background-color: #333;
+        position: absolute;
+        top: 70px;
+        width: 100vw;
+        height: auto;
+      }
+
+      nav a {
+        text-align: center;
+        padding: 1em;
+      }
+
+      .menu-icon {
+        display: block !important;
+        width: 2rem;
+        height: 0.2rem;
+        position: relative;
+        cursor: pointer;
+        background-color: white;
+        border-radius: 9999px;
+        margin: 0;
+        padding: 0;
+
+        &::before,
+        &::after {
+          content: " ";
+          display: block !important;
+          width: 2rem;
+          height: 0.2rem;
+          position: absolute;
+          background-color: white;
+          border-radius: 9999px;
+        }
+
+        &::before {
+          top: 0.5rem; // Linea superiore
+        }
+
+        &::after {
+          top: -0.5rem; // Linea inferiore
+        }
+      }
+
+      #menu-toggle:checked + .menu-icon {
+        background-color: transparent;
+
+        &::before {
+          top: 0;
+          transform: rotate(45deg);
+        }
+
+        &::after {
+          top: 0;
+          transform: rotate(-45deg);
+        }
+
+        & + nav {
+          display: flex;
+          right: 0;
+        }
+      }
+    }
   }
 }
 
