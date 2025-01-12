@@ -7,16 +7,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
     // Verifica che i campi richiesti siano presenti
-    if (!isset($data['email']) || !isset($data['password']) || !isset($data['first_name']) || !isset($data['last_name'])) {
+    if (!isset($data['email']) || !isset($data['password']) || !isset($data['full_name']) || !isset($data['phone'])) {
         http_response_code(400);
-        echo json_encode(["error" => "I campi email, password, first_name e last_name sono obbligatori."]);
+        echo json_encode(["error" => "I campi email, password, full_name e phone sono obbligatori."]);
         exit;
     }
 
+    // Estrai i campi dall'input
     $email = $data['email'];
     $password = $data['password'];
-    $firstName = $data['first_name'];
-    $lastName = $data['last_name'];
+    $fullName = $data['full_name'];
+    $phone = $data['phone'];
+    $address = $data['address'];
+    $city = $data['city'];
+    $province = $data['province'];
+    $zip = $data['zip'];
+    $country = $data['country'];
 
     // Verifica se l'email è già registrata
     $stmt = $conn->prepare("SELECT COUNT(*) FROM customers WHERE email = ?");
@@ -36,8 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     // Inserisci il nuovo utente nel database
-    $stmt = $conn->prepare("INSERT INTO customers (email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $email, $hashedPassword, $firstName, $lastName);
+    $stmt = $conn->prepare("
+        INSERT INTO customers (email, password, full_name, phone, address, city, province, zip, country) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+    $stmt->bind_param("sssssssss", $email, $hashedPassword, $fullName, $phone, $address, $city, $province, $zip, $country);
 
     if ($stmt->execute()) {
         http_response_code(201);
