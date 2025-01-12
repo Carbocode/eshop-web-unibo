@@ -1,5 +1,5 @@
 <?php
-require '../config/middleware.php';
+require '../../middleware/preflight.php';
 
 // Controlla il metodo della richiesta
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
