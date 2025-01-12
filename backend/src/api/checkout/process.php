@@ -3,7 +3,9 @@ require '../../middleware/preflight.php';
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
-
+define('JWT_SECRET','tuasegretatokenkey');
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 // Configurazione del database
 $host = 'localhost:3306';
 $user = 'root';
@@ -23,7 +25,14 @@ if ($conn->connect_error) {
 }
 
 function getCurrentId() {
-    return $_POST['userId']; //has to be obtained from a safer method.
+    $headers = getallheaders();
+    try {
+        $token = explode(' ', $headers['Authorization'])[1];
+        $decoded = JWT::decode($token, new Key(JWT_SECRET,'HS256'));
+        return $decoded->sub;
+    } catch (Exception $e) {
+        throw new Exception('Invalid token', 401);
+    }
 }
 
 function processCheckout($conn) {
@@ -77,7 +86,7 @@ function processCheckout($conn) {
 }
 
 function getCartItems($conn, $customer_id) {
-    $query = "SELECT c.quantity,tm.name as team,e.`name` as edition, t.image_url, t.price, s.`name`
+    $query = "SELECT c.quantity,tm.name as team,e.`name` as edition, t.image_url, t.price, s.`name` as size
               FROM carts c
               Inner JOIN warehouse w ON c.item_id = w.item_id
               Inner JOIN tshirts t ON w.tshirt_id = t.tshirt_id

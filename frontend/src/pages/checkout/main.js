@@ -1,11 +1,11 @@
 import "./style.scss";
-const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+const token = document.cookie; // Assuming token is stored in localStorage
 
 async function loadOrderSummary() {
     try {
         //parseJwt(token).sub non va jwt
         const response = await fetch('http://localhost:8000/src/api/checkout/process.php?'+new URLSearchParams({
-            customer_id: 1,
+            customer_id: parseJwt(token).sub,
         }));
         const data = await response.json();
         
@@ -24,7 +24,7 @@ function displayOrderSummary(data) {
     const totalAmountSpan = document.getElementById('totalAmount');
     
     let html = '<h2>Ordine</h2>';
-    
+    let price = data.reduce((acc, item) => acc + item.price, 0);
     // Display items
     html += data.map(item => `
         <div class="summary-item">
@@ -44,7 +44,7 @@ function displayOrderSummary(data) {
         <div class="totals">
             <div class="total-row">
                 <span>Prezzo Articoli</span>
-                <span>€1</span>
+                <span>€${price}</span>
             </div>
             <div class="total-row">
                 <span>Prezzo Spedizione</span>
@@ -52,13 +52,13 @@ function displayOrderSummary(data) {
             </div>
             <div class="total-row final">
                 <span>Prezzo Totale</span>
-                <span>€${data.reduce((acc, item) => acc + item.price, 0) + 5}</span>
+                <span>€${price + 5}</span>
             </div>
         </div>
     `;
 
     summaryContainer.innerHTML = html;
-    totalAmountSpan.textContent = (data.summary.total + 5).toFixed(2);
+    totalAmountSpan.textContent = (price + 5).toFixed(2);
 }
 
 function validateForm(formData) {
@@ -124,7 +124,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
     }
 
     try {
-        const response = await fetch('http://localhost:8000/src/checkout/process.php', {
+        const response = await fetch('http://localhost:8000/src/api/checkout/process.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
