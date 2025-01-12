@@ -87,7 +87,7 @@ function processCheckout($conn) {
 }
 
 function getCartItems($conn, $customer_id) {
-    $query = "SELECT c.quantity,tm.name as team,e.`name` as edition, t.image_url, t.price, s.`name` as size
+    $query = "SELECT c.quantity,tm.name as team,e.`name` as edition, t.image_url, t.price, s.`name` as size, t.tshirt_id as item_id, c.item_id
               FROM carts c
               Inner JOIN warehouse w ON c.item_id = w.item_id
               Inner JOIN tshirts t ON w.tshirt_id = t.tshirt_id
