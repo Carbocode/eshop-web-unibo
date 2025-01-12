@@ -8,8 +8,11 @@
         <link rel="icon" href="@assets/icons/favicon.ico" type="image/x-icon" />
       </head>
 <body>
-    <header style="height: 50px;">
-        <img src="@assets/icons/favicon.ico" alt="icona logo" />
+    <header>
+        <a href="/home" ria-label="Go to Home page">
+            <img src="@assets/icons/favicon.ico" alt="icona logo" />
+        </a>
+        
         <a href="@pages/home/"><h3>Elprimerofootballer</h3></a>
         <nav>
           <a href="@pages/toolkit/">Squadre</a>
@@ -24,8 +27,9 @@
     </div>
 
     <div class="checkout-container">
-        <div class="checkout-form">
-            <h2>Informazioni Carta</h2>
+        <div class="checkout-form-container">
+            <div class="checkout">
+                <h2>Informazioni Carta</h2>
             <form id="checkoutForm">
                 <div class="form-group">
                     <label>Numero Carta</label>
@@ -64,6 +68,8 @@
                 </div>
                 <button type="submit" class="pay-button">Paga €<span id="totalAmount">0.00</span></button>
             </form>
+            </div>
+            
         </div>
 
         <div class="order-summary" id="orderSummary">

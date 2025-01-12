@@ -25,15 +25,15 @@ function displayOrderSummary(data) {
     const summaryContainer = document.getElementById('orderSummary');
     const totalAmountSpan = document.getElementById('totalAmount');
     
-    let html = '<h2>Ordine</h2>';
+    let html = '';
     let price = data.reduce((acc, item) => acc + item.price, 0);
     // Display items
     html += data.map(item => `
         <div class="summary-item">
             <img src="${item.image_url}" alt="${item.team}">
             <div class="summary-details">
-                <div>${item.team} - ${item.edition}</div>
-                <div>Size: ${item.size}</div>
+                <div><b> Maglia ${item.team} </b></div>
+                <div> ${item.edition} Edition - ${item.size}</div>
                 <div>Quantity: ${item.quantity}</div>
             </div>
             <div class="summary-price">€${item.price}</div>
