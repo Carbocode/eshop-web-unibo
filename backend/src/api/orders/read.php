@@ -12,22 +12,26 @@ if (!$order_id) {
     exit;
 }
 
-// Query per ottenere lo stato dell'ordine e i dettagli dell'indirizzo
+// Query per ottenere i dettagli dell'ordine e gli stati
 $sql = "
-    SELECT o.order_id, 
-           o.status_id, 
-           os.status, 
-           os.icon, 
-           o.subtotal, 
-           o.shipping_cost, 
-           o.tax, 
-           o.total,
-           c.full_name, 
-           c.address, 
-           c.city, 
-           c.province, 
-           c.zip, 
-           c.country
+    SELECT 
+        o.order_id, 
+        o.status_id, 
+        os.status, 
+        os.icon, 
+        o.subtotal, 
+        o.shipping_cost, 
+        o.tax, 
+        o.total,
+        o.tracking_number,
+        o.delivery,
+        o.shipping_agent,
+        c.full_name, 
+        c.address, 
+        c.city, 
+        c.province, 
+        c.zip, 
+        c.country
     FROM orders o
     INNER JOIN order_status os ON o.status_id = os.status_id
     INNER JOIN customers c ON o.customer_id = c.customer_id
@@ -51,7 +55,7 @@ if ($result->num_rows === 0) {
     exit;
 }
 
-// Recupera i dettagli dell'ordine e dell'indirizzo
+// Recupera i dettagli dell'ordine
 $order = $result->fetch_assoc();
 
 // Restituisci i dati in formato JSON
@@ -64,6 +68,9 @@ echo json_encode([
     'shipping_cost' => $order['shipping_cost'],
     'tax' => $order['tax'],
     'total' => $order['total'],
+    'tracking_number' => $order['tracking_number'],
+    'delivery' => $order['delivery'],
+    'shipping_agent' => $order['shipping_agent'],
     'full_name' => $order['full_name'],
     'address' => $order['address'],
     'city' => $order['city'],

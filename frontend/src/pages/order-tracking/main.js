@@ -100,9 +100,9 @@ function updateOrderTracking(order) {
   document.querySelector('[data-tracking="number"]').textContent =
     order.tracking_number || "N/A";
   document.querySelector('[data-tracking="eta"]').textContent =
-    order.estimated_delivery || "N/A";
+    order.delivery || "N/A";
   document.querySelector('[data-tracking="method"]').textContent =
-    order.shipping_method || "N/A";
+    order.shipping_agent || "N/A";
 
   document.querySelector('[data-total="subtotal"]').textContent =
     formatCurrency(order.subtotal);
