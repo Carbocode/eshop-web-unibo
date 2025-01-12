@@ -42,17 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
 
-            // Imposta il cookie con il token JWT
-            setcookie('auth_token', $jwt, [
-                'expires' => time() + 60 * 60,
-                'path' => '/',
-                'secure' => false,
-                'httponly' => false,
-                'samesite' => 'Lax',
-            ]);
-
             http_response_code(200);
-            echo json_encode(["message" => "Login effettuato con successo."]);
+            echo json_encode(["message" => "Login effettuato con successo.", "token" => $jwt]);
         } else {
             http_response_code(401);
             echo json_encode(["error" => "Credenziali non valide."]);
