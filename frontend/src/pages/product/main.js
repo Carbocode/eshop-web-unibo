@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const prodottoContainer = document.querySelector('.prodotto-container');
 
     try {
-        const response = await fetch(`http://localhost:8000/src/product/read.php?id_team=${teamId}`);
-        const tshirts = await response.json();
+        const response = await fetch(`http://localhost:8000/src/api/product/read.php?id_team=${teamId}`);
+        const tshirt = await response.json(); 
 
-        if (response.ok && tshirts.length > 0) {
-            renderTshirts(tshirts, prodottoContainer);
+        if (response.ok && tshirt) {
+            renderTshirt(tshirt, prodottoContainer);
         } else {
             prodottoContainer.innerHTML = `<p>Nessuna t-shirt disponibile per il team selezionato.</p>`;
         }
@@ -24,18 +24,17 @@ function getTeamIdFromURL() {
     return params.get('id_team') || 1; // Default a 1 se non specificato
 }
 
-// Funzione per renderizzare le t-shirt
-function renderTshirts(tshirts, container) {
-    container.innerHTML = ''; // Rimuove i contenuti statici
-
-    tshirts.forEach(tshirt => {
-        const tshirtHTML = `
+// Funzione per renderizzare la t-shirt
+function renderTshirt(tshirt, container) {
+    console.log(tshirt);
+    const tshirtHTML = `
+        <div class="prodotto-card">
             <div class="prodotto-image">
-                <img src="${tshirt.image_url}" alt="T-shirt ${tshirt.team_name}" />
+                <img src="${tshirt.image_url}" alt="T-shirt ${tshirt.team.team_name}" />
             </div>
             <div class="prodotto-dettagli">
-                <h3>${tshirt.team_name}</h3>
-                <p>Edizione: ${tshirt.year}</p>
+                <h3>${tshirt.team.team_name}</h3>
+                <p>Edizione: ${tshirt.edition.year}</p>
                 <div class="dettagli-item">
                     <label>Versione</label>
                     <div class="versione">
@@ -50,25 +49,35 @@ function renderTshirts(tshirts, container) {
                     <button class="primary" onclick="buyNow(${tshirt.tshirt_id})">COMPRA ORA</button>
                 </div>
             </div>
-        `;
-        const tshirtElement = document.createElement('div');
-        tshirtElement.classList.add('tshirt-item');
-        tshirtElement.innerHTML = tshirtHTML;
-        container.appendChild(tshirtElement);
-    });
+        </div>
+    `;
+    container.innerHTML = tshirtHTML; 
+
+    // Aggiunge l'evento di cambio versione
+    const versionInputs = document.querySelectorAll('input[name="versione"]');
+    versionInputs.forEach((input) =>
+        input.addEventListener('change', () => updateVersionDetails(versions, input.value))
+    );
 }
+
 
 // Funzione per rendere le opzioni di versione dinamiche
 function renderVersionOptions(versions) {
-    if (!versions || versions.length === 0) {
-        return '<p>Nessuna versione disponibile</p>';
-    }
     return versions
-        .map((version, index) => `
-            <input type="radio" id="version-${index}" name="versione" value="${version}" ${index === 0 ? 'checked' : ''} />
-            <label for="version-${index}">${version}</label>
-        `)
+        .map(
+            (version, index) => `
+            <input type="radio" id="version-${index}" name="versione" value="${index}" ${index === 0 ? 'checked' : ''} />
+            <label for="version-${index}">${version.name}</label>
+        `
+        )
         .join('');
+}
+
+// Funzione per aggiornare i dettagli in base alla versione selezionata
+function updateVersionDetails(versions, selectedIndex) {
+    const selectedVersion = versions[selectedIndex];
+    document.getElementById('prezzo').innerText = `Prezzo: €${selectedVersion.price.toFixed(2)}`;
+    document.getElementById('disponibilita').innerText = `Disponibilità: ${selectedVersion.availability}`;
 }
 
 // Funzione per aggiungere al carrello (placeholder)
