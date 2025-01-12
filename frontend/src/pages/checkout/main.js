@@ -1,12 +1,14 @@
 import "./style.scss";
-const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+const token = getCookies("auth_token"); // Assuming token is stored in localStorage
 
 async function loadOrderSummary() {
     try {
         //parseJwt(token).sub non va jwt
-        const response = await fetch('http://localhost:8000/src/api/checkout/process.php?'+new URLSearchParams({
-            customer_id: 1,
-        }));
+        const response = await fetch('http://localhost:8000/src/api/checkout/process.php?', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await response.json();
         
         if (response.ok) {
@@ -23,15 +25,15 @@ function displayOrderSummary(data) {
     const summaryContainer = document.getElementById('orderSummary');
     const totalAmountSpan = document.getElementById('totalAmount');
     
-    let html = '<h2>Ordine</h2>';
-    
+    let html = '';
+    let price = data.reduce((acc, item) => acc + item.price, 0);
     // Display items
     html += data.map(item => `
         <div class="summary-item">
             <img src="${item.image_url}" alt="${item.team}">
             <div class="summary-details">
-                <div>${item.team} - ${item.edition}</div>
-                <div>Size: ${item.size}</div>
+                <div><b> Maglia ${item.team} </b></div>
+                <div> ${item.edition} Edition - ${item.size}</div>
                 <div>Quantity: ${item.quantity}</div>
             </div>
             <div class="summary-price">€${item.price}</div>
@@ -44,7 +46,7 @@ function displayOrderSummary(data) {
         <div class="totals">
             <div class="total-row">
                 <span>Prezzo Articoli</span>
-                <span>€1</span>
+                <span>€${price}</span>
             </div>
             <div class="total-row">
                 <span>Prezzo Spedizione</span>
@@ -52,13 +54,13 @@ function displayOrderSummary(data) {
             </div>
             <div class="total-row final">
                 <span>Prezzo Totale</span>
-                <span>€${data.reduce((acc, item) => acc + item.price, 0) + 5}</span>
+                <span>€${price + 5}</span>
             </div>
         </div>
     `;
 
     summaryContainer.innerHTML = html;
-    totalAmountSpan.textContent = (data.summary.total + 5).toFixed(2);
+    totalAmountSpan.textContent = (price + 5).toFixed(2);
 }
 
 function validateForm(formData) {
@@ -124,7 +126,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
     }
 
     try {
-        const response = await fetch('http://localhost:8000/src/checkout/process.php', {
+        const response = await fetch('http://localhost:8000/src/api/checkout/process.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -145,14 +147,20 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
         alert('Error processing checkout: ' + error.message);
     }
 });
-function parseJwt (token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
+function getCookies(name){
+    var name = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
 }
 // Load order summary when page loads
 loadOrderSummary();

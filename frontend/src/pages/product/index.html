@@ -10,36 +10,39 @@
   </head>
   <body>
     <header>
-      <a href="@pages/home/" aria-label="Go to Home page">
+      <a href="@pages/home/" aria-label="Vai alla home">
         <img src="@assets/icons/favicon.ico" alt="website logo" />
         <h1>Elprimerofootballer</h1>
       </a>
-      <nav>
-        <a href="@pages/toolkit/" aria-label="View all squads">Squadre</a>
-        <a
-          href="@pages/products-view/?leagues"
-          aria-label="Go to football leagues"
-        >
-          Leghe
-        </a>
-        <a
-          href="@pages/products-view/?nationals"
-          aria-label="Go to national teams"
-        >
-          Nazionali
-        </a>
-        <a href="@pages/login/" aria-label=" View your Account or Login">
-          <i class="fa-solid fa-circle-user"></i>
-        </a>
-        <a href="@pages/cart/" aria-label="View Items added to your cart">
-          <i class="fa-solid fa-cart-shopping"></i>
-        </a>
-      </nav>
+      <div>
+        <input type="checkbox" id="menu-toggle" />
+        <label for="menu-toggle" class="menu-icon"></label>
+        <nav>
+          <a href="@pages/toolkit/" aria-label="View tutte le squadre"
+            >Squadre</a
+          >
+          <a href="@pages/products/?leagues" aria-label="Vedi tutte le Leghe">
+            Leghe
+          </a>
+          <a
+            href="@pages/products/?nationals"
+            aria-label="Vedi le maglie di tutte le Nazionali"
+          >
+            Nazionali
+          </a>
+          <a href="@pages/login/" aria-label="Accedi o Entra nel tuo account">
+            <i class="fa-solid fa-circle-user"></i>
+          </a>
+          <a href="@pages/cart/" aria-label="Vedi gli oggetti nel tuo carello">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </a>
+        </nav>
+      </div>
     </header>
 
     <main>
       <div class="prodotto-container">
-        <!--<div class="prodotto-image">
+        <!-- <div class="prodotto-image">
           <img src="maglia-napoli.png" alt="Maglia Napoli" />
         </div>
         <div class="prodotto-dettagli">

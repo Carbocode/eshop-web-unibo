@@ -1,5 +1,5 @@
 <?php
-require '../config/middleware.php';
+require '../../middleware/preflight.php';
 
 // Query per ottenere i gruppi e le nazioni
 $sql = "

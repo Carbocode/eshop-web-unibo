@@ -1,5 +1,5 @@
 <?php
-require '../config/middleware.php';
+require '../../middleware/preflight.php';
 
 // Query per ottenere tutte le squadre di tutte le leghe
 $sql = "
