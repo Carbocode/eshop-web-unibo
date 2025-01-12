@@ -3,17 +3,16 @@ const token = localStorage.getItem('token'); // Assuming token is stored in loca
 
 async function loadOrderSummary() {
     try {
-        const response = await fetch('http://localhost:8000/cart/summary', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        //parseJwt(token).sub non va jwt
+        const response = await fetch('http://localhost:8000/src/checkout/process.php?'+new URLSearchParams({
+            customer_id: 1,
+        }));
         const data = await response.json();
         
         if (response.ok) {
-            displayOrderSummary(data.data);
+            displayOrderSummary(data);
         } else {
-            throw new Error(data.error);
+            throw new Error(data);
         }
     } catch (error) {
         console.error('Error loading order summary:', error);
@@ -27,7 +26,7 @@ function displayOrderSummary(data) {
     let html = '<h2>Ordine</h2>';
     
     // Display items
-    html += data.items.map(item => `
+    html += data.map(item => `
         <div class="summary-item">
             <img src="${item.image_url}" alt="${item.team_name}">
             <div class="summary-details">
@@ -40,11 +39,12 @@ function displayOrderSummary(data) {
     `).join('');
 
     // Display totals
+    
     html += `
         <div class="totals">
             <div class="total-row">
                 <span>Prezzo Articoli</span>
-                <span>€${data.summary.subtotal}</span>
+                <span>€1</span>
             </div>
             <div class="total-row">
                 <span>Prezzo Spedizione</span>
@@ -52,7 +52,7 @@ function displayOrderSummary(data) {
             </div>
             <div class="total-row final">
                 <span>Prezzo Totale</span>
-                <span>€${data.summary.total + 5}</span>
+                <span>€${data.reduce((acc, item) => acc + item.price, 0)}</span>
             </div>
         </div>
     `;
@@ -112,7 +112,8 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
         cardName: document.getElementById('cardName').value,
         address: document.getElementById('address').value,
         postalCode: document.getElementById('postalCode').value,
-        phone: document.getElementById('phone').value
+        phone: document.getElementById('phone').value,
+        id: 1 //IDUtente, temporaneo
     };
 
     // Validate form data
@@ -123,7 +124,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
     }
 
     try {
-        const response = await fetch('http://localhost:8000/checkout', {
+        const response = await fetch('http://localhost:8000/src/checkout/process.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -136,7 +137,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
         
         if (response.ok) {
             alert('Order placed successfully!');
-            window.location.href = '/order-confirmation';
+            window.location.href = '/home';
         } else {
             throw new Error(data.error);
         }
@@ -144,6 +145,14 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
         alert('Error processing checkout: ' + error.message);
     }
 });
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 
+    return JSON.parse(jsonPayload);
+}
 // Load order summary when page loads
 loadOrderSummary();
