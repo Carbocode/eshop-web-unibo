@@ -16,15 +16,21 @@ if (isset($_COOKIE['auth_token'])) {
 
         // Verifica che il token non sia scaduto
         if ($decoded->exp < time()) {
-            header('Location: /src/pages/login/');
+            die("Token scaduto");
             exit;
         }
+
+        // Se il token è valido, imposta la variabile $_TOKEN con il payload del token
+        $_TOKEN = [
+            'sub' => $decoded->sub,
+            'email' => $decoded->email,
+            'iat' => $decoded->iat,
+            'exp' => $decoded->exp
+        ];
     } catch (Exception $e) {
         // Gestione degli errori durante la decodifica del token
-        header('Location: /src/pages/login/');
-        exit;
+        die("Token non valido");
     }
 } else {
-    header('Location: /src/pages/login/');
-    exit;
+    die("Token non presente");
 }
