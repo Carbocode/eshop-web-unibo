@@ -1,12 +1,14 @@
 import "./style.scss";
-const token = document.cookie; // Assuming token is stored in localStorage
+const token = getCookies("auth_token"); // Assuming token is stored in localStorage
 
 async function loadOrderSummary() {
     try {
         //parseJwt(token).sub non va jwt
-        const response = await fetch('http://localhost:8000/src/api/checkout/process.php?'+new URLSearchParams({
-            customer_id: parseJwt(token).sub,
-        }));
+        const response = await fetch('http://localhost:8000/src/api/checkout/process.php?', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await response.json();
         
         if (response.ok) {
@@ -145,14 +147,20 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
         alert('Error processing checkout: ' + error.message);
     }
 });
-function parseJwt (token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
+function getCookies(name){
+    var name = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
 }
 // Load order summary when page loads
 loadOrderSummary();

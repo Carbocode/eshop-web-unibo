@@ -1,5 +1,6 @@
 <?php
 require '../../middleware/preflight.php';
+require '../../../vendor/autoload.php';
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
@@ -150,7 +151,7 @@ function clearCart($conn, $customer_id) {
     $stmt->execute();
 }
 if($_SERVER['REQUEST_METHOD']=='GET'){
-    echo(json_encode(getCartItems($conn, $_GET['customer_id']))); //temporaneo perche quello di so non va
+    echo(json_encode(getCartItems($conn, getCurrentId()))); //temporaneo perche quello di so non va
     $conn->close();
     exit;
 
