@@ -1,6 +1,5 @@
 <?php
-require '../config/middleware.php';
-$customer_id;
+require '../../middleware/preflight.php';
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
@@ -78,10 +77,13 @@ function processCheckout($conn) {
 }
 
 function getCartItems($conn, $customer_id) {
-    $query = "SELECT c.*, t.price 
+    $query = "SELECT c.quantity,tm.name as team,e.`name` as edition, t.image_url, t.price, s.`name`
               FROM carts c
-              JOIN warehouse w ON c.item_id = w.item_id
-              JOIN tshirts t ON w.tshirt_id = t.tshirt_id
+              Inner JOIN warehouse w ON c.item_id = w.item_id
+              Inner JOIN tshirts t ON w.tshirt_id = t.tshirt_id
+              inner join editions e on e.edition_id = t.edition_id
+              inner join teams tm on tm.team_id = t.team_id
+              inner join sizes s on w.size_id = s.size_id
               WHERE c.customer_id = ?";
     
     $stmt = $conn->prepare($query);

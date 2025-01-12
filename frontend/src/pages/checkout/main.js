@@ -4,7 +4,7 @@ const token = localStorage.getItem('token'); // Assuming token is stored in loca
 async function loadOrderSummary() {
     try {
         //parseJwt(token).sub non va jwt
-        const response = await fetch('http://localhost:8000/src/checkout/process.php?'+new URLSearchParams({
+        const response = await fetch('http://localhost:8000/src/api/checkout/process.php?'+new URLSearchParams({
             customer_id: 1,
         }));
         const data = await response.json();
@@ -28,13 +28,13 @@ function displayOrderSummary(data) {
     // Display items
     html += data.map(item => `
         <div class="summary-item">
-            <img src="${item.image_url}" alt="${item.team_name}">
+            <img src="${item.image_url}" alt="${item.team}">
             <div class="summary-details">
-                <div>${item.team_name} - ${item.edition_name}</div>
+                <div>${item.team} - ${item.edition}</div>
                 <div>Size: ${item.size}</div>
                 <div>Quantity: ${item.quantity}</div>
             </div>
-            <div class="summary-price">€${item.subtotal}</div>
+            <div class="summary-price">€${item.price}</div>
         </div>
     `).join('');
 
@@ -52,7 +52,7 @@ function displayOrderSummary(data) {
             </div>
             <div class="total-row final">
                 <span>Prezzo Totale</span>
-                <span>€${data.reduce((acc, item) => acc + item.price, 0)}</span>
+                <span>€${data.reduce((acc, item) => acc + item.price, 0) + 5}</span>
             </div>
         </div>
     `;
