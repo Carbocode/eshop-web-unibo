@@ -1,7 +1,7 @@
 <?php
 // Include libreria JWT
-require '../../../vendor/autoload.php';
-require '../../middleware/preflight.php';
+require '../../../../vendor/autoload.php';
+require '../../../middleware/preflight.php';
 
 use Firebase\JWT\JWT;
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'expires' => time() + 60 * 60,
                 'path' => '/',
                 'secure' => false,
-                'httponly' => true,
+                'httponly' => false,
                 'samesite' => 'Lax',
             ]);
 
