@@ -34,7 +34,7 @@ document
     try {
       // Effettua la chiamata POST alla tua API
       const response = await fetch(
-        "https://localhost:8000/src/accounts/create.php",
+        "http://localhost:8000/src/api/accounts/create.php",
         {
           method: "POST",
           headers: {
@@ -49,6 +49,7 @@ document
         const data = await response.json();
         alert(data.message || "Registrazione completata con successo!");
         document.getElementById("register-form").reset(); // Resetta il modulo
+        window.location.href = "/src/pages/login/";
       } else {
         const errorData = await response.json();
         alert(

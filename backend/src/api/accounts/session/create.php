@@ -1,7 +1,7 @@
 <?php
 // Include libreria JWT
 require '../../../vendor/autoload.php';
-require '../../config/middleware.php';
+require '../../middleware/preflight.php';
 
 use Firebase\JWT\JWT;
 
@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
 
             // Imposta il cookie con il token JWT
-            setcookie('auth_token', $jwt,[
-                'expires' => time() + 60*60,
+            setcookie('auth_token', $jwt, [
+                'expires' => time() + 60 * 60,
                 'path' => '/',
                 'secure' => false,
                 'httponly' => true,

@@ -10,7 +10,7 @@ document.addEventListener("scroll", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const apiEndpoint = "http://localhost:8000/src/groups/read.php"; // Cambia l'URL con quello corretto per la tua API
+  const apiEndpoint = "http://localhost:8000/src/api/groups/read.php"; // Cambia l'URL con quello corretto per la tua API
   const container = document.querySelector(".griglianazionali");
 
   fetch(apiEndpoint)
@@ -66,7 +66,7 @@ function renderGroups(groups, container) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const apiEndpoint = "http://localhost:8000/src/leagues/read.php"; // Cambia l'URL con quello corretto per la tua API
+  const apiEndpoint = "http://localhost:8000/src/api/leagues/read.php"; // Cambia l'URL con quello corretto per la tua API
   const container = document.querySelector(".leghe-container");
 
   fetch(apiEndpoint)
