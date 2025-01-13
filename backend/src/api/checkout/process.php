@@ -140,7 +140,8 @@ function clearCart($conn, $customer_id) {
     $stmt->execute();
 }
 if($_SERVER['REQUEST_METHOD']=='GET'){
-    echo(json_encode(getCartItems($conn, $_TOKEN['sub']))); //temporaneo perche quello di so non va
+    $out =getCartItems($conn, $_TOKEN['sub']);
+    echo(json_encode($out)); //temporaneo perche quello di so non va
     $conn->close();
     exit;
 

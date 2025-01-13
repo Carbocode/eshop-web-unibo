@@ -11,7 +11,7 @@ async function loadCartItems(token) {
         const data = await response.json();
         
         if (response.ok) {
-            if (data.message === "Nessun articolo nel carrello") {
+            if (data.length == 0 ||data.message === "Nessun articolo nel carrello") {
                 showEmptyCartMessage();
             } else {
                 displayCartItems(data);
