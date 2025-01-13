@@ -1,79 +1,110 @@
 <?php
 require '../../middleware/preflight.php';
 
+// Get team ID
+$team_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// Controllo del parametro id_team
-if (!isset($_GET['id_team'])) {
-    echo json_encode(["error" => "Parametro 'id_team' mancante"]);
-    $conn->close();
+// Check if team_id is valid
+if ($team_id === 0) {
+    echo json_encode(['error' => 'Invalid team ID']);
     exit;
 }
 
-$team_id = isset($_GET['id_team']) ? intval($_GET['id_team']) : 0;
+// Simple query to get tshirts for a team
+$sql = "
+    SELECT 
+        t.team_id,
+        t.name as team_name,
+        t.logo as team_logo,
+        ts.tshirt_id,
+        ts.price,
+        ts.image_url,
+        e.edition_id as edition_id,
+        e.name as edition_name,
+        e.year as edition_year,
+        s.size_id,
+        s.name as size_name,
+        w.availability
+    FROM 
+        teams t
+    JOIN 
+        tshirts ts ON t.team_id = ts.team_id
+    JOIN 
+        editions e ON ts.edition_id = e.edition_id
+    LEFT JOIN 
+        warehouse w ON ts.tshirt_id = w.tshirt_id
+    LEFT JOIN 
+        sizes s ON w.size_id = s.size_id
+    WHERE 
+        t.team_id = ?
+";
 
-if ($team_id > 0) {
-    $query = "SELECT 
-                  tshirts.tshirt_id,
-                  teams.team_id,
-                  teams.name AS team_name,
-                  editions.edition_id,
-                  editions.year,
-                  editions.description,
-                  tshirts.size,
-                  tshirts.price,
-                  warehouse.availability,
-                  tshirts.image_url,
-                  GROUP_CONCAT(DISTINCT versions.name) AS versions
-              FROM 
-                  tshirts
-              INNER JOIN 
-                  teams ON tshirts.team_id = teams.team_id
-              INNER JOIN 
-                  editions ON tshirts.edition_id = editions.edition_id
-              INNER JOIN 
-                  warehouse ON tshirts.tshirt_id = warehouse.tshirt_id
-              LEFT JOIN 
-                  tshirt_versions ON tshirts.tshirt_id = tshirt_versions.tshirt_id
-              LEFT JOIN 
-                  versions ON tshirt_versions.version_id = versions.version_id
-              WHERE 
-                  teams.team_id = :team_id
-              GROUP BY 
-                  tshirts.tshirt_id";
-
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':team_id', $team_id);
-    $stmt->execute();
-
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($row) {
-        // Prepara la risposta JSON
-        $response = [
-            "tshirt_id" => $row['tshirt_id'],
-            "team" => [
-                "team_id" => $row['team_id'],
-                "team_name" => $row['team_name']
-            ],
-            "edition" => [
-                "edition_id" => $row['edition_id'],
-                "year" => $row['year'],
-                "description" => $row['description']
-            ],
-            "size" => $row['size'],
-            "price" => (float)$row['price'],
-            "availability" => (int)$row['availability'],
-            "image_url" => $row['image_url'],
-            "versions" => explode(',', $row['versions'])
-        ];
-
-        echo json_encode($response);
-    } else {
-        echo json_encode(["message" => "Nessuna t-shirt trovata per il team selezionato."]);
-    }
-} else {
-    echo json_encode(["message" => "ID team non valido."]);
+$stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    echo json_encode(['error' => 'Failed to prepare SQL statement']);
+    exit;
 }
+
+$stmt->bind_param("i", $team_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Prepare response array
+$response = [
+    'team_id' => '',
+    'team_name' => '',
+    'team_logo' => '',
+    'tshirts' => []
+];
+
+// Check if result is empty
+if ($result->num_rows === 0) {
+    echo json_encode(['error' => 'No t-shirts found for this team']);
+    exit;
+}
+
+// Process query result
+while ($row = $result->fetch_assoc()) {
+    // Set team info if not set
+    if (!$response['team_id']) {
+        $response['team_id'] = $row['team_id'];
+        $response['team_name'] = $row['team_name'];
+        $response['team_logo'] = $row['team_logo'];
+    }
+
+    // Find if t-shirt already exists in array
+    $tshirt_exists = false;
+    foreach ($response['tshirts'] as &$tshirt) {
+        if ($tshirt['tshirt_id'] == $row['tshirt_id']) {
+            $tshirt_exists = true;
+            // Add size to existing t-shirt
+            $tshirt['sizes'][] = [
+                'size_id' => $row['size_id'],
+                'size_name' => $row['size_name'],
+                'availability' => (int)$row['availability']
+            ];
+            break;
+        }
+    }
+
+    // If t-shirt doesn't exist, add it
+    if (!$tshirt_exists) {
+        $response['tshirts'][] = [
+            'tshirt_id' => $row['tshirt_id'],
+            'price' => (float)$row['price'],
+            'image_url' => $row['image_url'],
+            'edition_id' => $row['edition_id'],
+            'edition_name' => $row['edition_name'],
+            'edition_year' => $row['edition_year'],
+            'sizes' => [[
+                'size_id' => $row['size_id'],
+                'size_name' => $row['size_name'],
+                'availability' => (int)$row['availability']
+            ]]
+        ];
+    }
+}
+
+echo json_encode($response);
 $stmt->close();
 $conn->close();
-?>
