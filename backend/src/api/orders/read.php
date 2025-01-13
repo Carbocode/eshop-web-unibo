@@ -91,8 +91,10 @@ if ($result->num_rows === 0) {
 // Recupera i dettagli dell'ordine
 $order = $result->fetch_assoc();
 
-// Query per ottenere gli item dell'ordine, includendo taglia e edizione
-$item_sql = "
+$items = [];
+if (!$getAll) {
+    // Query per ottenere gli item dell'ordine, includendo taglia e edizione
+    $item_sql = "
     SELECT 
         oi.item_id, 
         oi.quantity, 
@@ -110,39 +112,40 @@ $item_sql = "
     INNER JOIN teams t ON tsh.team_id = t.team_id
     INNER JOIN editions e ON tsh.edition_id = e.edition_id
     INNER JOIN sizes s ON w.size_id = s.size_id
-    WHERE oi.order_id = ?
-";
+    WHERE oi.order_id = ?";
 
-$item_stmt = $conn->prepare($item_sql);
+    $item_stmt = $conn->prepare($item_sql);
 
-if (!$item_stmt) {
-    echo json_encode(['error' => 'Failed to prepare item query']);
-    exit;
-}
+    if (!$item_stmt) {
+        echo json_encode(['error' => 'Failed to prepare item query']);
+        exit;
+    }
 
-// Associa i parametri (ID ordine)
-$item_stmt->bind_param('i', $order_id);
-$item_stmt->execute();
-$item_result = $item_stmt->get_result();
+    // Associa i parametri (ID ordine)
+    $item_stmt->bind_param('i', $order_id);
+    $item_stmt->execute();
+    $item_result = $item_stmt->get_result();
 
-$items = [];
-while ($row = $item_result->fetch_assoc()) {
-    $items[] = [
-        'item_id' => $row['item_id'],
-        'quantity' => $row['quantity'],
-        'paid_price' => $row['paid_price'],
-        'tshirt' => [
-            'tshirt_id' => $row['tshirt_id'],
-            'price' => $row['tshirt_price'],
-            'image_url' => $row['tshirt_image'],
-            'edition_name' => $row['edition_name'],
-            'size_name' => $row['size_name']
-        ],
-        'team' => [
-            'team_id' => $row['team_id'],
-            'team_name' => $row['team_name']
-        ]
-    ];
+    while ($row = $item_result->fetch_assoc()) {
+        $items[] = [
+            'item_id' => $row['item_id'],
+            'quantity' => $row['quantity'],
+            'paid_price' => $row['paid_price'],
+            'tshirt' => [
+                'tshirt_id' => $row['tshirt_id'],
+                'price' => $row['tshirt_price'],
+                'image_url' => $row['tshirt_image'],
+                'edition_name' => $row['edition_name'],
+                'size_name' => $row['size_name']
+            ],
+            'team' => [
+                'team_id' => $row['team_id'],
+                'team_name' => $row['team_name']
+            ]
+        ];
+    }
+    // Chiudi la connessione
+    $item_stmt->close();
 }
 
 // Restituisci i dati in formato JSON
@@ -167,7 +170,6 @@ echo json_encode([
     'items' => $items
 ]);
 
-// Chiudi la connessione
-$item_stmt->close();
+
 $stmt->close();
 $conn->close();
