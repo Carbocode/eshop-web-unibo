@@ -156,7 +156,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
 loadOrderSummary();
 document.addEventListener('DOMContentLoaded', () => {
     const tokenKey = getToken();
-    const loginPageUrl = '/src/pages/login'; /
+    const loginPageUrl = '/src/pages/login';
     function isTokenExpired(token) {
         try {
             const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
