@@ -3,7 +3,7 @@ import { getToken } from "@common";
 
 async function loadCartItems(token) {
     try {
-        const response = await fetch('http://localhost:8000/src/api/checkout/process.php?', {
+        const response = await fetch('http://localhost:8000/src/api/cart/read.php', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -11,7 +11,7 @@ async function loadCartItems(token) {
         const data = await response.json();
         
         if (response.ok) {
-            if (data.length == 0 ||data.message === "Nessun articolo nel carrello") {
+            if (data.message === "Cart is empty") {
                 showEmptyCartMessage();
             } else {
                 displayCartItems(data);
@@ -44,36 +44,14 @@ function displayCartItems(items) {
     let html = '';
 
     items.forEach(item => {
-        /*
-        html += `
-            <div class="cart-item" data-item-id="${item.cart_item_id}">
-                <div class="item-image">
-                    <img src="${item.image_url}" alt="${item.team_name}">
-                </div>
-                <div class="item-details">
-                    <h3>Maglia ${item.team_name}</h3>
-                    <div class="quantity-controls">
-                        <button class="quantity-btn minus" onclick="updateQuantity(${item.cart_item_id}, ${item.quantity - 1})">-</button>
-                        <span class="quantity">${item.quantity}</span>
-                        <button class="quantity-btn plus" onclick="updateQuantity(${item.cart_item_id}, ${item.quantity + 1})">+</button>
-                    </div>
-                    <button class="remove-btn" onclick="removeItem(${item.cart_item_id})">
-                        <i class="fa-solid fa-trash"></i> Rimuovi
-                    </button>
-                </div>
-                <div class="item-price">
-                    €${(item.price * item.quantity).toFixed(2)}
-                </div>
-            </div>
-        `;
-        */
         html += `
         <div class="cart-item" data-item-id="${item.item_id}">
             <div class="item-image">
-                <img src="${item.image_url}" alt="${item.team}">
+                <img src="${item.tshirt.image_url}" alt="${item.tshirt.team_name}">
             </div>
             <div class="item-details">
-                <h3>Maglia ${item.team}</h3>
+                <h3>Maglia ${item.tshirt.team_name}</h3>
+                <p>Taglia: ${item.tshirt.size}</p>
                 <div class="quantity-controls">
                     <button class="quantity-btn minus" onclick="updateQuantity(${item.item_id}, ${item.quantity - 1})">-</button>
                     <span class="quantity">${item.quantity}</span>
@@ -84,7 +62,7 @@ function displayCartItems(items) {
                 </button>
             </div>
             <div class="item-price">
-                €${(item.price * item.quantity).toFixed(2)}
+                €${(item.tshirt.price * item.quantity).toFixed(2)}
             </div>
         </div>
         `;
@@ -95,7 +73,7 @@ function displayCartItems(items) {
 
 function updateCartSummary(items) {
     const summaryContainer = document.getElementById('cartSummary');
-    const subtotal = items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const subtotal = items.reduce((total, item) => total + (item.tshirt.price * item.quantity), 0);
     const shipping = 5; // Fixed shipping cost
     const total = subtotal + shipping;
 
@@ -117,26 +95,27 @@ function updateCartSummary(items) {
     summaryContainer.innerHTML = html;
 }
 
-async function updateQuantity(cartItemId, newQuantity) {
+async function updateQuantity(itemId, newQuantity) {
     if (newQuantity < 1) return;
 
+    const token = getToken();
     try {
-        const response = await fetch('http://localhost:8000/src/api/cart/read.php', {
-            method: 'PUT',
+        const response = await fetch('http://localhost:8000/src/api/cart/update.php', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                cart_item_id: cartItemId,
+                item_id: itemId,
                 quantity: newQuantity
             })
         });
 
+        const data = await response.json();
         if (response.ok) {
             loadCartItems(token); // Reload cart to show updated quantities
         } else {
-            const data = await response.json();
             throw new Error(data.error || 'Error updating quantity');
         }
     } catch (error) {
@@ -145,23 +124,24 @@ async function updateQuantity(cartItemId, newQuantity) {
     }
 }
 
-async function removeItem(cartItemId) {
+async function removeItem(itemId) {
     if (!confirm('Sei sicuro di voler rimuovere questo articolo dal carrello?')) {
         return;
     }
 
+    const token = getToken();
     try {
-        const response = await fetch(`http://localhost:8000/src/api/cart/read.php?cart_item_id=${cartItemId}`, {
+        const response = await fetch(`http://localhost:8000/src/api/cart/delete.php?item_id=${itemId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
 
+        const data = await response.json();
         if (response.ok) {
             loadCartItems(token); // Reload cart to show remaining items
         } else {
-            const data = await response.json();
             throw new Error(data.error || 'Error removing item');
         }
     } catch (error) {
@@ -182,4 +162,6 @@ document.getElementById('checkoutBtn').addEventListener('click', () => {
 // Make functions available globally for onclick handlers
 window.updateQuantity = updateQuantity;
 window.removeItem = removeItem;
+
+// Initialize cart
 loadCartItems(getToken());
