@@ -179,57 +179,6 @@ ol.steps-container {
   }
 }
 
-// Loading State
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-
-  &.active {
-    display: flex;
-  }
-
-  .loader {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border-top-color: transparent;
-    animation: spin 1s linear infinite;
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-// Error Message
-.error-message {
-  display: none;
-  position: fixed;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 1rem 2rem;
-  border-radius: 4px;
-  z-index: 1000;
-
-  &.active {
-    display: block;
-  }
-}
-
-// Responsive Design
 @media (max-width: 768px) {
   ol.stepper {
     flex-direction: column;
@@ -271,5 +220,29 @@ ol.steps-container {
         }
       }
     }
+  }
+}
+
+table {
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--medium-color);
+  color: var(--medium-color-contrast);
+  overflow: hidden;
+
+  width: 100%;
+
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+  }
+  th {
+    font-weight: bold;
+  }
+
+  img {
+    max-width: 50px;
+    height: auto;
   }
 }

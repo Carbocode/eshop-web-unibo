@@ -1,19 +1,14 @@
 import "./style.scss";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const leagueId = getLeagueIdFromURL();
-  const apiEndpoint = `http://localhost:8000/src/api/product/read_one.php?id=${leagueId}`;
+  const { id, type } = getParamsFromURL();
+  const apiEndpoint = `http://localhost:8000/src/api/product/read_one.php?id=${id}&type=${type}`;
 
-  if (!leagueId) {
-    showError("League ID not found in the URL.");
-    return;
-  }
-
-  // Effettua la richiesta all'API per ottenere le squadre e una maglietta per squadra
+  // Effettua la richiesta all'API per ottenere i dati
   fetch(apiEndpoint)
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to fetch teams for the league");
+        throw new Error("Failed to fetch data");
       }
       return response.json();
     })
@@ -25,15 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
     .catch((error) => {
-      console.error("Error fetching teams:", error);
-      showError("An error occurred while fetching teams.");
+      console.error("Error fetching data:", error);
+      showError("An error occurred while fetching data.");
     });
 });
 
-// Funzione per ottenere il league_id dall'URL
-function getLeagueIdFromURL() {
+// Funzione per ottenere i parametri dall'URL
+function getParamsFromURL() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("id");
+  return {
+    id: params.get("id") ?? "",
+    type: params.get("type") ?? "",
+  };
 }
 
 // Funzione per popolare le squadre e le magliette nel contenitore
@@ -55,7 +53,7 @@ function populateTeams(teams) {
         ${
           team.tshirt && team.tshirt.tshirt_id
             ? `<p class="tshirt-price">${formatCurrency(team.tshirt.price)}</p>`
-            : `<p class="no-tshirt">Nessuna maglietta disponibile</p>`
+            : `<p class="no-tshirt" style="min-width: 30px;">N/A</p>`
         }
       </div>`;
 
@@ -71,7 +69,6 @@ function populateTeams(teams) {
 // Funzione per il redirect alla pagina del team
 function redirectToTeamPage(teamId) {
   window.location.href = `/src/pages/product/?id=${teamId}`;
-  url; // Effettua il redirect
 }
 
 // Funzione per formattare una valuta

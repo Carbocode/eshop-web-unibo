@@ -170,6 +170,5 @@ echo json_encode([
     'items' => $items
 ]);
 
-
 $stmt->close();
 $conn->close();

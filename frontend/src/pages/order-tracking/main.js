@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showError(data.error);
       } else {
         updateOrderTracking(data);
+        populateItemsTable(data.items);
       }
     })
     .catch((error) => {
@@ -71,7 +72,7 @@ function generateSteps(statuses) {
   });
 }
 
-// Funzione per aggiornare lo stato attivo degli step
+// Funzione per aggiornare lo stato attivo degli step e visualizzare i dettagli
 function updateOrderTracking(order) {
   const steps = document.querySelectorAll(".steps-container li");
   let isActive = true;
@@ -86,7 +87,7 @@ function updateOrderTracking(order) {
     }
   });
 
-  // Indirizzo di spedizione e altri dettagli
+  // Aggiorna indirizzo di spedizione e dettagli dell'ordine
   document.querySelector('[data-address="name"]').textContent =
     order.full_name || "N/A";
   document.querySelector('[data-address="street"]').textContent =
@@ -114,6 +115,40 @@ function updateOrderTracking(order) {
   document.querySelector('[data-total="final"]').textContent = formatCurrency(
     order.total
   );
+}
+
+// Funzione per popolare la tabella degli item
+function populateItemsTable(items) {
+  const itemsContainer = document.querySelector('[data-order="items"]');
+  itemsContainer.innerHTML = ""; // Pulisce il contenitore degli articoli esistenti
+
+  items.forEach((item) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td><img src="${
+        item.tshirt.image_url
+      }" alt="Item Image" class="item-image" /></td>
+      <td>
+        ${item.tshirt.edition_name} - ${item.tshirt.size_name}
+      </td>
+      <td>
+        <a href="/src/pages/product/?id=${item.team.team_id}">
+          ${item.team.team_name}
+        </a>
+      </td>
+      <td>${item.quantity}</td>
+      <td>
+        ${formatCurrency(item.paid_price * item.quantity)} 
+        <br>
+        <small>
+          ${formatCurrency(item.tshirt.price)} * ${item.quantity}
+        </small>
+      </td>
+    `;
+
+    itemsContainer.appendChild(row);
+  });
 }
 
 // Funzione per formattare una valuta

@@ -65,9 +65,6 @@
       <section class="order-summary">
         <h3>Order Summary</h3>
         <div class="summary-content">
-          <div class="order-items" data-order="items">
-            <!-- Items will be dynamically inserted here -->
-          </div>
           <div class="order-totals">
             <div class="subtotal">
               <span>Subtotal</span>
@@ -88,6 +85,21 @@
           </div>
         </div>
       </section>
+
+      <table class="order-items">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Item</th>
+            <th>Team</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody data-order="items">
+          <!-- Le righe verranno generate dinamicamente qui -->
+        </tbody>
+      </table>
     </main>
     <script type="module" src="./main.js"></script>
   </body>
