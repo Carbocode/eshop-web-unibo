@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Cart - Elprimero</title>
-
+    <title>Carrello - Elprimero</title>
     <link rel="icon" href="@assets/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
@@ -18,18 +17,9 @@
         <input type="checkbox" id="menu-toggle" />
         <label for="menu-toggle" class="menu-icon"></label>
         <nav>
-          <a href="@pages/toolkit/" aria-label="View tutte le squadre"
-            >Squadre</a
-          >
-          <a href="@pages/products/?leagues" aria-label="Vedi tutte le Leghe">
-            Leghe
-          </a>
-          <a
-            href="@pages/products/?nationals"
-            aria-label="Vedi le maglie di tutte le Nazionali"
-          >
-            Nazionali
-          </a>
+          <a href="@pages/toolkit/" aria-label="View tutte le squadre">Squadre</a>
+          <a href="@pages/products/?leagues" aria-label="Vedi tutte le Leghe">Leghe</a>
+          <a href="@pages/products/?nationals" aria-label="Vedi le maglie di tutte le Nazionali">Nazionali</a>
           <a href="@pages/login/" aria-label="Accedi o Entra nel tuo account">
             <i class="fa-solid fa-circle-user"></i>
           </a>
@@ -40,26 +30,37 @@
       </div>
     </header>
 
-    <main>
-      <h1>Carrello</h1>
-      <div class="item-carrello">
-        <!-- <img src="maglia-napoli.png" alt="Maglia Napoli">
-            <div class="item-dettagli">
-                <h4>Maglia Napoli</h4>
-                <p>Anno 24/25</p>
-                <p>Numero 69</p>
-                <p>Versione 3</p>
-                <p>Taglia M</p>
-                <p>Nome Bossetti</p>
-            </div>
-            <button class="bottone-rimuovi"><i class="fa-solid fa-trash-can"></i></button>-->
+    <div class="loader"></div>
+    <div class="breadcrumb">Carrello</div>
+
+    <div class="cart-container">
+      <div class="cart-items" id="cartItems">
+        <!-- Will be populated by JavaScript -->
       </div>
-    </main>
+
+      <div class="cart-summary">
+        <h2>Riepilogo Ordine</h2>
+        <div class="summary-content" id="cartSummary">
+          <!-- Will be populated by JavaScript -->
+        </div>
+        <div class="cart-actions">
+          <button id="continueShoppingBtn" class="secondary-button">Continua lo Shopping</button>
+          <button id="checkoutBtn" class="primary-button">Procedi al Checkout</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="emptyCartMessage" class="empty-cart-message" style="display: none;">
+      <h2>Il tuo carrello è vuoto</h2>
+      <p>Aggiungi alcuni prodotti per iniziare lo shopping!</p>
+      <button class="primary-button" onclick="window.location.href='@pages/products/'">Sfoglia Prodotti</button>
+    </div>
 
     <footer>
       <img src="@assets/icons/favicon.ico" alt="icona logo" />
       <h3>Elprimerofootballer</h3>
     </footer>
+
     <script type="module" src="./main.js"></script>
   </body>
 </html>

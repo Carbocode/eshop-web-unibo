@@ -14,6 +14,10 @@ async function loadOrderSummary() {
         
         if (response.ok) {
             displayOrderSummary(data);
+            const loaders = document.querySelectorAll('.loader');
+            loaders.forEach(loader => {
+                loader.style.display = 'none';
+            });
         } else {
             throw new Error(data);
         }
@@ -150,3 +154,24 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
 });
 // Load order summary when page loads
 loadOrderSummary();
+document.addEventListener('DOMContentLoaded', () => {
+    const token = getToken();
+    const loginPageUrl = '/src/pages/login';
+    function isTokenExpired(token) {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return payload.exp < currentTime; // Check expiration
+        } catch (e) {
+            console.error('Invalid JWT:', e);
+            return true; // Treat invalid token as expired
+        }
+    }
+
+    // Check the token
+    const jwt =token;
+    if (!jwt || isTokenExpired(jwt)) {
+        window.location.href = loginPageUrl; // Redirect to login page
+    }
+});
+

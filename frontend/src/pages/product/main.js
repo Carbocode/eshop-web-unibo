@@ -49,25 +49,41 @@ function getTeamIdFromURL() {
     return params.get('id') || '1'; 
 }
 
+function renderVersionOptions(editionId, tshirts) {
+    return tshirts.map(tshirt => `
+        <input type="radio" id="version-${tshirt.tshirt_id}" name="versione" value="${tshirt.tshirt_id}" ${editionId === tshirt.tshirt_id ? 'checked' : ''} />
+        <label for="version-${tshirt.tshirt_id}">${tshirt.edition_id}</label>
+    `).join('');
+}
+
+function renderSizeOptions(sizes) {
+    return sizes.map((size, index) => `
+        <input type="radio" id="size-${size.size_name}" name="Taglia" value="${size.size_name}" ${index === 0 ? 'checked' : ''} />
+        <label for="size-${size.size_name}">${size.size_name}</label>
+    `).join('');
+}
+
 function renderTeamTshirt(teamData, container) {
-    const tshirt = teamData.tshirts[0]; 
+    const tshirts = teamData.tshirts;
+    let selectedTshirt = tshirts.find(t => t.tshirt_id === teamData.edition_id) || tshirts[0];
+
     const tshirtHTML = `
         <h3>${teamData.team_name}</h3>
         <div class="prodotto-image">
-            <img src="${teamData.image_url}" alt="T-shirt ${teamData.team_name}" />
+            <img id="tshirt-image" src="${selectedTshirt.image_url}" alt="Maglia ${teamData.team_name}" />
         </div>
         <div class="prodotto-dettagli">
             <div class="dettagli">
                 <div class="dettagli-item">
                     <label for="annata">Annata</label>
                     <select id="annata">
-                        <option>${tshirt.edition_year}</option>
+                        <option>${selectedTshirt.edition_year}</option>
                     </select>
                 </div>
                 <div class="dettagli-item">
                     <label>Versione</label>
                     <div class="versione">
-                        ${renderVersionOptions(tshirt.edition_id)}
+                        ${renderVersionOptions(teamData.edition_id, tshirts)}
                     </div>
                 </div>
             </div>
@@ -75,48 +91,52 @@ function renderTeamTshirt(teamData, container) {
             <div class="dettagli">
                 <div class="dettagli-item">
                     <label for="numero">Numero</label>
-                    <input type="number" id="numero" value="1" />
+                    <input type="number" id="numero" placeholder="1" />
                 </div>
                 <div class="dettagli-item">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" placeholder="Nome" />
+                    <input type="text" id="nome" placehoder="Nome" />
                 </div>
             </div>
 
             <div class="dettagli">
                 <label>Taglia</label>
-                <div class="taglie">
-                    ${renderSizeOptions(tshirt.sizes)}
+                <div class="taglie" id="taglie-container">
+                    ${renderSizeOptions(selectedTshirt.sizes)}
                 </div>
             </div>
 
             <div class="prezzo">
-                <label>Prezzo:€${tshirt.price}</label>
+                <label>Prezzo: €<span id="tshirt-price">${selectedTshirt.price}</span></label>
             </div>
 
             <div class="azioni">
-                <button class="secondary" onclick="addToCart('${tshirt.tshirt_id}')">AGGIUNGI AL CARRELLO</button>
-                <button class="primary" onclick="buyNow('${tshirt.tshirt_id}')">COMPRA ORA</button>
+                <button class="secondary" onclick="addToCart('${selectedTshirt.tshirt_id}')">AGGIUNGI AL CARRELLO</button>
+                <button class="primary" onclick="buyNow('${selectedTshirt.tshirt_id}')">COMPRA ORA</button>
             </div>
         </div>
     `;
 
-    container.innerHTML = tshirtHTML; 
-}
+    container.innerHTML = tshirtHTML;
 
-function renderVersionOptions(editionId) {
-    const versions = [1, 2, 3]; 
-    return versions.map(version => `
-        <input type="radio" id="${version}" name="versione" value="${version}" ${editionId === version ? 'checked' : ''} />
-        <label for="${version}">${version}</label>
-    `).join('');
-}
+    // Aggiungi evento per cambiare immagine, taglie e prezzo al cambio di versione
+    document.querySelectorAll('input[name="versione"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+            const selectedId = parseInt(e.target.value);
+            const selectedTshirt = tshirts.find(t => t.tshirt_id === selectedId);
 
-function renderSizeOptions(sizes) {
-    return sizes.map((size, index) => `
-        <input type="radio" id="${size.size_name}" name="Taglia" value="${size.size_name}" ${index === 0 ? 'checked' : ''} />
-        <label for="${size.size_name}">${size.size_name}</label>
-    `).join('');
+            if (selectedTshirt) {
+                // Aggiorna immagine
+                document.getElementById('tshirt-image').src = selectedTshirt.image_url;
+
+                // Aggiorna taglie
+                document.getElementById('taglie-container').innerHTML = renderSizeOptions(selectedTshirt.sizes);
+
+                // Aggiorna prezzo
+                document.getElementById('tshirt-price').textContent = selectedTshirt.price;
+            }
+        });
+    });
 }
 
 // Funzioni di gestione carrello e acquisto (solo esempio)

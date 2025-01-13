@@ -22,18 +22,43 @@ if ($conn->connect_error) {
     exit;
 }
 
+// Decodifica del token JWT
+require 'vendor/autoload.php';  // Assicurati di aver installato firebase/php-jwt
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+$jwtSecret = 'tuasegretatokenkey';
+$headers = getallheaders();
+
+if (!isset($headers['Authorization'])) {
+    echo json_encode(["error" => "Token non presente"]);
+    exit;
+}
+
+$authHeader = $headers['Authorization'];
+$jwt = str_replace('Bearer ', '', $authHeader);
+
+try {
+    $decoded = JWT::decode($jwt, new Key($jwtSecret, 'HS256'));
+    
+    // Recupera il customer_id dal payload del token
+    $customer_id = intval($decoded->sub);
+    
+    if ($decoded->exp < time()) {
+        echo json_encode(["error" => "Token scaduto"]);
+        exit;
+    }
+} catch (Exception $e) {
+    echo json_encode(["error" => "Token non valido"]);
+    exit;
+}
+
+
 // Determina il metodo della richiesta (GET, POST, PUT, DELETE)
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
-        // Ottieni gli articoli del carrello di un cliente specifico
-        if (!isset($_GET['customer_id'])) {
-            echo json_encode(["error" => "Parametro 'customer_id' mancante"]);
-            break;
-        }
-
-        $customer_id = intval($_GET['customer_id']);
         $sql = "SELECT ci.cart_item_id, ci.quantity, ts.tshirt_id, ts.price, ts.image_url, t.name AS team_name
                 FROM cart_tshirts ci
                 INNER JOIN tshirts ts ON ci.tshirt_id = ts.tshirt_id
@@ -69,15 +94,7 @@ switch ($method) {
     case 'POST':
         // Aggiungi un nuovo articolo al carrello
         $data = json_decode(file_get_contents("php://input"), true);
-        
-        if (!isset($data['customer_id'], $data['tshirt_id'], $data['quantity'])) {
-            echo json_encode(["error" => "Parametri mancanti"]);
-            break;
-        }
-
         $customer_id = intval($data['customer_id']);
-        $tshirt_id = intval($data['tshirt_id']);
-        $quantity = intval($data['quantity']);
 
         $sql = "INSERT INTO cart_tshirts (customer_id, tshirt_id, quantity) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
