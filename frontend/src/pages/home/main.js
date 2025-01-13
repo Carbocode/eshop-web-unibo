@@ -126,8 +126,8 @@ function renderLeagues(leagues, container) {
 }
 document.querySelector('.fa-circle-user').addEventListener('click', () => {
   const token = getToken();
-  const loginPageUrl = '/src/pages/login';
-  const profilePageUrl = '/src/pages/profile';
+  const loginPageUrl = '/src/pages/login/';
+  const profilePageUrl = '/src/pages/profile/';
   function isTokenExpired(token) {
       try {
           const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
@@ -142,9 +142,11 @@ document.querySelector('.fa-circle-user').addEventListener('click', () => {
   // Check the token
   const jwt =token;
   if (!jwt || isTokenExpired(jwt)) {
+    console.log('You need to login.');
       window.location.href = loginPageUrl; // Redirect to login page
   }
   else {
+    console.log('You are already logged in.');
       window.location.href = profilePageUrl;
   }
 });
