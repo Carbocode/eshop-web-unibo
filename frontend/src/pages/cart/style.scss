@@ -140,35 +140,7 @@
     display: flex;
     gap: 15px;
     justify-content: space-between;
-
-    button {
-        padding: 12px 24px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        width: 48%;
-    }
-
-    .primary-button {
-        background-color: var(--secondary-color);
-        color: white;
-        border: none;
-
-        &:hover {
-            filter: brightness(0.9);
-        }
-    }
-
-    .secondary-button {
-        background-color: transparent;
-        border: 2px solid var(--secondary-color);
-        color: var(--secondary-color);
-
-        &:hover {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-    }
+    
 }
 
 .empty-cart-message {
