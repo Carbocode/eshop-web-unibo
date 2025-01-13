@@ -139,10 +139,55 @@ function renderTeamTshirt(teamData, container) {
     });
 }
 
-// Funzioni di gestione carrello e acquisto (solo esempio)
-window.addToCart = function(tshirtId) {
-    const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
-    alert(`T-shirt ${tshirtId} taglia ${selectedSize} aggiunta al carrello!`);
+// Funzioni di gestione carrello e acquisto
+window.addToCart = async function(tshirtId) {
+    try {
+        const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
+        const quantity = document.getElementById('numero').value || 1;
+
+        const response = await fetch('http://localhost:8000/src/api/cart/create.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+            },
+            body: JSON.stringify({
+                item_id: parseInt(tshirtId),
+                quantity: parseInt(quantity)
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Show success message
+            const successMessage = document.createElement('div');
+            successMessage.className = 'success-message';
+            successMessage.textContent = 'Prodotto aggiunto al carrello con successo!';
+            document.querySelector('.azioni').prepend(successMessage);
+            
+            // Remove message after 3 seconds
+            setTimeout(() => successMessage.remove(), 3000);
+        } else {
+            // Show error message
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = data.error || 'Errore durante l\'aggiunta al carrello';
+            document.querySelector('.azioni').prepend(errorMessage);
+            
+            // Remove message after 3 seconds
+            setTimeout(() => errorMessage.remove(), 3000);
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'error-message';
+        errorMessage.textContent = 'Errore di connessione. Riprova più tardi.';
+        document.querySelector('.azioni').prepend(errorMessage);
+        
+        // Remove message after 3 seconds
+        setTimeout(() => errorMessage.remove(), 3000);
+    }
 };
 
 window.buyNow = function(tshirtId) {
