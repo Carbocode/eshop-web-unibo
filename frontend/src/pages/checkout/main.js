@@ -155,7 +155,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
 // Load order summary when page loads
 loadOrderSummary();
 document.addEventListener('DOMContentLoaded', () => {
-    const tokenKey = getToken();
+    const token = getToken();
     const loginPageUrl = '/src/pages/login';
     function isTokenExpired(token) {
         try {
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Check the token
-    const jwt = localStorage.getItem(tokenKey);
+    const jwt =token;
     if (!jwt || isTokenExpired(jwt)) {
         window.location.href = loginPageUrl; // Redirect to login page
     }
