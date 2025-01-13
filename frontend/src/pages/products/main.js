@@ -25,6 +25,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("team-search");
+  const teamsContainer = document.querySelector(".teams-container");
+
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    const teams = teamsContainer.querySelectorAll(".team");
+
+    teams.forEach((team) => {
+      const teamName = team.querySelector("h3").textContent.toLowerCase();
+      if (teamName.includes(query)) {
+        team.style.display = "block";
+      } else {
+        team.style.display = "none";
+      }
+    });
+  });
+});
+
 // Funzione per ottenere i parametri dall'URL
 function getParamsFromURL() {
   const params = new URLSearchParams(window.location.search);

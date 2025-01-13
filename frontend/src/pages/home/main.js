@@ -35,7 +35,7 @@ function renderGroups(groups, container) {
     groupDiv.classList.add("gruppo");
 
     const groupTitle = document.createElement("h3");
-    groupTitle.textContent = group.group_name;
+    groupTitle.textContent = "Gruppo " + group.group_name;
     groupDiv.appendChild(groupTitle);
 
     const nationsGrid = document.createElement("div");
@@ -49,7 +49,6 @@ function renderGroups(groups, container) {
       const flagImage = document.createElement("img");
       flagImage.src = country.country_flag;
       flagImage.alt = `${country.country_name} flag`;
-      flagImage.style.width = "50px"; // Stile opzionale per dimensionare l'immagine
       nationDiv.appendChild(flagImage);
 
       // Aggiungi nome del paese
@@ -92,30 +91,32 @@ function renderLeagues(leagues, container) {
 
     // Aggiungi il link e il logo della lega
     const leagueLink = document.createElement("a");
-    leagueLink.href = `/src/pages/products/?id=${league.league_id}`; // Cambia con il percorso reale per la lega
+    leagueLink.href = `/src/pages/products/?id=${league.league_id}&type=league`; // Cambia con il percorso reale per la lega
     leagueLink.title = `Vai alla pagina della lega ${league.league_name}`;
 
     const leagueLogo = document.createElement("img");
     leagueLogo.src = league.league_logo;
     leagueLogo.alt = `${league.league_name} Logo`;
-    leagueLogo.classList.add("logo");
 
     leagueLink.appendChild(leagueLogo);
     leagueDiv.appendChild(leagueLink);
 
     // Aggiungi la lista delle squadre
-    const teamList = document.createElement("ul");
+    const teamList = document.createElement("nav");
     teamList.classList.add("squadre");
 
     league.teams.forEach((team) => {
-      const teamItem = document.createElement("li");
+      const teamItem = document.createElement("a");
 
       // Crea il link per la squadra
-      const teamLink = document.createElement("a");
-      teamLink.href = `/src/pages/product/?id=${team.team_id}`; // Cambia l'URL con il corretto percorso per la squadra
-      teamLink.textContent = team.team_name;
+      teamItem.href = `/src/pages/product/?id=${team.team_id}`; // Cambia l'URL con il corretto percorso per la squadra
+      teamItem.textContent = team.team_name;
 
-      teamItem.appendChild(teamLink);
+      teamItem.setAttribute(
+        "aria-label",
+        `Visualizza dettagli per ${team.team_name}`
+      );
+
       teamList.appendChild(teamItem);
     });
 

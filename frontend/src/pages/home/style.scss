@@ -90,23 +90,31 @@ a:hover {
 
   .photoslideshow {
     display: flex;
-    gap: 50px;
+    gap: var(--margin);
     flex-wrap: nowrap;
     white-space: nowrap;
     overflow-x: scroll;
+    border-radius: var(--border-radius);
+    margin: var(--margin);
+
     img {
-      flex-shrink: 0;
-      width: 800px;
-      height: 500px;
-      object-fit: contain;
+      height: 50vw;
+      width: auto;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: var(--border-radius);
     }
   }
 
   .griglianazionali {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-    color: white;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    padding: 16px;
+
     h2 {
       text-align: center;
       margin-bottom: 20px;
@@ -118,30 +126,23 @@ a:hover {
       h3 {
         margin-bottom: 10px;
         font-size: 1.5rem;
-        text-align: left;
+        text-align: center;
       }
 
       .grigliagruppo {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-        .nazione {
-          margin: 5px 0;
-          padding: 10px;
-          border-radius: 5px;
+        .nazionale {
           width: 100%;
           text-align: center;
-        }
 
-        @media (max-width: 768px) {
-          grid-template-columns: repeat(
-            2,
-            1fr
-          ); /* 2 colonne su schermi piccoli */
-        }
-
-        @media (max-width: 480px) {
-          grid-template-columns: 1fr; /* 1 colonna su schermi molto piccoli */
+          img {
+            width: clamp(100px, 20vw, 100px);
+            aspect-ratio: 3/2.25;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+          }
         }
       }
     }
@@ -149,31 +150,62 @@ a:hover {
 }
 
 .leghe-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: var(--background-color);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--margin);
+  margin: var(--margin);
 
   .lega {
+    background-color: var(--medium-color);
+    color: var(--medium-color-contrast);
+
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 10px;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
 
-    .logo {
-      width: 80px;
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: clamp(0px, 40vw, 200px);
+      height: 100%;
+      object-fit: cover;
+
+      background-color: var(--light-color);
+      color: var(--light-color-contrast);
+
       height: auto;
       object-fit: contain;
+
+      padding: 20px;
     }
 
     .squadre {
-      list-style: none;
+      height: 100%;
+      width: 100%;
       padding: 0;
       margin: 0;
-      li {
-        margin-bottom: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      a {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        padding-left: 10px;
+
+        &:hover {
+          background-color: var(--primary-color);
+          color: var(--primary-color-contrast);
+        }
+
+        &:not(:last-child) {
+          border-bottom: 1px solid var(--medium-color-contrast);
+        }
       }
     }
   }

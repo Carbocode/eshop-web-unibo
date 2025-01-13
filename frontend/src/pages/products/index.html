@@ -21,15 +21,14 @@
           <a href="@pages/toolkit/" aria-label="View tutte le squadre"
             >Squadre</a
           >
-          <a href="@pages/products/?leagues" aria-label="Vedi tutte le Leghe">
-            Leghe
-          </a>
+          <a href="@pages/products/?leagues" aria-label="Vedi tutte le Leghe"
+            >Leghe</a
+          >
           <a
             href="@pages/products/?nationals"
             aria-label="Vedi le maglie di tutte le Nazionali"
+            >Nazionali</a
           >
-            Nazionali
-          </a>
           <a href="@pages/login/" aria-label="Accedi o Entra nel tuo account">
             <i class="fa-solid fa-circle-user"></i>
           </a>
@@ -40,7 +39,17 @@
       </div>
     </header>
 
-    <main class="teams-container"></main>
+    <main>
+      <div class="search-bar">
+        <input
+          type="text"
+          id="team-search"
+          placeholder="Cerca squadre..."
+          aria-label="Cerca squadre"
+        />
+      </div>
+      <div class="teams-container"></div>
+    </main>
 
     <footer>
       <img src="@assets/icons/favicon.ico" alt="icona logo" />
