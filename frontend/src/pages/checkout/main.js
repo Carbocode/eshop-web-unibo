@@ -14,6 +14,10 @@ async function loadOrderSummary() {
         
         if (response.ok) {
             displayOrderSummary(data);
+            const loaders = document.querySelectorAll('.loader');
+            loaders.forEach(loader => {
+                loader.style.display = 'none';
+            });
         } else {
             throw new Error(data);
         }
@@ -150,3 +154,4 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
 });
 // Load order summary when page loads
 loadOrderSummary();
+
