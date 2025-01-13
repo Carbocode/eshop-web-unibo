@@ -58,13 +58,23 @@ function renderVersionOptions(editionId, tshirts) {
 
 function renderSizeOptions(sizes) {
     return sizes.map((size, index) => `
-        <input type="radio" id="size-${size.size_name}" name="Taglia" value="${size.size_name}" ${index === 0 ? 'checked' : ''} />
-        <label for="size-${size.size_name}">${size.size_name}</label>
+        <input type="radio" id="size-${size.size_name}" name="Taglia"
+            value="${size.size_name}"
+            data-item-id="${size.item_id}"
+            ${index === 0 ? 'checked' : ''}
+            ${size.availability > 0 ? '' : 'disabled'} />
+        <label for="size-${size.size_name}">
+            ${size.size_name}
+            ${size.availability > 0 ? '' : ' (Non disponibile)'}
+        </label>
     `).join('');
 }
 
+// Store tshirts data globally for cart operations
+let tshirts = [];
+
 function renderTeamTshirt(teamData, container) {
-    const tshirts = teamData.tshirts;
+    tshirts = teamData.tshirts;
     let selectedTshirt = tshirts.find(t => t.tshirt_id === teamData.edition_id) || tshirts[0];
 
     const tshirtHTML = `
@@ -145,6 +155,25 @@ window.addToCart = async function(tshirtId) {
         const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
         const quantity = document.getElementById('numero').value || 1;
 
+        // Get the warehouse item_id for this tshirt and size combination
+        const selectedTshirt = tshirts.find(t => t.tshirt_id === parseInt(tshirtId));
+        if (!selectedTshirt) {
+            throw new Error('Selected t-shirt not found');
+        }
+
+        const selectedSizeObj = selectedTshirt.sizes.find(s => s.size_name === selectedSize);
+        if (!selectedSizeObj) {
+            throw new Error('Selected size not found');
+        }
+
+        if (!selectedSizeObj.item_id) {
+            throw new Error('No warehouse item found for this combination');
+        }
+
+        if (selectedSizeObj.availability < quantity) {
+            throw new Error(`Solo ${selectedSizeObj.availability} pezzi disponibili`);
+        }
+
         const response = await fetch('http://localhost:8000/src/api/cart/create.php', {
             method: 'POST',
             headers: {
@@ -152,7 +181,7 @@ window.addToCart = async function(tshirtId) {
                 'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
             },
             body: JSON.stringify({
-                item_id: parseInt(tshirtId),
+                item_id: selectedSizeObj.item_id,
                 quantity: parseInt(quantity)
             })
         });
@@ -192,5 +221,6 @@ window.addToCart = async function(tshirtId) {
 
 window.buyNow = function(tshirtId) {
     const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
-    alert(`Acquisto immediato della T-shirt ${tshirtId} taglia ${selectedSize}!`);
+    addToCart(tshirtId); // Add to cart first
+    window.location.href = '/src/pages/cart/';
 };

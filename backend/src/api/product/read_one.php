@@ -26,7 +26,7 @@ $sql = "
 ";
 
 // Modify the query based on the type
-if ($type === 'nationals') {
+if ($type === 'national') {
     $sql .= " WHERE t.league_id IS NULL";
 } elseif ($type === 'league') {
     if ($id === 0) {

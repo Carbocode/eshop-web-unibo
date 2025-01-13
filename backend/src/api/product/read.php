@@ -24,7 +24,8 @@ $sql = "
         e.year as edition_year,
         s.size_id,
         s.name as size_name,
-        w.availability
+        w.availability,
+        w.item_id
     FROM 
         teams t
     JOIN 
@@ -81,6 +82,7 @@ while ($row = $result->fetch_assoc()) {
             $tshirt['sizes'][] = [
                 'size_id' => $row['size_id'],
                 'size_name' => $row['size_name'],
+                'item_id' => $row['item_id'],
                 'availability' => (int)$row['availability']
             ];
             break;
@@ -99,6 +101,7 @@ while ($row = $result->fetch_assoc()) {
             'sizes' => [[
                 'size_id' => $row['size_id'],
                 'size_name' => $row['size_name'],
+                'item_id' => $row['item_id'],
                 'availability' => (int)$row['availability']
             ]]
         ];
