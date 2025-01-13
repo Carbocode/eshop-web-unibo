@@ -58,6 +58,60 @@ if ($result->num_rows === 0) {
 // Recupera i dettagli dell'ordine
 $order = $result->fetch_assoc();
 
+// Query per ottenere gli item dell'ordine, includendo taglia e edizione
+$item_sql = "
+    SELECT 
+        oi.item_id, 
+        oi.quantity, 
+        oi.paid_price, 
+        tsh.tshirt_id, 
+        tsh.price AS tshirt_price, 
+        tsh.image_url AS tshirt_image, 
+        tsh.team_id, 
+        t.name AS team_name, 
+        e.name AS edition_name, 
+        s.name AS size_name
+    FROM order_items oi
+    INNER JOIN warehouse w ON oi.item_id = w.item_id
+    INNER JOIN tshirts tsh ON w.tshirt_id = tsh.tshirt_id
+    INNER JOIN teams t ON tsh.team_id = t.team_id
+    INNER JOIN editions e ON tsh.edition_id = e.edition_id
+    INNER JOIN sizes s ON w.size_id = s.size_id
+    WHERE oi.order_id = ?
+";
+
+$item_stmt = $conn->prepare($item_sql);
+
+if (!$item_stmt) {
+    echo json_encode(['error' => 'Failed to prepare item query']);
+    exit;
+}
+
+// Associa i parametri (ID ordine)
+$item_stmt->bind_param('i', $order_id);
+$item_stmt->execute();
+$item_result = $item_stmt->get_result();
+
+$items = [];
+while ($row = $item_result->fetch_assoc()) {
+    $items[] = [
+        'item_id' => $row['item_id'],
+        'quantity' => $row['quantity'],
+        'paid_price' => $row['paid_price'],
+        'tshirt' => [
+            'tshirt_id' => $row['tshirt_id'],
+            'price' => $row['tshirt_price'],
+            'image_url' => $row['tshirt_image'],
+            'edition_name' => $row['edition_name'],
+            'size_name' => $row['size_name']
+        ],
+        'team' => [
+            'team_id' => $row['team_id'],
+            'team_name' => $row['team_name']
+        ]
+    ];
+}
+
 // Restituisci i dati in formato JSON
 echo json_encode([
     'order_id' => $order['order_id'],
@@ -76,9 +130,11 @@ echo json_encode([
     'city' => $order['city'],
     'province' => $order['province'],
     'zip' => $order['zip'],
-    'country' => $order['country']
+    'country' => $order['country'],
+    'items' => $items
 ]);
 
 // Chiudi la connessione
+$item_stmt->close();
 $stmt->close();
 $conn->close();
