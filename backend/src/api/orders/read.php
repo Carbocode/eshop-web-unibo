@@ -144,6 +144,8 @@ if (!$getAll) {
             ]
         ];
     }
+    // Chiudi la connessione
+    $item_stmt->close();
 }
 
 // Restituisci i dati in formato JSON
@@ -168,7 +170,6 @@ echo json_encode([
     'items' => $items
 ]);
 
-// Chiudi la connessione
-$item_stmt->close();
+
 $stmt->close();
 $conn->close();
