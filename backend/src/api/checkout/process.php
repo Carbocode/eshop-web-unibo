@@ -1,4 +1,5 @@
 <?php
+$start = microtime(true);
 require '../../middleware/preflight.php';
 require '../../../vendor/autoload.php';
 require '../../middleware/auth.php';
@@ -6,8 +7,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
 define('JWT_SECRET','tuasegretatokenkey');
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 // Configurazione del database
 $host = 'localhost:3306';
 $user = 'root';
