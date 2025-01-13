@@ -1,9 +1,7 @@
 import "./style.scss";
 import { getToken } from "@common";
 
-const token = getToken();
-
-async function loadCartItems() {
+async function loadCartItems(token) {
     try {
         const response = await fetch('http://localhost:8000/src/api/checkout/process.php?', {
             headers: {
@@ -136,7 +134,7 @@ async function updateQuantity(cartItemId, newQuantity) {
         });
 
         if (response.ok) {
-            loadCartItems(); // Reload cart to show updated quantities
+            loadCartItems(token); // Reload cart to show updated quantities
         } else {
             const data = await response.json();
             throw new Error(data.error || 'Error updating quantity');
@@ -161,7 +159,7 @@ async function removeItem(cartItemId) {
         });
 
         if (response.ok) {
-            loadCartItems(); // Reload cart to show remaining items
+            loadCartItems(token); // Reload cart to show remaining items
         } else {
             const data = await response.json();
             throw new Error(data.error || 'Error removing item');
@@ -174,11 +172,11 @@ async function removeItem(cartItemId) {
 
 // Event Listeners
 document.getElementById('continueShoppingBtn').addEventListener('click', () => {
-    window.location.href = '@pages/products/';
+    window.location.href = '/src/pages/home/';
 });
 
 document.getElementById('checkoutBtn').addEventListener('click', () => {
-    window.location.href = '@pages/checkout/';
+    window.location.href = '/src/pages/checkout/';
 });
 
 // Make functions available globally for onclick handlers
@@ -188,7 +186,6 @@ window.removeItem = removeItem;
 // Authentication check and cart loading
 document.addEventListener('DOMContentLoaded', () => {
     const token = getToken();
-    const loginPageUrl = '/src/pages/login';
 
     function isTokenExpired(token) {
         try {
@@ -202,8 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (!token || isTokenExpired(token)) {
-        window.location.href = loginPageUrl;
+        window.location.href = '/src/pages/login/';
     } else {
-        loadCartItems();
+        loadCartItems(token);
     }
 });
