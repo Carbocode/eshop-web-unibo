@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Profile - Elprimero</title>
-
+    <script src="/@common"></script>
     <link rel="icon" href="@assets/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
@@ -30,7 +30,7 @@
           >
             Nazionali
           </a>
-          <a href="@pages/login/" aria-label="Accedi o Entra nel tuo account">
+          <a aria-label="Accedi o Entra nel tuo account">
             <i class="fa-solid fa-circle-user"></i>
           </a>
           <a href="@pages/cart/" aria-label="Vedi gli oggetti nel tuo carello">
@@ -73,6 +73,24 @@
             <p>Notifiche</p>
             <p>0</p>
           </div>
+        </div>
+
+        <div class="ordini-recenti">
+          <h3>I miei ordini</h3>
+          <table class="ordini-table">
+            <thead>
+              <tr>
+                <th>Ordine #</th>
+                <th>Data</th>
+                <th>Stato</th>
+                <th>Totale</th>
+                <th>Articoli</th>
+              </tr>
+            </thead>
+            <tbody id="ordini-list">
+              <!-- Orders will be populated here by JavaScript -->
+            </tbody>
+          </table>
         </div>
       </div>
     </main>

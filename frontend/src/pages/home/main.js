@@ -1,4 +1,5 @@
 import "./style.scss";
+import { getToken } from "@common";
 
 document.addEventListener("scroll", () => {
   const header = document.querySelector("header");

@@ -4,15 +4,7 @@ require '../../../vendor/autoload.php';
 require '../../middleware/preflight.php';
 require '../../middleware/auth.php';
 
-// Recupera l'ID dell'ordine dalla richiesta
-$order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : null;
-
-if (!$order_id) {
-    echo json_encode(['error' => 'Order ID is required']);
-    exit;
-}
-
-// Query per ottenere i dettagli dell'ordine e gli stati
+// Query per ottenere i dettagli di tutti gli ordini
 $sql = "
     SELECT 
         o.order_id, 
@@ -35,7 +27,7 @@ $sql = "
     FROM orders o
     INNER JOIN order_status os ON o.status_id = os.status_id
     INNER JOIN customers c ON o.customer_id = c.customer_id
-    WHERE o.order_id = ? AND o.customer_id = ?
+    WHERE o.customer_id = ?
 ";
 
 $stmt = $conn->prepare($sql);
@@ -45,22 +37,21 @@ if (!$stmt) {
     exit;
 }
 
-// Associa i parametri (ID ordine e ID cliente autenticato)
-$stmt->bind_param('ii', $order_id, $_TOKEN['sub']);
+$stmt->bind_param('i', $_TOKEN['sub']);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    echo json_encode(['error' => 'Order not found']);
+    echo json_encode([]);
     exit;
 }
 
-// Recupera i dettagli dell'ordine
-$order = $result->fetch_assoc();
+$orders = $result->fetch_all(MYSQLI_ASSOC);
 
 // Query per ottenere gli item dell'ordine, includendo taglia e edizione
 $item_sql = "
     SELECT 
+        oi.order_id,
         oi.item_id, 
         oi.quantity, 
         oi.paid_price, 
@@ -77,7 +68,7 @@ $item_sql = "
     INNER JOIN teams t ON tsh.team_id = t.team_id
     INNER JOIN editions e ON tsh.edition_id = e.edition_id
     INNER JOIN sizes s ON w.size_id = s.size_id
-    WHERE oi.order_id = ?";
+    WHERE oi.order_id IN (" . implode(',', array_map(function($order) { return $order['order_id']; }, $orders)) . ")";
 
 $item_stmt = $conn->prepare($item_sql);
 
@@ -86,14 +77,16 @@ if (!$item_stmt) {
     exit;
 }
 
-// Associa i parametri (ID ordine)
-$item_stmt->bind_param('i', $order_id);
 $item_stmt->execute();
 $item_result = $item_stmt->get_result();
 
-$items = [];
+// Create a map of order_id to items
+$items_map = [];
 while ($row = $item_result->fetch_assoc()) {
-    $items[] = [
+    if (!isset($items_map[$row['order_id']])) {
+        $items_map[$row['order_id']] = [];
+    }
+    $items_map[$row['order_id']][] = [
         'item_id' => $row['item_id'],
         'quantity' => $row['quantity'],
         'paid_price' => $row['paid_price'],
@@ -111,30 +104,16 @@ while ($row = $item_result->fetch_assoc()) {
     ];
 }
 
-// Chiudi la connessione per gli items
+// Add items to each order
+$orders_with_items = array_map(function($order) use ($items_map) {
+    $order['items'] = isset($items_map[$order['order_id']]) ? $items_map[$order['order_id']] : [];
+    return $order;
+}, $orders);
+
+// Chiudi le connessioni
 $item_stmt->close();
-
-// Restituisci i dati in formato JSON
-echo json_encode([
-    'order_id' => $order['order_id'],
-    'status_id' => $order['status_id'],
-    'status' => $order['status'],
-    'icon' => $order['icon'],
-    'subtotal' => $order['subtotal'],
-    'shipping_cost' => $order['shipping_cost'],
-    'tax' => $order['tax'],
-    'total' => $order['total'],
-    'tracking_number' => $order['tracking_number'],
-    'delivery' => $order['delivery'],
-    'shipping_agent' => $order['shipping_agent'],
-    'full_name' => $order['full_name'],
-    'address' => $order['address'],
-    'city' => $order['city'],
-    'province' => $order['province'],
-    'zip' => $order['zip'],
-    'country' => $order['country'],
-    'items' => $items
-]);
-
 $stmt->close();
 $conn->close();
+
+// Restituisci i dati in formato JSON
+echo json_encode($orders_with_items);
