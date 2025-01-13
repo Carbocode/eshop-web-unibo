@@ -77,7 +77,7 @@ while ($row = $result->fetch_assoc()) {
     foreach ($response['tshirts'] as &$tshirt) {
         if ($tshirt['tshirt_id'] == $row['tshirt_id']) {
             $tshirt_exists = true;
-            // Add size to existing t-shirt
+            
             $tshirt['sizes'][] = [
                 'size_id' => $row['size_id'],
                 'size_name' => $row['size_name'],
