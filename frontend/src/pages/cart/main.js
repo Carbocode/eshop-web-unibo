@@ -182,25 +182,4 @@ document.getElementById('checkoutBtn').addEventListener('click', () => {
 // Make functions available globally for onclick handlers
 window.updateQuantity = updateQuantity;
 window.removeItem = removeItem;
-
-// Authentication check and cart loading
-document.addEventListener('DOMContentLoaded', () => {
-    const token = getToken();
-
-    function isTokenExpired(token) {
-        try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const currentTime = Math.floor(Date.now() / 1000);
-            return payload.exp < currentTime;
-        } catch (e) {
-            console.error('Invalid JWT:', e);
-            return true;
-        }
-    }
-
-    if (!token || isTokenExpired(token)) {
-        window.location.href = '/src/pages/login/';
-    } else {
-        loadCartItems(token);
-    }
-});
+loadCartItems(getToken());
