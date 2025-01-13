@@ -4,14 +4,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const teamId = getTeamIdFromURL();
     const productContainer = document.querySelector('.prodotto-container');
 
-    console.log('Fetching data for team ID:', teamId); // Debug log
+    console.log('Fetching data for team ID:', teamId); 
 
     try {
         const response = await fetch(`http://localhost:8000/src/api/product/read.php?id=${teamId}`);
-        console.log('Response status:', response.status); // Debug log
+        console.log('Response status:', response.status); 
         
         const data = await response.json();
-        console.log('Received data:', data); // Debug log
+        console.log('Received data:', data); 
 
         if (response.ok && data && !data.error) {
             if (data.tshirts && data.tshirts.length > 0) {
@@ -50,10 +50,11 @@ function getTeamIdFromURL() {
 }
 
 function renderTeamTshirt(teamData, container) {
-    const tshirt = teamData.tshirts[0]; // Seleziona solo la prima t-shirt
+    const tshirt = teamData.tshirts[0]; 
     const tshirtHTML = `
+        <h3>${teamData.team_name}</h3>
         <div class="prodotto-image">
-            <img src="${tshirt.image_url}" alt="T-shirt ${teamData.team_name}" />
+            <img src="${teamData.image_url}" alt="T-shirt ${teamData.team_name}" />
         </div>
         <div class="prodotto-dettagli">
             <div class="dettagli">
@@ -74,11 +75,11 @@ function renderTeamTshirt(teamData, container) {
             <div class="dettagli">
                 <div class="dettagli-item">
                     <label for="numero">Numero</label>
-                    <input type="number" id="numero" value="69" />
+                    <input type="number" id="numero" value="1" />
                 </div>
                 <div class="dettagli-item">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" value="Bossetti" />
+                    <input type="text" id="nome" placeholder="Nome" />
                 </div>
             </div>
 
@@ -89,6 +90,10 @@ function renderTeamTshirt(teamData, container) {
                 </div>
             </div>
 
+            <div class="prezzo">
+                <label>Prezzo:€${tshirt.price}</label>
+            </div>
+
             <div class="azioni">
                 <button class="secondary" onclick="addToCart('${tshirt.tshirt_id}')">AGGIUNGI AL CARRELLO</button>
                 <button class="primary" onclick="buyNow('${tshirt.tshirt_id}')">COMPRA ORA</button>
@@ -96,11 +101,11 @@ function renderTeamTshirt(teamData, container) {
         </div>
     `;
 
-    container.innerHTML = tshirtHTML; // Renderizza solo una t-shirt
+    container.innerHTML = tshirtHTML; 
 }
 
 function renderVersionOptions(editionId) {
-    const versions = [1, 2, 3]; // Esempio di versioni, puoi sostituirle con quelle reali
+    const versions = [1, 2, 3]; 
     return versions.map(version => `
         <input type="radio" id="${version}" name="versione" value="${version}" ${editionId === version ? 'checked' : ''} />
         <label for="${version}">${version}</label>
