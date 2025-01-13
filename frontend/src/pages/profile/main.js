@@ -76,7 +76,7 @@ function updateProfileUI(profile, orders) {
     
     row.innerHTML = `
       <td>#${order.order_id}</td>
-      <td>${formatDate(order.delivery)}</td>
+      <td>${order.delivery ? formatDate(order.delivery): "In Transito"}</td>
       <td>
         <span class="status-badge ${order.status.toLowerCase()}">
           <i class="fa-solid ${order.icon}"></i>
