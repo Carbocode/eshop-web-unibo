@@ -1,4 +1,5 @@
 import "./style.scss";
+import { getToken } from "@common";
 
 document.addEventListener("scroll", () => {
   const header = document.querySelector("header");
@@ -123,3 +124,27 @@ function renderLeagues(leagues, container) {
     container.appendChild(leagueDiv);
   });
 }
+document.querySelector('.fa-circle-user').addEventListener('click', () => {
+  const token = getToken();
+  const loginPageUrl = '/src/pages/login';
+  const profilePageUrl = '/src/pages/profile';
+  function isTokenExpired(token) {
+      try {
+          const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+          const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+          return payload.exp < currentTime; // Check expiration
+      } catch (e) {
+          console.error('Invalid JWT:', e);
+          return true; // Treat invalid token as expired
+      }
+  }
+
+  // Check the token
+  const jwt =token;
+  if (!jwt || isTokenExpired(jwt)) {
+      window.location.href = loginPageUrl; // Redirect to login page
+  }
+  else {
+      window.location.href = profilePageUrl;
+  }
+});

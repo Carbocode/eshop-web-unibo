@@ -1,6 +1,8 @@
 import { getToken } from "@common";
 import "./style.scss";
 let token = getToken();
+let orders=null;
+let profile=null;
 
 // Function to fetch user profile data
 async function fetchProfileData() {
@@ -24,7 +26,7 @@ async function fetchProfileData() {
 // Function to fetch user orders
 async function fetchOrders() {
   try {
-    const response = await fetch('http://localhost:8000/src/api/orders/read.php', {
+    const response = await fetch('http://localhost:8000/src/api/orders/read_all.php', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -37,6 +39,12 @@ async function fetchOrders() {
     console.error('Error fetching orders:', error);
     return [];
   }
+}
+
+// Function to format date
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('it-IT');
 }
 
 // Function to update profile UI
@@ -56,13 +64,38 @@ function updateProfileUI(profile, orders) {
   
   document.querySelector('.statistiche:nth-child(1) p:last-child').textContent = totalOrders;
   document.querySelector('.statistiche:nth-child(2) p:last-child').textContent = deliveredOrders;
+
+  // Update orders table
+  const ordersTableBody = document.getElementById('ordini-list');
+  ordersTableBody.innerHTML = ''; // Clear existing rows
+
+  orders.forEach(order => {
+    const row = document.createElement('tr');
+    row.style.cursor = 'pointer';
+    row.onclick = () => window.location.href = `/src/pages/order-tracking/?id=${order.order_id}`;
+    
+    row.innerHTML = `
+      <td>#${order.order_id}</td>
+      <td>${formatDate(order.delivery)}</td>
+      <td>
+        <span class="status-badge ${order.status.toLowerCase()}">
+          <i class="fa-solid ${order.icon}"></i>
+          ${order.status}
+        </span>
+      </td>
+      <td>${new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(order.total)}</td>
+      <td>${order.items.length} articoli</td>
+    `;
+    
+    ordersTableBody.appendChild(row);
+  });
 }
 
 // Initialize profile page
 async function initProfile() {
-  const profile = await fetchProfileData();
-  const orders = await fetchOrders();
-  updateProfileUI(profile, orders.orders);
+  profile = await fetchProfileData();
+  orders = await fetchOrders();
+  updateProfileUI(profile, orders);
 }
 
 // Load profile data when page loads
