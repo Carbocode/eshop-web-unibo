@@ -163,8 +163,8 @@ async function loadInventory() {
         if (!tshirtsResponse.ok) throw new Error('Failed to fetch t-shirts');
         const tshirts = await tshirtsResponse.json();
         
-        const select = document.querySelector('#inventoryTshirt');
-        select.innerHTML = tshirts.map(tshirt => `
+        const select = document.querySelector('#inventoryTshirt');     
+        select.innerHTML = tshirts.filter(t=> t.tshirt.tshirt_id !=null).map(tshirt => `
             <option value="${tshirt.tshirt.tshirt_id}">
                 ${tshirt.team_name} - ${tshirt.tshirt.edition_name}
             </option>

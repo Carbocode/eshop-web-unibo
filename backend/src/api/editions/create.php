@@ -44,11 +44,11 @@ if ($stmt === false) {
     exit;
 }
 
-$stmt->bind_param("sis", 
-    $data['name'],
-    $data['year'],
-    $data['description'] ?? null
-);
+$name = $data['name'];
+$year = $data['year'];
+$description = $data['description'] ?? "";
+
+$stmt->bind_param("sis", $name, $year, $description);
 
 if (!$stmt->execute()) {
     echo json_encode(['error' => 'Failed to create edition: ' . $stmt->error]);
