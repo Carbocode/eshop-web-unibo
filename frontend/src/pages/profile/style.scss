@@ -2,6 +2,7 @@
 
 body {
     background-color: var(--background-color);
+    overflow-x: hidden;
 }
 
 table {
@@ -123,6 +124,7 @@ table {
 .ordini-recenti {
     margin-top: 30px;
     padding: 20px;
+    overflow-x: scroll;
 
     h3 {
         color: var(--background-color-contrast);
