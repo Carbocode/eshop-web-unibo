@@ -49,11 +49,11 @@ document.querySelector(".fa-circle-user").addEventListener("click", () => {
   }
 });
 
-async function readCartCount() {
+export async function readCartCount() {
   try {
     // Effettua una richiesta POST all'API
     const response = await fetch(
-      "https://localhost:8000/src/api/cart/number/read.php",
+      "http://localhost:8000/src/api/cart/number/read.php",
       {
         method: "POST",
         headers: {
@@ -83,11 +83,11 @@ async function readCartCount() {
   }
 }
 
-async function readNotificationsCount() {
+export async function readNotificationsCount() {
   try {
     // Effettua una richiesta POST all'API
     const response = await fetch(
-      "https://localhost:8000/src/api/notifications/number/read.php",
+      "http://localhost:8000/src/api/notifications/number/read.php",
       {
         method: "POST",
         headers: {
@@ -106,18 +106,13 @@ async function readNotificationsCount() {
 
     if (data.error) {
       console.error("Errore dall'API:", data.error);
-      document.getElementById(".fa-circle-user").textContent = "N/A";
+      document.querySelector(".fa-bell").textContent = "N/A";
     } else {
       // Aggiorna il contenuto dell'elemento HTML
-      document.getElementById(".fa-circle-user").textContent = data.item_count;
+      document.querySelector(".fa-bell").textContent = data.notifications_count;
     }
   } catch (error) {
     console.error("Errore durante la chiamata API:", error);
-    document.getElementById(".fa-circle-user").textContent = "N/A";
+    document.querySelector(".fa-bell").textContent = "N/A";
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  readCartCount();
-  readNotificationsCount();
-});

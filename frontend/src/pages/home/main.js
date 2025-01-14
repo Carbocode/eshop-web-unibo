@@ -1,5 +1,5 @@
 import "./style.scss";
-import { getToken } from "@common";
+import { getToken, readCartCount, readNotificationsCount } from "@common";
 
 document.addEventListener("scroll", () => {
   const header = document.querySelector("header");
@@ -11,10 +11,17 @@ document.addEventListener("scroll", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  readCartCount();
+  readNotificationsCount();
+  readGroups();
+  readLeagues();
+});
+
+async function readGroups() {
   const apiEndpoint = "http://localhost:8000/src/api/groups/read.php"; // Cambia l'URL con quello corretto per la tua API
   const container = document.querySelector(".griglianazionali");
 
-  fetch(apiEndpoint)
+  await fetch(apiEndpoint)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Errore nella risposta dell'API");
@@ -28,7 +35,27 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Errore:", error);
       container.innerHTML = "<p>Errore nel caricamento dei dati.</p>";
     });
-});
+}
+
+async function readLeagues() {
+  const apiEndpoint = "http://localhost:8000/src/api/leagues/read.php"; // Cambia l'URL con quello corretto per la tua API
+  const container = document.querySelector(".leghe-container");
+
+  await fetch(apiEndpoint)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Errore nella risposta dell'API");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      renderLeagues(data, container);
+    })
+    .catch((error) => {
+      console.error("Errore:", error);
+      container.innerHTML = "<p>Errore nel caricamento dei dati.</p>";
+    });
+}
 
 function renderGroups(groups, container) {
   groups.forEach((group) => {
@@ -64,26 +91,6 @@ function renderGroups(groups, container) {
     container.appendChild(groupDiv);
   });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const apiEndpoint = "http://localhost:8000/src/api/leagues/read.php"; // Cambia l'URL con quello corretto per la tua API
-  const container = document.querySelector(".leghe-container");
-
-  fetch(apiEndpoint)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Errore nella risposta dell'API");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      renderLeagues(data, container);
-    })
-    .catch((error) => {
-      console.error("Errore:", error);
-      container.innerHTML = "<p>Errore nel caricamento dei dati.</p>";
-    });
-});
 
 function renderLeagues(leagues, container) {
   leagues.forEach((league) => {

@@ -1,28 +1,14 @@
 <?php
-
+require '../../../middleware/preflight.php';
 require '../../../../vendor/autoload.php';
 require '../../../middleware/auth.php';
-require '../../../middleware/preflight.php';
 
-// Recupera i dati JSON dalla richiesta
-$data = json_decode(file_get_contents('php://input'), true);
-
-if (!$data) {
-    echo json_encode(['error' => 'Invalid JSON input']);
-    exit;
-}
-
-// Controlla se il campo necessario è presente
-if (!isset($_TOKEN['sub']) || empty($_TOKEN['sub'])) {
-    echo json_encode(['error' => 'User not authenticated']);
-    exit;
-}
 
 // ID utente autenticato
 $userId = $_TOKEN['sub'];
 
 // Prepara la query per contare gli oggetti nel carrello
-$sql = "SELECT COUNT(*) AS item_count FROM cart WHERE user_id = ?";
+$sql = "SELECT COUNT(*) AS item_count FROM carts WHERE customer_id = ?";
 
 $stmt = $conn->prepare($sql);
 

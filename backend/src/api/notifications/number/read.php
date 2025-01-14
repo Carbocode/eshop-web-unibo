@@ -1,8 +1,7 @@
 <?php
-
+require '../../../middleware/preflight.php';
 require '../../../../vendor/autoload.php';
 require '../../../middleware/auth.php';
-require '../../middleware/preflight.php';
 
 // ID utente autenticato
 $userId = $_TOKEN['sub'];
