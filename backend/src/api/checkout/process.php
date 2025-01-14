@@ -111,6 +111,13 @@ try {
         $total
     );
     
+    // Notify customer about their order
+    create_order_placed_notification(
+        $order_id,
+        $total,
+        $customer_id
+    );
+    
     // Commit transaction
     $conn->commit();
     

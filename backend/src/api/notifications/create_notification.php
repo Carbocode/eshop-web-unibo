@@ -68,6 +68,18 @@ function create_new_order_notification($order_id, $total) {
 }
 
 /**
+ * Create order placed notification for customer
+ * @param int $order_id - ID of the new order
+ * @param float $total - Order total amount
+ * @param int $customer_id - ID of the customer who placed the order
+ * @return bool - Success status
+ */
+function create_order_placed_notification($order_id, $total, $customer_id) {
+    $message = "Il tuo ordine #$order_id è stato confermato! Totale: €" . number_format($total, 2);
+    return create_notification($customer_id, 'order_placed', $message);
+}
+
+/**
  * Check if stock level requires notification
  * @param int $current_stock - Current stock level
  * @param int $threshold - Threshold for low stock alert (default 5)
