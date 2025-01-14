@@ -39,7 +39,40 @@
       </div>
     </header>
 
-    <main></main>
+    <main>
+      <section class="notifications-container">
+        <h2>Notifiche</h2>
+        <div class="notification-filters">
+          <button class="filter-btn active" data-filter="all">Tutte</button>
+          <button class="filter-btn" data-filter="unread">Non lette</button>
+          <button class="filter-btn" data-filter="read">Lette</button>
+        </div>
+        <div class="notifications-list">
+          <!-- Notifications will be dynamically inserted here -->
+        </div>
+        <template id="notification-template">
+          <div class="notification-item" data-id="">
+            <div class="notification-content">
+              <div class="notification-icon">
+                <i class="fa-solid"></i>
+              </div>
+              <div class="notification-text">
+                <p class="notification-message"></p>
+                <span class="notification-time"></span>
+              </div>
+            </div>
+            <div class="notification-actions">
+              <button class="mark-btn" aria-label="Segna come letto/non letto">
+                <i class="fa-solid fa-circle"></i>
+              </button>
+              <button class="delete-btn" aria-label="Elimina notifica">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </template>
+      </section>
+    </main>
 
     <footer>
       <img src="@assets/icons/favicon.ico" alt="icona logo" />
