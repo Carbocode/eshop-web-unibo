@@ -2,8 +2,12 @@
 
 body {
     background-color: var(--background-color);
+    overflow-x: hidden;
 }
 
+table {
+    overflow-x: scroll;
+}
 .profilo-container {
     padding: 20px;
     background-color: var(--background-color);
@@ -120,6 +124,7 @@ body {
 .ordini-recenti {
     margin-top: 30px;
     padding: 20px;
+    overflow-x: scroll;
 
     h3 {
         color: var(--background-color-contrast);
