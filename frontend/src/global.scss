@@ -429,11 +429,20 @@ header {
         top: 70px;
         width: 100vw;
         height: auto;
-      }
 
-      nav a {
-        text-align: center;
-        padding: 1em;
+        a {
+          text-align: center;
+          padding: 1em;
+
+          i {
+            position: relative;
+            div {
+              position: absolute;
+              top: 0;
+              right: 0;
+            }
+          }
+        }
       }
 
       .menu-icon {
