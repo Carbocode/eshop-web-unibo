@@ -1,4 +1,4 @@
-import { getToken } from "@common";
+import { getToken, getTokenRole } from "@common";
 import "./style.scss";
 let token = getToken();
 let orders=null;
@@ -52,9 +52,25 @@ function updateProfileUI(profile, orders) {
   if (!profile) return;
 
   // Update profile info
-  document.querySelector('.infoProfilo h4').textContent = profile.full_name;
-  
-  // Update address
+    document.querySelector('.infoProfilo h4').textContent = profile.full_name;
+    
+    // Add admin button if user is admin
+    const isAdmin = getTokenRole(getToken()) === "ADMIN";
+    let adminButton = document.querySelector('.admin-button');
+    
+    if (isAdmin) {
+      if (!adminButton) {
+        adminButton = document.createElement('button');
+        adminButton.className = 'admin-button';
+        adminButton.textContent = 'Gestione Admin';
+        adminButton.onclick = () => window.location.href = '/src/pages/manage/';
+        document.querySelector('.infoProfilo').appendChild(adminButton);
+      }
+    } else if (adminButton) {
+      adminButton.remove();
+    }
+    
+    // Update address
   const addressText = `${profile.address}, ${profile.city} (${profile.province})`;
   document.querySelector('.dettagliProfilo p:nth-child(2)').textContent = addressText;
   

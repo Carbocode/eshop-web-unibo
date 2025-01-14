@@ -156,8 +156,9 @@ export async function readNotificationsCount() {
     document.querySelector(".fa-bell").textContent = "N/A";
   }
 }
-const adminPages = ["src/pages/manage/"];
-const publicPages = ["src/pages/home/", "src/pages/login/", "src/pages/register/"];
+const adminPages = ["/src/pages/manage/"];
+const publicPages = ["/src/pages/home/", "/src/pages/login/", "/src/pages/register/"];
+const currentPath = new URL(window.location.href).pathname;
 document.addEventListener("DOMContentLoaded", () => {
   adminPages.forEach(page => {
     if(window.location.href.includes(page)){
@@ -166,12 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
-  publicPages.forEach(page => {
-    if(!window.location.href.includes(page)&&!isLoggedIn()){
-      console.log("unauthorized");
-      window.location.href = "/src/pages/home/";
-    }
-  });
+  let permits = publicPages.includes(currentPath);
+  if (!permits && !isLoggedIn()) {
+    console.log("Unauthorized access. Redirecting to home...");
+    window.location.href = "/home"; // Redirect to home
+  }
   updateAuthButtons();
   readCartCount();
   readNotificationsCount();
