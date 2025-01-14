@@ -1,8 +1,9 @@
 <?php
 
 require '../../../vendor/autoload.php';
-require '../../middleware/auth.php';
 require '../../middleware/preflight.php';
+require '../../middleware/auth.php';
+
 
 // Recupera i dati JSON dalla richiesta
 $data = json_decode(file_get_contents('php://input'), true);

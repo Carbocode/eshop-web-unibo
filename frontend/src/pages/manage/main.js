@@ -155,6 +155,7 @@ document.querySelector('#tshirtForm').addEventListener('submit', async (e) => {
 
         e.target.reset();
         loadInventory();
+        loadTshirts();
     } catch (error) {
         console.error('Failed to create t-shirt:', error);
         showError(error.message);

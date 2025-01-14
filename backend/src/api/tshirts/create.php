@@ -56,38 +56,63 @@ if ($result->num_rows === 0) {
 }
 $stmt->close();
 
-// Insert new t-shirt
-$sql = "INSERT INTO tshirts (team_id, edition_id, price, image_url) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-
-if ($stmt === false) {
-    echo json_encode(['error' => 'Failed to prepare SQL statement']);
-    exit;
-}
+// Check if t-shirt already exists
+$stmt = $conn->prepare("SELECT tshirt_id FROM tshirts WHERE team_id = ? AND edition_id = ?");
+$stmt->bind_param("ii", $data['team_id'], $data['edition_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$existing = $result->fetch_assoc();
+$stmt->close();
 
 $image_url = $data['image_url'] ?? 'https://www.gravatar.com/avatar/';
-$stmt->bind_param("iisd", 
-    $data['team_id'],
-    $data['edition_id'],
-    $data['price'],
-    $image_url
-);
 
-if (!$stmt->execute()) {
-    echo json_encode(['error' => 'Failed to create t-shirt: ' . $stmt->error]);
-    $stmt->close();
-    $conn->close();
-    exit;
+if ($existing) {
+    // Update existing t-shirt
+    $sql = "UPDATE tshirts SET price = ?, image_url = ? WHERE tshirt_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("dsi", $data['price'], $image_url, $existing['tshirt_id']);
+    
+    if (!$stmt->execute()) {
+        echo json_encode(['error' => 'Failed to update t-shirt: ' . $stmt->error]);
+        $stmt->close();
+        $conn->close();
+        exit;
+    }
+    
+    $tshirt_id = $existing['tshirt_id'];
+    $message = 'T-shirt updated successfully';
+} else {
+    // Insert new t-shirt
+    $sql = "INSERT INTO tshirts (team_id, edition_id, price, image_url) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iisd", 
+        $data['team_id'],
+        $data['edition_id'],
+        $data['price'],
+        $image_url
+    );
+    
+    if (!$stmt->execute()) {
+        echo json_encode(['error' => 'Failed to create t-shirt: ' . $stmt->error]);
+        $stmt->close();
+        $conn->close();
+        exit;
+    }
+    
+    $tshirt_id = $conn->insert_id;
+    $message = 'T-shirt created successfully';
 }
 
-$tshirt_id = $conn->insert_id;
-
 echo json_encode([
-    'tshirt_id' => $tshirt_id,
-    'team_id' => $data['team_id'],
-    'edition_id' => $data['edition_id'],
-    'price' => (float)$data['price'],
-    'image_url' => $image_url
+    'success' => true,
+    'message' => $message,
+    'data' => [
+        'tshirt_id' => $tshirt_id,
+        'team_id' => $data['team_id'],
+        'edition_id' => $data['edition_id'],
+        'price' => (float)$data['price'],
+        'image_url' => $image_url
+    ]
 ]);
 
 $stmt->close();

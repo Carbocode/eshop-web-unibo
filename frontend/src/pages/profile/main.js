@@ -101,8 +101,114 @@ async function initProfile() {
 // Load profile data when page loads
 document.addEventListener('DOMContentLoaded', initProfile);
 
-// Handle address change button
+// Function to update profile
+async function updateProfile(profileData) {
+  try {
+    const response = await fetch('http://localhost:8000/src/api/accounts/update.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(profileData)
+    });
+
+    if (!response.ok) throw new Error('Failed to update profile');
+    
+    // Refresh profile data
+    profile = await fetchProfileData();
+    updateProfileUI(profile, orders);
+    return true;
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    return false;
+  }
+}
+
+// Handle profile change button
+document.querySelector('.Cambioindirizzo').textContent = 'Modifica Profilo';
 document.querySelector('.Cambioindirizzo').addEventListener('click', () => {
-  // TODO: Implement address change functionality
-  alert('Address change functionality will be implemented soon');
+  // Create modal HTML
+  const modal = document.createElement('div');
+  modal.className = 'address-modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h3>Modifica Profilo</h3>
+      <form id="profile-form">
+        <div class="form-group">
+          <label for="full_name">Nome Completo:</label>
+          <input type="text" id="full_name" required value="${profile.full_name}">
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" required value="${profile.email}">
+        </div>
+        <div class="form-group">
+          <label for="phone">Telefono:</label>
+          <input type="tel" id="phone" required value="${profile.phone}">
+        </div>
+        <div class="form-group">
+          <label for="address">Indirizzo:</label>
+          <input type="text" id="address" required value="${profile.address}">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">Città:</label>
+            <input type="text" id="city" required value="${profile.city}">
+          </div>
+          <div class="form-group">
+            <label for="province">Provincia:</label>
+            <input type="text" id="province" required value="${profile.province}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="zip">CAP:</label>
+            <input type="text" id="zip" required value="${profile.zip}">
+          </div>
+          <div class="form-group">
+            <label for="country">Paese:</label>
+            <input type="text" id="country" required value="${profile.country}">
+          </div>
+        </div>
+        <div class="button-group">
+          <button type="submit" class="save-btn">Salva</button>
+          <button type="button" class="cancel-btn">Annulla</button>
+        </div>
+      </form>
+    </div>
+  `;
+
+  // Add modal to page
+  document.body.appendChild(modal);
+
+  // Add event listeners
+  const form = modal.querySelector('#profile-form');
+  const cancelBtn = modal.querySelector('.cancel-btn');
+
+  cancelBtn.addEventListener('click', () => {
+    document.body.removeChild(modal);
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const profileData = {
+      full_name: form.querySelector('#full_name').value,
+      email: form.querySelector('#email').value,
+      phone: form.querySelector('#phone').value,
+      address: form.querySelector('#address').value,
+      city: form.querySelector('#city').value,
+      province: form.querySelector('#province').value,
+      zip: form.querySelector('#zip').value,
+      country: form.querySelector('#country').value
+    };
+
+    const success = await updateProfile(profileData);
+    if (success) {
+      document.body.removeChild(modal);
+      window.location.reload();
+    } else {
+      alert('Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.');
+    }
+  });
 });

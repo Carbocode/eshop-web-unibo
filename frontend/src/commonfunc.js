@@ -37,6 +37,15 @@ function isTokenExpired(token) {
     return true; // Treat invalid token as expired
   }
 }
+export function getTokenRole(token){
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+    return payload.role;
+  } catch (e) {
+    console.error("Invalid JWT:", e);
+    return "UNLOGGED"; 
+  }
+}
 
 function isLoggedIn() {
   const token = getToken();
@@ -147,8 +156,22 @@ export async function readNotificationsCount() {
     document.querySelector(".fa-bell").textContent = "N/A";
   }
 }
-
+const adminPages = ["src/pages/manage/"];
+const publicPages = ["src/pages/home/", "src/pages/login/", "src/pages/register/"];
 document.addEventListener("DOMContentLoaded", () => {
+  adminPages.forEach(page => {
+    if(window.location.href.includes(page)){
+      if(getTokenRole(getToken())!="ADMIN"){
+        window.location.href = "/src/pages/home/";
+      }
+    }
+  });
+  publicPages.forEach(page => {
+    if(!window.location.href.includes(page)&&!isLoggedIn()){
+      console.log("unauthorized");
+      window.location.href = "/src/pages/home/";
+    }
+  });
   updateAuthButtons();
   readCartCount();
   readNotificationsCount();
