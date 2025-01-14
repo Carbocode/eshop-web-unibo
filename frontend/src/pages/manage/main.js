@@ -8,8 +8,39 @@ document.addEventListener('DOMContentLoaded', () => {
     loadEditions();
     loadTeams();
     loadSizes();
+    loadTshirts();
     loadInventory();
 });
+
+// T-Shirt Management
+async function loadTshirts() {
+    try {
+        const response = await fetch(`${API_BASE}/product/read_one.php`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
+        if (!response.ok) throw new Error('Failed to fetch t-shirts');
+        const data = await response.json();
+        
+        const tbody = document.querySelector('#tshirtsTable tbody');
+        tbody.innerHTML = data.filter(t=> t.tshirt.tshirt_id !=null).map(team =>
+            `
+                <tr>
+                    <td>${team.team_name}</td>
+                    <td>${team.tshirt.edition_name} (${team.tshirt.edition_year})</td>
+                    <td>${formatCurrency(team.tshirt.price)}</td>
+                    <td>
+                        <img src="${team.tshirt.image_url}" alt="T-shirt image" style="width: 50px; height: 50px; object-fit: cover;">
+                    </td>
+                </tr>
+            `
+        ).join('');
+    } catch (error) {
+        console.error('Failed to load t-shirts:', error);
+        showError('Failed to load t-shirts');
+    }
+}
 
 // Edition Management
 async function loadEditions() {
