@@ -44,41 +44,41 @@ function isLoggedIn() {
 }
 
 function logout() {
-  localStorage.removeItem('auth_token');
-  window.location.href = '/src/pages/home/';
+  localStorage.removeItem("auth_token");
+  window.location.href = "/src/pages/home/";
 }
 
 function updateAuthButtons() {
-  const userIcon = document.querySelector('.fa-circle-user').parentElement;
-  let logoutButton = document.querySelector('.logout-button');
-  
+  const userIcon = document.querySelector(".fa-circle-user").parentElement;
+  let logoutButton = document.querySelector(".logout-button");
+
   if (isLoggedIn()) {
     // Update user icon to go to profile
-    userIcon.setAttribute('href', '/src/pages/profile/');
-    userIcon.setAttribute('aria-label', 'Vai al tuo profilo');
-    
+    userIcon.setAttribute("href", "/src/pages/profile/");
+    userIcon.setAttribute("aria-label", "Vai al tuo profilo");
+
     // Add logout button if not present
     if (!logoutButton) {
-      const nav = document.querySelector('nav');
-      logoutButton = document.createElement('a');
-      logoutButton.className = 'logout-button';
-      logoutButton.setAttribute('aria-label', 'Logout dal tuo account');
+      const nav = document.querySelector("nav");
+      logoutButton = document.createElement("a");
+      logoutButton.className = "logout-button";
+      logoutButton.setAttribute("aria-label", "Logout dal tuo account");
       logoutButton.innerHTML = '<i class="fa-solid fa-sign-out"></i>';
-      logoutButton.addEventListener('click', logout);
+      logoutButton.addEventListener("click", logout);
       // Insert before the cart icon (last element)
       nav.insertBefore(logoutButton, nav.lastElementChild);
     }
   } else {
     // Update user icon to go to login
-    userIcon.setAttribute('href', '/src/pages/login/');
-    userIcon.setAttribute('aria-label', 'Accedi al tuo account');
-    
+    userIcon.setAttribute("href", "/src/pages/login/");
+    userIcon.setAttribute("aria-label", "Accedi al tuo account");
+
     // Remove logout button if present
     if (logoutButton) {
       logoutButton.remove();
     }
   }
-});
+}
 
 async function readCartCount() {
   try {
@@ -153,4 +153,3 @@ document.addEventListener("DOMContentLoaded", () => {
   readCartCount();
   readNotificationsCount();
 });
-

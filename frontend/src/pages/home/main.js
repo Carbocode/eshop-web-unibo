@@ -1,5 +1,4 @@
 import "./style.scss";
-import { getToken, readCartCount, readNotificationsCount } from "@common";
 
 document.addEventListener("scroll", () => {
   const header = document.querySelector("header");
@@ -11,8 +10,6 @@ document.addEventListener("scroll", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  readCartCount();
-  readNotificationsCount();
   readGroups();
   readLeagues();
 });
