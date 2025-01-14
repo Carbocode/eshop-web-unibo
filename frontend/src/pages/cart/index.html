@@ -18,9 +18,22 @@
         <input type="checkbox" id="menu-toggle" />
         <label for="menu-toggle" class="menu-icon"></label>
         <nav>
-          <a href="@pages/toolkit/" aria-label="View tutte le squadre">Squadre</a>
-          <a href="@pages/products/?leagues" aria-label="Vedi tutte le Leghe">Leghe</a>
-          <a href="@pages/products/?nationals" aria-label="Vedi le maglie di tutte le Nazionali">Nazionali</a>
+          <a href="@pages/products/?type=all" aria-label="View tutte le squadre"
+            >Squadre</a
+          >
+
+          <a
+            href="@pages/products/?type=nationals"
+            aria-label="Vedi le maglie di tutte le Nazionali"
+          >
+            Nazionali
+          </a>
+          <a
+            href="@pages/notifications/"
+            aria-label="Vedi le notifiche del tuo profilo"
+          >
+            <i class="fa-solid fa-bell"></i>
+          </a>
           <a aria-label="Accedi o Entra nel tuo account">
             <i class="fa-solid fa-circle-user"></i>
           </a>
@@ -45,16 +58,25 @@
           <!-- Will be populated by JavaScript -->
         </div>
         <div class="cart-actions">
-          <button id="continueShoppingBtn" class="secondary-button">Continua lo Shopping</button>
-          <button id="checkoutBtn" class="primary-button">Procedi al Checkout</button>
+          <button id="continueShoppingBtn" class="secondary-button">
+            Continua lo Shopping
+          </button>
+          <button id="checkoutBtn" class="primary-button">
+            Procedi al Checkout
+          </button>
         </div>
       </div>
     </div>
 
-    <div id="emptyCartMessage" class="empty-cart-message" style="display: none;">
+    <div id="emptyCartMessage" class="empty-cart-message" style="display: none">
       <h2>Il tuo carrello è vuoto</h2>
       <p>Aggiungi alcuni prodotti per iniziare lo shopping!</p>
-      <button class="primary-button" onclick="window.location.href='@pages/products/'">Sfoglia Prodotti</button>
+      <button
+        class="primary-button"
+        onclick="window.location.href='@pages/products/'"
+      >
+        Sfoglia Prodotti
+      </button>
     </div>
 
     <footer>
