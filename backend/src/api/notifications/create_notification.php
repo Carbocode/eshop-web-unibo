@@ -46,27 +46,37 @@ function create_order_status_notification($order_id, $new_status, $customer_id) 
 }
 
 /**
- * Create low stock notification for seller
- * @param int $seller_id - ID of the seller to notify
+ * Create low stock notification for admins
  * @param string $product_name - Name of the product
  * @param int $current_stock - Current stock level
  * @return bool - Success status
  */
-function create_stock_alert_notification($seller_id, $product_name, $current_stock) {
+function create_stock_alert_notification($product_name, $current_stock) {
     $message = "Attenzione: Il prodotto '$product_name' ha scorte limitate ($current_stock rimasti)";
-    return create_notification($seller_id, 'stock_alert', $message);
+    return create_notification(-1, 'stock_alert', $message);
 }
 
 /**
- * Create new order notification for seller
- * @param int $seller_id - ID of the seller to notify
+ * Create new order notification for admins
  * @param int $order_id - ID of the new order
  * @param float $total - Order total amount
  * @return bool - Success status
  */
-function create_new_order_notification($seller_id, $order_id, $total) {
+function create_new_order_notification($order_id, $total) {
     $message = "Nuovo ordine #$order_id ricevuto! Totale: €" . number_format($total, 2);
-    return create_notification($seller_id, 'new_order', $message);
+    return create_notification(-1, 'new_order', $message);
+}
+
+/**
+ * Create order placed notification for customer
+ * @param int $order_id - ID of the new order
+ * @param float $total - Order total amount
+ * @param int $customer_id - ID of the customer who placed the order
+ * @return bool - Success status
+ */
+function create_order_placed_notification($order_id, $total, $customer_id) {
+    $message = "Il tuo ordine #$order_id è stato confermato! Totale: €" . number_format($total, 2);
+    return create_notification($customer_id, 'order_placed', $message);
 }
 
 /**

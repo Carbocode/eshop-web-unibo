@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Checkout - Elprimero</title>
     <link rel="icon" href="@assets/icons/favicon.ico" type="image/x-icon" />
-    <script src="/@common"></script>
+    <script type="module" src="@common"></script>
   </head>
   <body>
     <header>
@@ -51,6 +51,7 @@
                 type="text"
                 id="cardNumber"
                 placeholder="Card Number"
+                value="4242 4242 4242 4242"
                 required
               />
             </div>
@@ -61,34 +62,35 @@
                   type="text"
                   id="cardExpiry"
                   placeholder="MM/YY"
+                  value="12/25"
                   required
                 />
               </div>
               <div style="flex: 1">
                 <label>CVV</label>
-                <input type="text" id="cardCvv" placeholder="CVV" required />
+                <input type="text" id="cardCvv" placeholder="CVV" value="111" required />
               </div>
             </div>
             <div class="form-group">
               <label>Nome Intestatario Carta</label>
-              <input type="text" id="cardName" required />
+              <input type="text" id="cardName" value="Nome Utente" required />
             </div>
             <h2>Indirizzo Spedizione</h2>
             <div class="form-group">
               <label>Paese</label>
-              <input type="text" value="Italia" readonly />
+              <input type="text" value="Italia"  readonly />
             </div>
             <div class="form-group">
               <label>CAP</label>
-              <input type="text" id="postalCode" required />
+              <input type="text" id="postalCode" value="47121" required />
             </div>
             <div class="form-group">
               <label>Indirizzo</label>
-              <input type="text" id="address" required />
+              <input type="text" id="address" value="Corso diaz"  required />
             </div>
             <div class="form-group">
               <label>Numero di telefono</label>
-              <input type="tel" id="phone" required />
+              <input type="tel" id="phone" value="1234567890" required />
             </div>
             <button type="submit" class="pay-button">
               Paga €<span id="totalAmount">0.00</span>

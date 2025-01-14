@@ -33,6 +33,7 @@ export default defineConfig({
         profile: path.resolve(__dirname, "src/pages/profile/index.html"),
         product: path.resolve(__dirname, "src/pages/product/index.html"),
         checkout: path.resolve(__dirname, "src/pages/checkout/index.html"),
+        notifications: path.resolve(__dirname, "src/pages/notifications/index.html"),
         cart: path.resolve(__dirname, "src/pages/cart/index.html"),
       },
     },
@@ -47,6 +48,7 @@ export default defineConfig({
         const aliasMap = {
           "@assets": "/src/assets",
           "@pages": "/src/pages",
+          "@common": "/src/commonfunc.js",
         };
 
         // Sostituisci gli alias nel contenuto HTML
