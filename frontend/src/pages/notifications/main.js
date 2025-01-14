@@ -142,9 +142,10 @@ class NotificationsManager {
       if (!response.ok) throw new Error('Failed to update notification status');
 
       // Update local state and re-render
-      const notification = this.notifications.find(n => n.id === notificationId);
+      const notification = this.notifications.find(n => n.id === parseInt(notificationId));
       if (notification) {
         notification.read = !notification.read;
+        //location.reload();
         this.renderNotifications();
       }
     } catch (error) {
@@ -173,7 +174,7 @@ class NotificationsManager {
       if (!response.ok) throw new Error('Failed to delete notification');
 
       // Update local state and re-render
-      this.notifications = this.notifications.filter(n => n.id !== notificationId);
+      this.notifications = this.notifications.filter(n => n.id !== parseInt(notificationId));
       this.renderNotifications();
     } catch (error) {
       console.error('Error deleting notification:', error);
