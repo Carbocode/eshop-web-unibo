@@ -1,4 +1,5 @@
 const method = "Storage";
+
 function getCookies(name) {
   var name = name + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -14,42 +15,72 @@ function getCookies(name) {
   }
   return "";
 }
+
 function readTokenFromStorage() {
   return localStorage.getItem("auth_token");
 }
+
 export function getToken() {
   if (method == "Cookies") {
     return getCookies("auth_token");
   }
   return readTokenFromStorage();
 }
-document.querySelector(".fa-circle-user").addEventListener("click", () => {
-  const token = getToken();
-  const loginPageUrl = "/src/pages/login/";
-  const profilePageUrl = "/src/pages/profile/";
-  function isTokenExpired(token) {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-      const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-      return payload.exp < currentTime; // Check expiration
-    } catch (e) {
-      console.error("Invalid JWT:", e);
-      return true; // Treat invalid token as expired
-    }
-  }
 
-  // Check the token
-  const jwt = token;
-  if (!jwt || isTokenExpired(jwt)) {
-    console.log("You need to login.");
-    window.location.href = loginPageUrl; // Redirect to login page
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+    return payload.exp < currentTime; // Check expiration
+  } catch (e) {
+    console.error("Invalid JWT:", e);
+    return true; // Treat invalid token as expired
+  }
+}
+
+function isLoggedIn() {
+  const token = getToken();
+  return token && !isTokenExpired(token);
+}
+
+function logout() {
+  localStorage.removeItem('auth_token');
+  window.location.href = '/src/pages/home/';
+}
+
+function updateAuthButtons() {
+  const userIcon = document.querySelector('.fa-circle-user').parentElement;
+  let logoutButton = document.querySelector('.logout-button');
+  
+  if (isLoggedIn()) {
+    // Update user icon to go to profile
+    userIcon.setAttribute('href', '/src/pages/profile/');
+    userIcon.setAttribute('aria-label', 'Vai al tuo profilo');
+    
+    // Add logout button if not present
+    if (!logoutButton) {
+      const nav = document.querySelector('nav');
+      logoutButton = document.createElement('a');
+      logoutButton.className = 'logout-button';
+      logoutButton.setAttribute('aria-label', 'Logout dal tuo account');
+      logoutButton.innerHTML = '<i class="fa-solid fa-sign-out"></i>';
+      logoutButton.addEventListener('click', logout);
+      // Insert before the cart icon (last element)
+      nav.insertBefore(logoutButton, nav.lastElementChild);
+    }
   } else {
-    console.log("You are already logged in.");
-    window.location.href = profilePageUrl;
+    // Update user icon to go to login
+    userIcon.setAttribute('href', '/src/pages/login/');
+    userIcon.setAttribute('aria-label', 'Accedi al tuo account');
+    
+    // Remove logout button if present
+    if (logoutButton) {
+      logoutButton.remove();
+    }
   }
 });
 
-export async function readCartCount() {
+async function readCartCount() {
   try {
     // Effettua una richiesta POST all'API
     const response = await fetch(
@@ -116,3 +147,10 @@ export async function readNotificationsCount() {
     document.querySelector(".fa-bell").textContent = "N/A";
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateAuthButtons();
+  readCartCount();
+  readNotificationsCount();
+});
+
