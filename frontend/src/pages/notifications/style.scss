@@ -50,14 +50,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: v;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(var(--background-color-contrast), 0.1);
   transition: transform 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--primary-color);
   }
 
   &.unread {
