@@ -18,7 +18,8 @@ main {
       border-radius: var(--border-radius);
       width: 100%;
       aspect-ratio: 1/1;
-      object-fit: cover;
+      object-fit: contain;
+      background-color: var(--light-color);
     }
     .team-info {
       display: flex;
