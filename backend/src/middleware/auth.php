@@ -19,7 +19,8 @@ if (isset($headers['Authorization'])) {
 
         // Verifica che il token non sia scaduto
         if ($decoded->exp < time()) {
-            die("Token scaduto");
+            echo(json_encode(["error" => "Token scaduto"]));
+            die();
         }
 
         // Se il token è valido, imposta la variabile $_TOKEN con il payload del token
@@ -27,12 +28,15 @@ if (isset($headers['Authorization'])) {
             'sub' => $decoded->sub,
             'email' => $decoded->email,
             'iat' => $decoded->iat,
-            'exp' => $decoded->exp
+            'exp' => $decoded->exp,
+            'role' => $decoded->role ?? 'CUSTOMER'
         ];
     } catch (Exception $e) {
         // Gestione degli errori durante la decodifica del token
-        die("Token non valido");
+        echo(json_encode(["error" => "Token non valido"]));
+        die();
     }
 } else {
-    die("Token non presente");
+    echo(json_encode(["error" => "Token non presente"]));
+    die();
 }

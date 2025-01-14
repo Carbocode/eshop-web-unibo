@@ -4,20 +4,22 @@ require '../../../vendor/autoload.php';
 require '../../middleware/preflight.php';
 require '../../middleware/auth.php';
 
-// Get user role from token
+// Get user info from token
 $user_id = $_TOKEN['sub'];
+$is_admin = $_TOKEN['role'] === 'ADMIN';
 
 // Base query for notifications
 $sql = "
-    SELECT 
+    SELECT
         n.notification_id as id,
         n.type,
         n.message,
         n.created_at as timestamp,
         n.is_read as `read`
     FROM notifications n
-    WHERE n.user_id = ?
-    ORDER BY n.created_at DESC
+    WHERE n.user_id = ? " .
+    ($is_admin ? "OR n.user_id = -1 " : "") . // Include admin notifications if user is admin
+    "ORDER BY n.created_at DESC
 ";
 
 $stmt = $conn->prepare($sql);

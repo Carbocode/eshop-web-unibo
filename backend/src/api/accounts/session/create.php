@@ -24,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $data['password'];
 
     // Recupera l'utente dal database
-    $stmt = $conn->prepare("SELECT `customer_id`, `password` FROM customers WHERE email = ?");
+    $stmt = $conn->prepare("SELECT `customer_id`, `password`, `admin` FROM customers WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
-    $stmt->bind_result($customerId, $hashedPassword);
+    $stmt->bind_result($customerId, $hashedPassword, $admin);
 
     if ($stmt->fetch()) {
         // Verifica la password
@@ -37,7 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sub' => $customerId,
                 'email' => $email,
                 'iat' => time(),
-                'exp' => time() + (60 * 60) // 1 ora di validità
+                'role' => $admin == 1 ? 'ADMIN' : 'CUSTOMER',
+                'exp' => time() + (24 * 60 * 60) // 1 ora di validità
             ];
 
             $jwt = JWT::encode($payload, $jwtSecret, 'HS256');

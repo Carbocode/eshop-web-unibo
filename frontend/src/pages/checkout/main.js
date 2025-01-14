@@ -152,7 +152,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
             alert('Order placed successfully!');
             window.location.href = '/home';
         } else {
-            throw new Error(data);
+            throw new Error(data.error);
         }
     } catch (error) {
         alert('Error processing checkout: ' + error.message);
