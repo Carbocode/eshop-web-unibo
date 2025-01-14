@@ -5,6 +5,21 @@
     gap: 40px;
     margin: 0 auto;
 }
+@media screen and (max-width: 768px) {
+    .checkout-container {
+        flex-direction: column;
+    }
+    .checkout-form-container {
+        width: 95vw !important;
+        border-right: none !important;
+    }
+    .order-summary {
+        width: 100% !important;
+    }
+    .checkout {
+        max-width: 100% !important;
+    }
+}
 .checkout-form-container {
     width: 50vw;
     border-right: var(--background-color-contrast) 1px solid;
