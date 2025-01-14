@@ -4,22 +4,28 @@ const token = getToken() // Assuming token is stored in localStorage
 
 async function loadOrderSummary() {
     try {
-        //parseJwt(token).sub non va jwt
-        const response = await fetch('http://localhost:8000/src/api/checkout/process.php?', {
+        const response = await fetch('http://localhost:8000/src/api/cart/read.php', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
         const data = await response.json();
         
-        if (response.ok) {
+        if (response.ok && !data.message) {
             displayOrderSummary(data);
             const loaders = document.querySelectorAll('.loader');
             loaders.forEach(loader => {
                 loader.style.display = 'none';
             });
+        } else if (data.message === 'Cart is empty') {
+            const summaryContainer = document.getElementById('orderSummary');
+            summaryContainer.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+            const loaders = document.querySelectorAll('.loader');
+            loaders.forEach(loader => {
+                loader.style.display = 'none';
+            });
         } else {
-            throw new Error(data);
+            throw new Error(data.error || 'Failed to load cart');
         }
     } catch (error) {
         console.error('Error loading order summary:', error);
@@ -31,17 +37,17 @@ function displayOrderSummary(data) {
     const totalAmountSpan = document.getElementById('totalAmount');
     
     let html = '';
-    let price = data.reduce((acc, item) => acc + item.price, 0);
+    let price = data.reduce((acc, item) => acc + (item.tshirt.price * item.quantity), 0);
     // Display items
     html += data.map(item => `
         <div class="summary-item">
-            <img src="${item.image_url}" alt="${item.team}">
+            <img src="${item.tshirt.image_url}" alt="${item.tshirt.team_name}">
             <div class="summary-details">
-                <div><b> Maglia ${item.team} </b></div>
-                <div> ${item.edition} Edition - ${item.size}</div>
+                <div><b> Maglia ${item.tshirt.team_name} </b></div>
+                <div>Size: ${item.tshirt.size}</div>
                 <div>Quantity: ${item.quantity}</div>
             </div>
-            <div class="summary-price">€${item.price}</div>
+            <div class="summary-price">€${(item.tshirt.price * item.quantity).toFixed(2)}</div>
         </div>
     `).join('');
 
