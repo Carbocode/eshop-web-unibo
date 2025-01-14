@@ -18,10 +18,10 @@ function readTokenFromStorage(){
     return localStorage.getItem('auth_token');
 }
 export function getToken(){
-    if(method == "Cookies"){
-        return getCookies("auth_token");
-    }
-    return readTokenFromStorage();
+  if(method == "Cookies"){
+      return getCookies("auth_token");
+  }
+  return readTokenFromStorage();
 }
 document.querySelector('.fa-circle-user').addEventListener('click', () => {
   const token = getToken();
