@@ -117,7 +117,7 @@ try {
         $total,
         $customer_id
     );
-    
+    clearCart($conn, $customer_id);
     // Commit transaction
     $conn->commit();
     
@@ -199,4 +199,10 @@ function generateTrackingNumber() {
     $year = date('Y');
     $random = bin2hex(random_bytes(8)); // 16 characters of random hex
     return $year . '-' . strtoupper($random);
+}
+function clearCart($conn, $customer_id) {
+    $query = "DELETE FROM carts WHERE customer_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $customer_id);
+    $stmt->execute();
 }
