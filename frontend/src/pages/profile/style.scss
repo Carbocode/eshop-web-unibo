@@ -4,6 +4,9 @@ body {
     background-color: var(--background-color);
 }
 
+table {
+    overflow-x: scroll;
+}
 .profilo-container {
     padding: 20px;
     background-color: var(--background-color);
