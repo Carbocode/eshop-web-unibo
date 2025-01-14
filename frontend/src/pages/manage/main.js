@@ -165,8 +165,8 @@ async function loadInventory() {
         
         const select = document.querySelector('#inventoryTshirt');
         select.innerHTML = tshirts.map(tshirt => `
-            <option value="${tshirt.tshirt_id}">
-                ${tshirt.team_name} - ${tshirt.edition_name}
+            <option value="${tshirt.tshirt.tshirt_id}">
+                ${tshirt.team_name} - ${tshirt.tshirt.edition_name}
             </option>
         `).join('');
 
