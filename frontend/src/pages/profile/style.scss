@@ -40,6 +40,23 @@ body {
                 color: var(--medium-color-contrast);
                 font-size: 1rem;
             }
+
+            .admin-button {
+                margin-top: 10px;
+                background-color: var(--primary-color);
+                border: none;
+                padding: 8px 15px;
+                border-radius: var(--border-radius);
+                color: var(--primary-color-contrast);
+                cursor: pointer;
+                font-size: 0.9rem;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: var(--secondary-color);
+                    color: var(--secondary-color-contrast);
+                }
+            }
         }
     }
 
@@ -164,6 +181,109 @@ body {
             &.cancelled {
                 background-color: var(--dark-color);
                 color: var(--dark-color-contrast);
+            }
+        }
+    }
+}
+
+.address-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    .modal-content {
+        background-color: var(--background-color);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+
+        h3 {
+            color: var(--background-color-contrast);
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+
+            label {
+                display: block;
+                color: var(--medium-color-contrast);
+                margin-bottom: 8px;
+                font-size: 0.9rem;
+            }
+
+            input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid var(--medium-color);
+                border-radius: var(--border-radius);
+                background-color: var(--background-color);
+                color: var(--background-color-contrast);
+                font-size: 1rem;
+
+                &:focus {
+                    outline: none;
+                    border-color: var(--primary-color);
+                }
+            }
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+
+            .form-group {
+                flex: 1;
+                margin-bottom: 0;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+
+            button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: var(--border-radius);
+                cursor: pointer;
+                font-size: 0.9rem;
+                transition: background-color 0.2s;
+
+                &.save-btn {
+                    background-color: var(--primary-color);
+                    color: var(--primary-color-contrast);
+
+                    &:hover {
+                        background-color: var(--secondary-color);
+                        color: var(--secondary-color-contrast);
+                    }
+                }
+
+                &.cancel-btn {
+                    background-color: var(--medium-color);
+                    color: var(--medium-color-contrast);
+
+                    &:hover {
+                        background-color: var(--dark-color);
+                        color: var(--dark-color-contrast);
+                    }
+                }
             }
         }
     }
