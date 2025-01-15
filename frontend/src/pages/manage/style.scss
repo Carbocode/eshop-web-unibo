@@ -1,133 +1,63 @@
 @use "@global" as global;
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--padding);
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--padding);
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: calc(var(--margin) * 2);
+section {
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: calc(var(--padding) * 2);
+  margin-bottom: calc(var(--margin) * 2);
+  box-shadow: var(--box-shadow);
+
+  h2 {
+    margin-bottom: var(--margin);
+    padding-bottom: var(--padding);
+    border-bottom: 2px solid var(--medium-color);
+  }
+
+  h3 {
+    margin: var(--margin) 0;
+  }
 }
 
-.section {
-    background: var(--background-color);
-    border-radius: var(--border-radius);
-    padding: calc(var(--padding) * 2);
-    margin-bottom: calc(var(--margin) * 2);
-    box-shadow: var(--box-shadow);
+form {
+  max-width: 600px;
 
-    h2 {
-        margin-bottom: var(--margin);
-        padding-bottom: var(--padding);
-        border-bottom: 2px solid var(--medium-color);
+  .form-group {
+    textarea {
+      resize: vertical;
+      min-height: 80px;
     }
-
-    h3 {
-        margin: var(--margin) 0;
-    }
-}
-
-.form {
-    max-width: 600px;
-    margin-bottom: calc(var(--margin) * 2);
-
-    .form-group {
-        margin-bottom: var(--margin);
-
-        label {
-            display: block;
-            margin-bottom: calc(var(--padding) / 2);
-        }
-
-        input, select, textarea {
-            width: 100%;
-            background-color: var(--medium-color);
-            color: var(--medium-color-contrast);
-            border: none;
-            border-radius: var(--border-radius);
-            padding: var(--padding);
-            box-shadow: var(--box-shadow);
-
-            &:focus {
-                outline: none;
-                box-shadow: var(--box-shadow-hover);
-            }
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-    }
-
-    button {
-        background-color: var(--primary-color);
-        color: var(--primary-color-contrast);
-        border: none;
-        padding: var(--padding);
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        box-shadow: var(--box-shadow);
-
-        &:hover {
-            box-shadow: var(--box-shadow-hover);
-            transform: scale(1.02);
-        }
-
-        &:active {
-            box-shadow: var(--box-shadow-active);
-            transform: scale(0.99);
-        }
-    }
+  }
 }
 
 .table-container {
-    overflow-x: auto;
-    margin-top: var(--margin);
+  overflow-x: auto;
+  margin-top: var(--margin);
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: calc(var(--padding) * 2);
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: calc(var(--padding) * 2);
 
-        th, td {
-            padding: var(--padding);
-            text-align: left;
-            border-bottom: 1px solid var(--medium-color);
-        }
-
-        th {
-            background: var(--medium-color);
-            color: var(--medium-color-contrast);
-            font-weight: bold;
-        }
-
-        tr:hover {
-            background: var(--medium-color);
-        }
-    }
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-    .container {
-        padding: calc(var(--padding) / 2);
+    th,
+    td {
+      padding: var(--padding);
+      text-align: left;
+      border-bottom: 1px solid var(--medium-color);
     }
 
-    .section {
-        padding: var(--padding);
+    th {
+      background: var(--medium-color);
+      color: var(--medium-color-contrast);
+      font-weight: bold;
     }
 
-    .form {
-        max-width: 100%;
+    tr:hover {
+      background: var(--medium-color);
     }
-
-    .table-container {
-        table {
-            th, td {
-                padding: calc(var(--padding) / 2);
-            }
-        }
-    }
+  }
 }
