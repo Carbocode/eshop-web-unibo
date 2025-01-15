@@ -89,7 +89,7 @@ function renderTeamTshirt(teamData, container) {
                     </select>
                 </div>
                 <div class="dettagli-item">
-                    <label>Versione</label>
+                    <label for="versione">Versione</label>
                     <div class="versione">
                         ${renderVersionOptions(teamData.edition_id, tshirts)}
                     </div>
@@ -108,14 +108,14 @@ function renderTeamTshirt(teamData, container) {
             </div>
 
             <div class="dettagli">
-                <label>Taglia</label>
+                <label for="taglia">Taglia</label>
                 <div class="taglie" id="taglie-container">
                     ${renderSizeOptions(selectedTshirt.sizes)}
                 </div>
             </div>
 
             <div class="prezzo">
-                <label>Prezzo: €<span id="tshirt-price">${selectedTshirt.price}</span></label>
+                <label for="prezzo" >Prezzo: €<span id="tshirt-price">${selectedTshirt.price}</span></label>
             </div>
 
             <div class="azioni">
