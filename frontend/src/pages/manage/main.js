@@ -1,5 +1,6 @@
 import "./style.scss";
 import { getToken } from "@common";
+let ordersdb = null;
 
 const API_BASE = "http://localhost:8000/src/api";
 
@@ -10,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSizes();
     loadTshirts();
     loadInventory();
+    loadOrderStatuses();
+    loadOrders();
 });
 
 // T-Shirt Management
@@ -268,4 +271,95 @@ function formatCurrency(value) {
         style: 'currency',
         currency: 'EUR'
     }).format(value || 0);
+}
+// Order Status Management
+async function loadOrderStatuses() {
+    try {
+        const response = await fetch(`${API_BASE}/orders/statuses/read.php`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
+        if (!response.ok) throw new Error('Failed to fetch order statuses');
+        const statuses = await response.json();
+        
+        const select = document.querySelector('#orderStatus');
+        select.innerHTML = statuses.map(status => `
+            <option value="${status.status_id}">${status.status}</option>
+        `).join('');
+    } catch (error) {
+        console.error('Failed to load order statuses:', error);
+        showError('Failed to load order statuses');
+    }
+}
+
+// Order Management
+async function loadOrders() {
+    try {
+        const response = await fetch(`${API_BASE}/orders/read_all.php`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
+        if (!response.ok) throw new Error('Failed to fetch orders');
+        const orders = await response.json();
+        ordersdb = orders;
+        const select = document.querySelector('#orderSelect');
+        select.innerHTML = orders.map(order => `
+            <option value="${order.order_id}" onclick="loadOrderDetails(${order.order_id})">
+                Order #${order.order_id} - ${order.status}
+            </option>
+        `).join('');
+    } catch (error) {
+        console.error('Failed to load orders:', error);
+        showError('Failed to load orders');
+    }
+}
+
+
+document.querySelector('#orderSelect')?.addEventListener('change', (e) => {
+    const order_id = parseInt(e.target.value, 10);
+    loadOrderDetails(order_id);
+});
+// Order Update Handler
+document.querySelector('#orderUpdateForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {
+        order_id: parseInt(formData.get('order_id'), 10),
+        status_id: parseInt(formData.get('status_id'), 10),
+        tracking_number: formData.get('tracking_number') || null,
+        delivery_date: formData.get('delivery_date') || null,
+        shipping_agent: formData.get('shipping_agent') || null
+    };
+
+    try {
+        const response = await fetch(`${API_BASE}/orders/update_status.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to update order');
+        }
+
+        e.target.reset();
+        loadOrders(); // Refresh orders list
+        alert('Ordine Aggiornato')
+    } catch (error) {
+        console.error('Failed to update order:', error);
+        alert(error.message)
+    }
+});
+async function loadOrderDetails(order_id){
+    const order = ordersdb.find(o => o.order_id == order_id);
+    document.querySelector('#orderStatus').value = order.status_id;
+    document.querySelector('#trackingNumber').value = order.tracking_number;
+    document.querySelector('#deliveryDate').value = order.delivery;
+    document.querySelector('#shippingAgent').value = order.shipping_agent;
 }
