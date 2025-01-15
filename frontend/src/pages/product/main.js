@@ -1,216 +1,269 @@
 import "./style.scss";
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const teamId = getTeamIdFromURL();
-    const productContainer = document.querySelector('.prodotto-container');
+document.addEventListener("DOMContentLoaded", async () => {
+  const teamId = getTeamIdFromURL();
+  const productContainer = document.querySelector(".prodotto-container");
 
-    console.log('Fetching data for team ID:', teamId); 
-
-    try {
-        const response = await fetch(`http://localhost:8000/src/api/product/read.php?id=${teamId}`);
-        console.log('Response status:', response.status); 
-        
-        const data = await response.json();
-        console.log('Received data:', data); 
-
-        if (response.ok && data && !data.error) {
-            if (data.tshirts && data.tshirts.length > 0) {
-                renderTeamTshirt(data, productContainer);
-            } else {
-                productContainer.innerHTML = `
-                    <div class="error-message">
-                        <p>Nessuna t-shirt disponibile per il team selezionato.</p>
-                        <p>Team ID: ${teamId}</p>
-                    </div>`;
-            }
-        } else {
-            productContainer.innerHTML = `
-                <div class="error-message">
-                    <p>Errore nel caricamento dei dati:</p>
-                    <p>${data.error || 'Nessuna t-shirt disponibile'}</p>
-                    <p>Team ID: ${teamId}</p>
-                    ${data.debug ? `<pre>${JSON.stringify(data.debug, null, 2)}</pre>` : ''}
-                </div>`;
-        }
-    } catch (error) {
-        console.error('Fetch error:', error);
-        productContainer.innerHTML = `
-            <div class="error-message">
-                <p>Errore nel caricamento dei dati:</p>
-                <p>${error.message}</p>
-                <p>Team ID: ${teamId}</p>
-            </div>`;
-    }
+  try {
+    const data = await fetchTeamData(teamId);
+    const allSizes = await fetchAllSizes();
+    renderContent(data, teamId, productContainer, allSizes);
+  } catch (error) {
+    handleFetchError(error, teamId, productContainer);
+  }
 });
 
 function getTeamIdFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('id') || '1'; 
+  return new URLSearchParams(window.location.search).get("id") || "1";
+}
+
+async function fetchTeamData(teamId) {
+  console.log("Fetching data for team ID:", teamId);
+  const response = await fetch(
+    `http://localhost:8000/src/api/product/read.php?id=${teamId}`
+  );
+  console.log("Response status:", response.status);
+
+  const data = await response.json();
+  console.log("Received data:", data);
+  if (!response.ok || !data || data.error) {
+    throw new Error(data.error || "Errore nel caricamento dei dati");
+  }
+  return data;
+}
+
+async function fetchAllSizes() {
+  console.log("Fetching all sizes");
+  const response = await fetch(`http://localhost:8000/src/api/sizes/read.php`);
+  console.log("Sizes response status:", response.status);
+
+  const data = await response.json();
+  console.log("All sizes data:", data);
+  if (!response.ok || !data) {
+    throw new Error("Errore nel caricamento delle taglie disponibili");
+  }
+  return data;
+}
+
+function renderContent(data, teamId, container, allSizes) {
+  if (data.tshirts && data.tshirts.length > 0) {
+    renderTeamTshirt(data, container, allSizes);
+  } else {
+    container.innerHTML = `
+      <div class="error-message">
+        <p>Nessuna t-shirt disponibile per il team selezionato.</p>
+        <p>Team ID: ${teamId}</p>
+      </div>`;
+  }
+}
+
+function handleFetchError(error, teamId, container) {
+  console.error("Fetch error:", error);
+  container.innerHTML = `
+    <div class="error-message">
+      <p>Errore nel caricamento dei dati:</p>
+      <p>${error.message}</p>
+      <p>Team ID: ${teamId}</p>
+    </div>`;
 }
 
 function renderVersionOptions(editionId, tshirts) {
-    return tshirts.map(tshirt => `
-        <input type="radio" id="version-${tshirt.tshirt_id}" name="versione" value="${tshirt.tshirt_id}" ${editionId === tshirt.tshirt_id ? 'checked' : ''} />
+  return tshirts
+    .map(
+      (tshirt) => `
+        <input type="radio" id="version-${
+          tshirt.tshirt_id
+        }" name="versione" value="${tshirt.tshirt_id}" ${
+        editionId === tshirt.tshirt_id ? "checked" : ""
+      } />
         <label for="version-${tshirt.tshirt_id}">${tshirt.edition_id}</label>
-    `).join('');
+      `
+    )
+    .join("");
 }
 
-function renderSizeOptions(sizes) {
-    return sizes.map((size, index) => `
-        <input type="radio" id="size-${size.size_name}" name="Taglia"
-            value="${size.size_name}"
-            data-item-id="${size.item_id}"
-            ${index === 0 && size.availability > 0 ? 'checked' : ''}
-            ${size.availability > 0 ? '' : 'class="not-available"'} />
-        <label for="size-${size.size_name}">
-            ${size.size_name}
-            ${size.availability > 0 ? '' : ' (Non disponibile)'}
+function renderSizeOptions(sizes, allSizes) {
+  console.log(allSizes);
+  return allSizes
+    .map((globalSize) => {
+      const matchingSize = sizes.find(
+        (size) => size.size_name === globalSize.name
+      );
+      const isDisabled = !matchingSize || globalSize.availability <= 0;
+
+      return `
+        <input type="radio" id="size-${globalSize.name}" name="Taglia"
+            value="${globalSize.name}"
+            data-item-id="${matchingSize ? matchingSize.item_id : ""}"
+            ${isDisabled ? "disabled" : ""} />
+        <label for="size-${globalSize.name}">
+            ${globalSize.name}
         </label>
-    `).join('');
+      `;
+    })
+    .join("");
 }
 
 let tshirts = [];
 
-function renderTeamTshirt(teamData, container) {
-    tshirts = teamData.tshirts;
-    let selectedTshirt = tshirts.find(t => t.tshirt_id === teamData.edition_id) || tshirts[0];
+function renderTeamTshirt(teamData, container, allSizes) {
+  tshirts = teamData.tshirts;
+  const selectedTshirt =
+    tshirts.find((t) => t.tshirt_id === teamData.edition_id) || tshirts[0];
 
-    const tshirtHTML = `
-        <div class="prodotto-image">
-        <h2>${teamData.team_name}</h2>
-            <img id="tshirt-image" src="${selectedTshirt.image_url}" alt="Maglia ${teamData.team_name}" />
+  container.innerHTML = `
+    <div class="prodotto-image">
+      <h2>${teamData.team_name}</h2>
+      <img id="tshirt-image" src="${selectedTshirt.image_url}" alt="Maglia ${
+    teamData.team_name
+  }" />
+    </div>
+    <div class="prodotto-dettagli">
+      <div class="dettagli">
+        <div class="dettagli-item">
+          <label for="annata">Annata</label>
+          <select id="annata">
+            <option>${selectedTshirt.edition_year}</option>
+          </select>
         </div>
-        <div class="prodotto-dettagli">
-            <div class="dettagli">
-                <div class="dettagli-item">
-                    <label for="annata">Annata</label>
-                    <select id="annata">
-                        <option>${selectedTshirt.edition_year}</option>
-                    </select>
-                </div>
-                <div class="dettagli-item">
-                    <label for="versione">Versione</label>
-                    <div class="versione">
-                        ${renderVersionOptions(teamData.edition_id, tshirts)}
-                    </div>
-                </div>
-            </div>
-
-            <div class="dettagli">
-                <div class="dettagli-item">
-                    <label for="numero">Numero</label>
-                    <input type="number" id="numero" placeholder="1" />
-                </div>
-                <div class="dettagli-item">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" placehoder="Nome" />
-                </div>
-            </div>
-
-            <div class="dettagli">
-                <label for="taglia">Taglia</label>
-                <div class="taglie" id="taglie-container">
-                    ${renderSizeOptions(selectedTshirt.sizes)}
-                </div>
-            </div>
-
-            <div class="prezzo">
-                <label for="prezzo" >Prezzo: €<span id="tshirt-price">${selectedTshirt.price}</span></label>
-            </div>
-
-            <div class="azioni">
-                <button class="secondary" onclick="addToCart('${selectedTshirt.tshirt_id}')">AGGIUNGI AL CARRELLO</button>
-                <button class="primary" onclick="buyNow('${selectedTshirt.tshirt_id}')">COMPRA ORA</button>
-            </div>
+        <div class="dettagli-item">
+          <fieldset class="versione">
+            <legend>Versione</legend>
+            ${renderVersionOptions(selectedTshirt.tshirt_id, tshirts)}
+          </fieldset>
         </div>
-    `;
+      </div>
 
-    container.innerHTML = tshirtHTML;
+      <div class="dettagli">
+        <div class="dettagli-item">
+          <label for="numero">Numero</label>
+          <input type="number" id="numero" placeholder="1" />
+        </div>
+        <div class="dettagli-item">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="Nome" />
+        </div>
+      </div>
 
-    document.querySelectorAll('input[name="versione"]').forEach(input => {
-        input.addEventListener('change', (e) => {
-            const selectedId = parseInt(e.target.value);
-            const selectedTshirt = tshirts.find(t => t.tshirt_id === selectedId);
+      <div class="dettagli">
+        <fieldset class="taglie" id="taglie-container">
+          <legend>Taglia</legend>
+          ${renderSizeOptions(selectedTshirt.sizes, allSizes)}
+        </fieldset>
+      </div>
 
-            if (selectedTshirt) {
-                document.getElementById('tshirt-image').src = selectedTshirt.image_url;
-                document.getElementById('taglie-container').innerHTML = renderSizeOptions(selectedTshirt.sizes);
-                document.getElementById('tshirt-price').textContent = selectedTshirt.price;
-            }
-        });
-    });
+      <div class="prezzo">
+        <h4 for="prezzo">Prezzo: €${selectedTshirt.price}</h4>
+      </div>
 
-    // Gestione alert per taglie non disponibili
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('not-available')) {
-            e.preventDefault();
-            alert('Taglia non disponibile');
-        }
-    });
+      <div class="azioni">
+        <button class="secondary" onclick="addToCart('${
+          selectedTshirt.tshirt_id
+        }')">Aggiungi al carrello</button>
+        <button class="primary" onclick="buyNow('${
+          selectedTshirt.tshirt_id
+        }')">Compra ora</button>
+      </div>
+    </div>`;
+
+  setupEventListeners(allSizes);
 }
 
-window.addToCart = async function(tshirtId) {
-    try {
-        const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
-        const quantity = document.getElementById('numero').value || 1;
+function setupEventListeners(allSizes) {
+  document.querySelectorAll('input[name="versione"]').forEach((input) => {
+    input.addEventListener("change", (e) => handleVersionChange(e, allSizes));
+  });
 
-        const selectedTshirt = tshirts.find(t => t.tshirt_id === parseInt(tshirtId));
-        if (!selectedTshirt) {
-            throw new Error('Selected t-shirt not found');
-        }
-
-        const selectedSizeObj = selectedTshirt.sizes.find(s => s.size_name === selectedSize);
-        if (!selectedSizeObj) {
-            throw new Error('Selected size not found');
-        }
-
-        if (!selectedSizeObj.item_id) {
-            throw new Error('No warehouse item found for this combination');
-        }
-
-        if (selectedSizeObj.availability < quantity) {
-            throw new Error(`Solo ${selectedSizeObj.availability} pezzi disponibili`);
-        }
-
-        const response = await fetch('http://localhost:8000/src/api/cart/create.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-            },
-            body: JSON.stringify({
-                item_id: selectedSizeObj.item_id,
-                quantity: parseInt(quantity)
-            })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            const successMessage = document.createElement('div');
-            successMessage.className = 'success-message';
-            successMessage.textContent = 'Prodotto aggiunto al carrello con successo!';
-            document.querySelector('.azioni').prepend(successMessage);
-            setTimeout(() => successMessage.remove(), 3000);
-        } else {
-            const errorMessage = document.createElement('div');
-            errorMessage.className = 'error-message';
-            errorMessage.textContent = data.error || 'Errore durante l\'aggiunta al carrello';
-            document.querySelector('.azioni').prepend(errorMessage);
-            setTimeout(() => errorMessage.remove(), 3000);
-        }
-    } catch (error) {
-        console.error('Error adding to cart:', error);
-        const errorMessage = document.createElement('div');
-        errorMessage.className = 'error-message';
-        errorMessage.textContent = 'Errore di connessione. Riprova più tardi.';
-        document.querySelector('.azioni').prepend(errorMessage);
-        setTimeout(() => errorMessage.remove(), 3000);
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("not-available")) {
+      e.preventDefault();
+      alert("Taglia non disponibile");
     }
+  });
+}
+
+function handleVersionChange(e, allSizes) {
+  const selectedId = parseInt(e.target.value);
+  const selectedTshirt = tshirts.find((t) => t.tshirt_id === selectedId);
+
+  if (selectedTshirt) {
+    document.getElementById("tshirt-image").src = selectedTshirt.image_url;
+    document.getElementById("taglie-container").innerHTML = renderSizeOptions(
+      selectedTshirt.sizes,
+      allSizes
+    );
+  }
+}
+
+window.addToCart = async function (tshirtId) {
+  try {
+    const selectedSize = document.querySelector(
+      'input[name="Taglia"]:checked'
+    ).value;
+    const quantity = document.getElementById("numero").value || 1;
+
+    const selectedTshirt = tshirts.find(
+      (t) => t.tshirt_id === parseInt(tshirtId)
+    );
+    const selectedSizeObj = selectedTshirt.sizes.find(
+      (s) => s.size_name === selectedSize
+    );
+
+    validateCartInput(selectedSizeObj, quantity);
+
+    await addToCartRequest(selectedSizeObj.item_id, quantity);
+    showSuccessMessage("Prodotto aggiunto al carrello con successo!");
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    showErrorMessage("Errore di connessione. Riprova più tardi.");
+  }
 };
 
-window.buyNow = function(tshirtId) {
-    const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
-    addToCart(tshirtId);
-    window.location.href = '/src/pages/cart/';
+function validateCartInput(selectedSizeObj, quantity) {
+  if (!selectedSizeObj) throw new Error("Selected size not found");
+  if (selectedSizeObj.availability < quantity)
+    throw new Error(`Solo ${selectedSizeObj.availability} pezzi disponibili`);
+}
+
+async function addToCartRequest(itemId, quantity) {
+  const response = await fetch(
+    "http://localhost:8000/src/api/cart/create.php",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+      body: JSON.stringify({
+        item_id: itemId,
+        quantity: parseInt(quantity),
+      }),
+    }
+  );
+
+  const data = await response.json();
+  if (!response.ok)
+    throw new Error(data.error || "Errore durante l'aggiunta al carrello");
+}
+
+function showSuccessMessage(message) {
+  const successMessage = document.createElement("div");
+  successMessage.className = "success-message";
+  successMessage.textContent = message;
+  document.querySelector(".azioni").prepend(successMessage);
+  setTimeout(() => successMessage.remove(), 3000);
+}
+
+function showErrorMessage(message) {
+  const errorMessage = document.createElement("div");
+  errorMessage.className = "error-message";
+  errorMessage.textContent = message;
+  document.querySelector(".azioni").prepend(errorMessage);
+  setTimeout(() => errorMessage.remove(), 3000);
+}
+
+window.buyNow = function (tshirtId) {
+  addToCart(tshirtId).then(() => {
+    window.location.href = "/src/pages/cart/";
+  });
 };

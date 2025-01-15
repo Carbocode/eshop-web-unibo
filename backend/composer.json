@@ -25,20 +25,6 @@
     "ext-curl": "*",
     "ext-json": "*",
     "ext-openssl": "*",
-    "phpmailer/phpmailer": "^6.9",
     "firebase/php-jwt": "^6.10"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.65",
-    "phpstan/phpstan": "^2.0"
-  },
-  "scripts": {
-    "fix-style": [
-      "export PHP_CS_FIXER_IGNORE_ENV=1",
-      "@php ./vendor/bin/php-cs-fixer fix"
-    ],
-    "check-code": [
-      "@php ./vendor/bin/phpstan analyse src --level 7"
-    ]
   }
 }

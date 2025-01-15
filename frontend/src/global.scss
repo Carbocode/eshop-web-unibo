@@ -25,6 +25,8 @@ html {
   --light-color-contrast: #000;
   --medium-color: light-dark(#f6f6f6, #3f3f3f);
   --medium-color-contrast: light-dark(#000, #fff);
+  --medium-color-disabled: light-dark(#f7f7f7, #383838);
+  --medium-color-contrast-disabled: light-dark(#cecece, #4c4c4c);
   --dark-color: #000;
   --dark-color-contrast: #fff;
   --overlay-color: light-dark(#212121b5, #e9e9e9c3);
@@ -251,6 +253,12 @@ input[type="radio"] {
     background: var(--medium-color);
     color: var(--medium-color-contrast);
     box-shadow: var(--box-shadow-active);
+  }
+
+  &:disabled + label {
+    background: var(--medium-color-disabled);
+    color: var(--medium-color-contrast-disabled);
+    box-shadow: none;
   }
 }
 
