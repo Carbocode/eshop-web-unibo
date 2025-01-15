@@ -78,8 +78,7 @@ function updateProfileUI(profile, orders) {
 
   // Update address
   const addressText = `${profile.address}, ${profile.city} (${profile.province})`;
-  document.querySelector("#indirizzo").textContent =
-    addressText;
+  document.querySelector("#indirizzo").textContent = addressText;
 
   // Update statistics
   const totalOrders = orders.length;
@@ -98,9 +97,6 @@ function updateProfileUI(profile, orders) {
 
   orders.forEach((order) => {
     const row = document.createElement("tr");
-    row.style.cursor = "pointer";
-    row.onclick = () =>
-      (window.location.href = `/src/pages/order-tracking/?id=${order.order_id}`);
 
     row.innerHTML = `
       <td>#${order.order_id}</td>
@@ -116,6 +112,14 @@ function updateProfileUI(profile, orders) {
         currency: "EUR",
       }).format(order.total)}</td>
       <td>${order.items.length} articoli</td>
+      <td><a class="button" href="/src/pages/order-tracking/?id=${
+        order.order_id
+      }" aria-label="Ordine #${order.order_id}, stato ${
+      order.status
+    }, totale ${new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "EUR",
+    }).format(order.total)}">Vai</a></td>
     `;
 
     ordersTableBody.appendChild(row);
@@ -171,7 +175,7 @@ document.querySelector(".modifiche-profilo").addEventListener("click", () => {
       <form id="profile-form">
         <div class="form-group">
           <label for="full_name">Nome Completo:</label>
-          <input type="text" id="full_name" required value="${profile.full_name}">
+          <input type="text" id="full_name" required value="${profile.full_name}" autofocus>
         </div>
         <div class="form-group">
           <label for="email">Email:</label>

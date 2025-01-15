@@ -59,9 +59,13 @@ function populateTeams(teams) {
   container.innerHTML = ""; // Pulisce il contenitore
 
   teams.forEach((team) => {
-    const teamElement = document.createElement("div");
+    const teamElement = document.createElement("a");
+    teamElement.href = `/src/pages/product/?id=${team.team_id}`;
     teamElement.classList.add("team");
-    teamElement.setAttribute("data-team-id", team.team_id); // Attributo per identificare il team
+    teamElement.setAttribute(
+      "aria-label",
+      `Vai alla pagina del team ${team.team_name}`
+    );
 
     teamElement.innerHTML = `
       <img src="${team.tshirt?.image_url || team.team_logo}" alt="Maglietta ${
@@ -76,18 +80,8 @@ function populateTeams(teams) {
         }
       </div>`;
 
-    // Aggiungi un evento per il redirect al click
-    teamElement.addEventListener("click", () => {
-      redirectToTeamPage(team.team_id);
-    });
-
     container.appendChild(teamElement);
   });
-}
-
-// Funzione per il redirect alla pagina del team
-function redirectToTeamPage(teamId) {
-  window.location.href = `/src/pages/product/?id=${teamId}`;
 }
 
 // Funzione per formattare una valuta
