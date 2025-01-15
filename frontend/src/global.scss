@@ -27,8 +27,8 @@ html {
   --medium-color-contrast: light-dark(#000, #fff);
   --dark-color: #000;
   --dark-color-contrast: #fff;
-  --overlay-color: #212121b5;
-  --overlay-color-contrast: #fff;
+  --overlay-color: light-dark(#212121b5, #e9e9e9c3);
+  --overlay-color-contrast: light-dark(#fff, #393939);
   --margin: 1.2rem;
   --padding: 0.75rem;
 
@@ -438,6 +438,7 @@ header {
         a {
           text-align: center;
           padding: 1em;
+          color: var(--overlay-color-contrast);
 
           i {
             position: relative;
