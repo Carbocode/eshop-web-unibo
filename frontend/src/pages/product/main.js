@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>`;
             }
         } else {
-            // Handle backend error or empty data
             productContainer.innerHTML = `
                 <div class="error-message">
                     <p>Errore nel caricamento dei dati:</p>
@@ -61,8 +60,8 @@ function renderSizeOptions(sizes) {
         <input type="radio" id="size-${size.size_name}" name="Taglia"
             value="${size.size_name}"
             data-item-id="${size.item_id}"
-            ${index === 0 ? 'checked' : ''}
-            ${size.availability > 0 ? '' : 'disabled'} />
+            ${index === 0 && size.availability > 0 ? 'checked' : ''}
+            ${size.availability > 0 ? '' : 'class="not-available"'} />
         <label for="size-${size.size_name}">
             ${size.size_name}
             ${size.availability > 0 ? '' : ' (Non disponibile)'}
@@ -70,7 +69,6 @@ function renderSizeOptions(sizes) {
     `).join('');
 }
 
-// Store tshirts data globally for cart operations
 let tshirts = [];
 
 function renderTeamTshirt(teamData, container) {
@@ -78,8 +76,8 @@ function renderTeamTshirt(teamData, container) {
     let selectedTshirt = tshirts.find(t => t.tshirt_id === teamData.edition_id) || tshirts[0];
 
     const tshirtHTML = `
-        <h3>${teamData.team_name}</h3>
         <div class="prodotto-image">
+        <h2>${teamData.team_name}</h2>
             <img id="tshirt-image" src="${selectedTshirt.image_url}" alt="Maglia ${teamData.team_name}" />
         </div>
         <div class="prodotto-dettagli">
@@ -129,33 +127,33 @@ function renderTeamTshirt(teamData, container) {
 
     container.innerHTML = tshirtHTML;
 
-    // Aggiungi evento per cambiare immagine, taglie e prezzo al cambio di versione
     document.querySelectorAll('input[name="versione"]').forEach(input => {
         input.addEventListener('change', (e) => {
             const selectedId = parseInt(e.target.value);
             const selectedTshirt = tshirts.find(t => t.tshirt_id === selectedId);
 
             if (selectedTshirt) {
-                // Aggiorna immagine
                 document.getElementById('tshirt-image').src = selectedTshirt.image_url;
-
-                // Aggiorna taglie
                 document.getElementById('taglie-container').innerHTML = renderSizeOptions(selectedTshirt.sizes);
-
-                // Aggiorna prezzo
                 document.getElementById('tshirt-price').textContent = selectedTshirt.price;
             }
         });
     });
+
+    // Gestione alert per taglie non disponibili
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('not-available')) {
+            e.preventDefault();
+            alert('Taglia non disponibile');
+        }
+    });
 }
 
-// Funzioni di gestione carrello e acquisto
 window.addToCart = async function(tshirtId) {
     try {
         const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
         const quantity = document.getElementById('numero').value || 1;
 
-        // Get the warehouse item_id for this tshirt and size combination
         const selectedTshirt = tshirts.find(t => t.tshirt_id === parseInt(tshirtId));
         if (!selectedTshirt) {
             throw new Error('Selected t-shirt not found');
@@ -189,22 +187,16 @@ window.addToCart = async function(tshirtId) {
         const data = await response.json();
 
         if (response.ok) {
-            // Show success message
             const successMessage = document.createElement('div');
             successMessage.className = 'success-message';
             successMessage.textContent = 'Prodotto aggiunto al carrello con successo!';
             document.querySelector('.azioni').prepend(successMessage);
-            
-            // Remove message after 3 seconds
             setTimeout(() => successMessage.remove(), 3000);
         } else {
-            // Show error message
             const errorMessage = document.createElement('div');
             errorMessage.className = 'error-message';
             errorMessage.textContent = data.error || 'Errore durante l\'aggiunta al carrello';
             document.querySelector('.azioni').prepend(errorMessage);
-            
-            // Remove message after 3 seconds
             setTimeout(() => errorMessage.remove(), 3000);
         }
     } catch (error) {
@@ -213,14 +205,12 @@ window.addToCart = async function(tshirtId) {
         errorMessage.className = 'error-message';
         errorMessage.textContent = 'Errore di connessione. Riprova più tardi.';
         document.querySelector('.azioni').prepend(errorMessage);
-        
-        // Remove message after 3 seconds
         setTimeout(() => errorMessage.remove(), 3000);
     }
 };
 
 window.buyNow = function(tshirtId) {
     const selectedSize = document.querySelector('input[name="Taglia"]:checked').value;
-    addToCart(tshirtId); // Add to cart first
+    addToCart(tshirtId);
     window.location.href = '/src/pages/cart/';
 };

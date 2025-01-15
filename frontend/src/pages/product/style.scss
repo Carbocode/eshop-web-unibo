@@ -48,3 +48,52 @@ main {
         margin-top: 20px;
     }
 }
+
+/* Media query per schermi piccoli (fino a 430px di larghezza) */
+@media (max-width: 430px) {
+    main {
+        max-width: 100%;
+    }
+
+    h3 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .prodotto-container {
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+
+        img {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .prodotto-dettagli {
+            width: 100%;
+        }
+        .versione{
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dettagli {
+            flex-direction: column;
+            gap: 10px;
+
+            .taglie{
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+
+    .prezzo {
+        text-align: center;
+    }
+}
