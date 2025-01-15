@@ -87,16 +87,19 @@ async function readCartCount() {
 
     const data = await response.json();
 
+    const cart = document.querySelector(".fa-cart-shopping");
+
     if (data.error) {
       console.error("Errore dall'API:", data.error);
-      document.querySelector(".fa-cart-shopping").textContent = "N/A";
+      cart.textContent = "";
     } else {
       // Aggiorna il contenuto dell'elemento HTML
-      document.querySelector(".fa-cart-shopping").textContent = data.item_count;
+      if (data.item_count > 0) cart.textContent = data.item_count;
+      else cart.textContent = "";
     }
   } catch (error) {
     console.error("Errore durante la chiamata API:", error);
-    document.querySelector(".fa-cart-shopping").textContent = "N/A";
+    document.querySelector(".fa-cart-shopping").textContent = "";
   }
 }
 
@@ -121,16 +124,20 @@ export async function readNotificationsCount() {
 
     const data = await response.json();
 
+    const bell = document.querySelector(".fa-bell");
+
     if (data.error) {
       console.error("Errore dall'API:", data.error);
-      document.querySelector(".fa-bell").textContent = "N/A";
+      bell.textContent = "";
     } else {
       // Aggiorna il contenuto dell'elemento HTML
-      document.querySelector(".fa-bell").textContent = data.notifications_count;
+      if (data.notifications_count > 0)
+        bell.textContent = data.notifications_count;
+      else bell.textContent = "";
     }
   } catch (error) {
     console.error("Errore durante la chiamata API:", error);
-    document.querySelector(".fa-bell").textContent = "N/A";
+    document.querySelector(".fa-bell").textContent = "";
   }
 }
 const adminPages = ["/src/pages/manage/"];
