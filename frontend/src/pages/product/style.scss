@@ -12,6 +12,7 @@ main {
     .prodotto-container {
         display: flex;
         gap: 40px;
+        flex-wrap: wrap;
 
         img {
             width: 400px;
