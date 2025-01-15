@@ -179,6 +179,7 @@ input[type="submit"] {
   transition: all 0.2s ease-out;
   display: block;
   text-align: center;
+  cursor: pointer;
 
   &.secondary {
     background-color: var(--secondary-color);
@@ -227,6 +228,7 @@ input[type="radio"] {
     margin: calc(var(--margin) / 2) var(--margin);
     transition: all 0.1s ease-out;
     display: inline-block;
+    cursor: pointer;
   }
 
   &:hover + label,

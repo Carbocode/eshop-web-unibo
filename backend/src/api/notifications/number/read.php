@@ -7,7 +7,7 @@ require '../../../middleware/auth.php';
 $userId = $_TOKEN['sub'];
 
 // Prepara la query per contare gli oggetti nel carrello
-$sql = "SELECT COUNT(*) AS notifications_count FROM notifications WHERE user_id = ?";
+$sql = "SELECT COUNT(*) AS notifications_count FROM notifications WHERE user_id = ? AND is_read=0";
 
 $stmt = $conn->prepare($sql);
 

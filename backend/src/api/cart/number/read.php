@@ -8,7 +8,7 @@ require '../../../middleware/auth.php';
 $userId = $_TOKEN['sub'];
 
 // Prepara la query per contare gli oggetti nel carrello
-$sql = "SELECT COUNT(*) AS item_count FROM carts WHERE customer_id = ?";
+$sql = "SELECT SUM(quantity) AS item_count FROM carts WHERE customer_id = ?";
 
 $stmt = $conn->prepare($sql);
 

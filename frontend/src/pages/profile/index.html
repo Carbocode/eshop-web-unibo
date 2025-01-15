@@ -54,7 +54,12 @@
             <p>Membro</p>
           </div>
         </div>
-        <div class="bottoni-profilo"></div>
+        <div
+          class="bottoni-profilo"
+          onclick="localStorage.removeItem('auth_token');window.location.href = '/src/pages/home/';"
+        >
+          <button onclick="logout()">Esci</button>
+        </div>
       </div>
 
       <div class="dettagli-profilo">
@@ -91,6 +96,7 @@
               <th>Stato</th>
               <th>Totale</th>
               <th>Articoli</th>
+              <th>Vai</th>
             </tr>
           </thead>
           <tbody id="ordini-list">

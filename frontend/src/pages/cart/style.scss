@@ -83,10 +83,10 @@
 }
 
 .cart-actions {
-  margin-top: var(--margin);
   display: flex;
-  gap: var(--margin);
-  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .empty-cart-message {
@@ -118,13 +118,5 @@
   .item-image {
     width: 80px;
     height: 80px;
-  }
-
-  .cart-actions {
-    flex-direction: column;
-
-    button {
-      width: 100%;
-    }
   }
 }
