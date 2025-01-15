@@ -21,7 +21,7 @@ $user_id = $_TOKEN['sub'];
 $check_sql = "
     SELECT notification_id, is_read
     FROM notifications
-    WHERE notification_id = ? AND user_id = ?
+    WHERE notification_id = ? AND (user_id = ? OR user_id = -1)
 ";
 
 $check_stmt = $conn->prepare($check_sql);
@@ -51,7 +51,7 @@ if ($action === 'toggle_status') {
     $update_sql = "
         UPDATE notifications
         SET is_read = ?
-        WHERE notification_id = ? AND user_id = ?
+        WHERE notification_id = ? AND (user_id = ? OR user_id = -1)
     ";
     
     $update_stmt = $conn->prepare($update_sql);

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function readGroups() {
-  const apiEndpoint = "http://localhost:8000/src/api/groups/read.php"; // Cambia l'URL con quello corretto per la tua API
+  const apiEndpoint = "http://localhost:8000/src/api/groups/read.php"; 
   const container = document.querySelector(".griglianazionali");
 
   await fetch(apiEndpoint)
@@ -35,7 +35,7 @@ async function readGroups() {
 }
 
 async function readLeagues() {
-  const apiEndpoint = "http://localhost:8000/src/api/leagues/read.php"; // Cambia l'URL con quello corretto per la tua API
+  const apiEndpoint = "http://localhost:8000/src/api/leagues/read.php"; 
   const container = document.querySelector(".leghe-container");
 
   await fetch(apiEndpoint)
@@ -67,22 +67,24 @@ function renderGroups(groups, container) {
     nationsGrid.classList.add("grigliagruppo");
 
     group.countries.forEach((country) => {
-      const nationDiv = document.createElement("div");
-      nationDiv.classList.add("nazionale");
-
-      // Aggiungi immagine bandiera
+      const nationLink = document.createElement("a");
+      nationLink.classList.add("nazionale");
+      nationLink.href = `/src/pages/product/?id=${country.team_id}`; 
+      nationLink.title = `Visualizza dettagli per ${country.country_name}`;
+    
       const flagImage = document.createElement("img");
       flagImage.src = country.country_flag;
       flagImage.alt = `${country.country_name} flag`;
-      nationDiv.appendChild(flagImage);
-
-      // Aggiungi nome del paese
+    
       const countryName = document.createElement("div");
       countryName.textContent = country.country_name;
-      nationDiv.appendChild(countryName);
-
-      nationsGrid.appendChild(nationDiv);
+    
+      nationLink.appendChild(flagImage);
+      nationLink.appendChild(countryName);
+    
+      nationsGrid.appendChild(nationLink);
     });
+    
 
     groupDiv.appendChild(nationsGrid);
     container.appendChild(groupDiv);
@@ -96,7 +98,7 @@ function renderLeagues(leagues, container) {
 
     // Aggiungi il link e il logo della lega
     const leagueLink = document.createElement("a");
-    leagueLink.href = `/src/pages/products/?id=${league.league_id}&type=league`; // Cambia con il percorso reale per la lega
+    leagueLink.href = `/src/pages/products/?id=${league.league_id}&type=league`; 
     leagueLink.title = `Vai alla pagina della lega ${league.league_name}`;
 
     const leagueLogo = document.createElement("img");
@@ -114,7 +116,7 @@ function renderLeagues(leagues, container) {
       const teamItem = document.createElement("a");
 
       // Crea il link per la squadra
-      teamItem.href = `/src/pages/product/?id=${team.team_id}`; // Cambia l'URL con il corretto percorso per la squadra
+      teamItem.href = `/src/pages/product/?id=${team.team_id}`; 
       teamItem.textContent = team.team_name;
 
       teamItem.setAttribute(
