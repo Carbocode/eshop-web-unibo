@@ -78,7 +78,7 @@ function updateProfileUI(profile, orders) {
 
   // Update address
   const addressText = `${profile.address}, ${profile.city} (${profile.province})`;
-  document.querySelector(".dettagliProfilo p:nth-child(2)").textContent =
+  document.querySelector("#indirizzo").textContent =
     addressText;
 
   // Update statistics
