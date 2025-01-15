@@ -183,11 +183,58 @@
           </table>
         </div>
       </section>
+
+      <!-- Order Management -->
+      <section>
+        <h3>Order Updates</h3>
+        <form id="orderUpdateForm" class="form">
+          <div class="form-group">
+            <label for="orderSelect">Select Order</label>
+            <select id="orderSelect" name="order_id" onchange="console.log(this.value)" required>
+              <option value="">Select an Order</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="orderStatus">Order Status</label>
+            <select id="orderStatus" name="status_id" required>
+              <option value="">Select Status</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="trackingNumber">Tracking Number (Optional)</label>
+            <input 
+              type="text" 
+              id="trackingNumber" 
+              name="tracking_number" 
+              placeholder="Enter tracking number"
+            />
+          </div>
+          <div class="form-group">
+            <label for="deliveryDate">Delivery Date (Optional)</label>
+            <input 
+              type="datetime-local" 
+              id="deliveryDate" 
+              name="delivery_date"
+            />
+          </div>
+          <div class="form-group">
+            <label for="shippingAgent">Shipping Agent (Optional)</label>
+            <input 
+              type="text" 
+              id="shippingAgent" 
+              name="shipping_agent" 
+              placeholder="Enter shipping agent"
+            />
+          </div>
+          <button type="submit">Update Order</button>
+        </form>
+      </section>
     </main>
     <footer>
       <img src="@assets/icons/favicon.ico" alt="icona logo" />
       <h3>Elprimerofootballer</h3>
     </footer>
-    <script type="module" src="main.js"></script>
+    <script type="module" src="main.js">
+    </script>
   </body>
 </html>
