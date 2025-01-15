@@ -1,24 +1,27 @@
 import { getToken, getTokenRole } from "@common";
 import "./style.scss";
 let token = getToken();
-let orders=null;
-let profile=null;
+let orders = null;
+let profile = null;
 
 // Function to fetch user profile data
 async function fetchProfileData() {
   try {
-    const response = await fetch('http://localhost:8000/src/api/accounts/read.php',{
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-      },
-    });
-    if (!response.ok) throw new Error('Failed to fetch profile data');
+    const response = await fetch(
+      "http://localhost:8000/src/api/accounts/read.php",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+        },
+      }
+    );
+    if (!response.ok) throw new Error("Failed to fetch profile data");
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    console.error("Error fetching profile:", error);
     return null;
   }
 }
@@ -26,17 +29,20 @@ async function fetchProfileData() {
 // Function to fetch user orders
 async function fetchOrders() {
   try {
-    const response = await fetch('http://localhost:8000/src/api/orders/read_all.php', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+    const response = await fetch(
+      "http://localhost:8000/src/api/orders/read_all.php",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    if (!response.ok) throw new Error('Failed to fetch orders');
+    );
+    if (!response.ok) throw new Error("Failed to fetch orders");
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching orders:', error);
+    console.error("Error fetching orders:", error);
     return [];
   }
 }
@@ -44,7 +50,7 @@ async function fetchOrders() {
 // Function to format date
 function formatDate(dateString) {
   const date = new Date(dateString);
-  return date.toLocaleDateString('it-IT');
+  return date.toLocaleDateString("it-IT");
 }
 
 // Function to update profile UI
@@ -52,57 +58,66 @@ function updateProfileUI(profile, orders) {
   if (!profile) return;
 
   // Update profile info
-    document.querySelector('.infoProfilo h4').textContent = profile.full_name;
-    
-    // Add admin button if user is admin
-    const isAdmin = getTokenRole(getToken()) === "ADMIN";
-    let adminButton = document.querySelector('.admin-button');
-    
-    if (isAdmin) {
-      if (!adminButton) {
-        adminButton = document.createElement('button');
-        adminButton.className = 'admin-button';
-        adminButton.textContent = 'Gestione Admin';
-        adminButton.onclick = () => window.location.href = '/src/pages/manage/';
-        document.querySelector('.infoProfilo').appendChild(adminButton);
-      }
-    } else if (adminButton) {
-      adminButton.remove();
+  document.querySelector(".info-profilo h4").textContent = profile.full_name;
+
+  // Add admin button if user is admin
+  const isAdmin = getTokenRole(getToken()) === "ADMIN";
+  let adminButton = document.querySelector(".admin-button");
+
+  if (isAdmin) {
+    if (!adminButton) {
+      adminButton = document.createElement("button");
+      adminButton.className = "admin-button";
+      adminButton.textContent = "Gestione Admin";
+      adminButton.onclick = () => (window.location.href = "/src/pages/manage/");
+      document.querySelector(".bottoni-profilo").appendChild(adminButton);
     }
-    
-    // Update address
+  } else if (adminButton) {
+    adminButton.remove();
+  }
+
+  // Update address
   const addressText = `${profile.address}, ${profile.city} (${profile.province})`;
-  document.querySelector('.dettagliProfilo p:nth-child(2)').textContent = addressText;
-  
+  document.querySelector(".dettagliProfilo p:nth-child(2)").textContent =
+    addressText;
+
   // Update statistics
   const totalOrders = orders.length;
-  const deliveredOrders = orders.filter(order => order.status === 'delivered').length;
-  
-  document.querySelector('.statistiche:nth-child(1) p:last-child').textContent = totalOrders;
-  document.querySelector('.statistiche:nth-child(2) p:last-child').textContent = deliveredOrders;
+  const deliveredOrders = orders.filter(
+    (order) => order.status === "delivered"
+  ).length;
+
+  document.querySelector(".statistiche:nth-child(1) p:last-child").textContent =
+    totalOrders;
+  document.querySelector(".statistiche:nth-child(2) p:last-child").textContent =
+    deliveredOrders;
 
   // Update orders table
-  const ordersTableBody = document.getElementById('ordini-list');
-  ordersTableBody.innerHTML = ''; // Clear existing rows
+  const ordersTableBody = document.getElementById("ordini-list");
+  ordersTableBody.innerHTML = ""; // Clear existing rows
 
-  orders.forEach(order => {
-    const row = document.createElement('tr');
-    row.style.cursor = 'pointer';
-    row.onclick = () => window.location.href = `/src/pages/order-tracking/?id=${order.order_id}`;
-    
+  orders.forEach((order) => {
+    const row = document.createElement("tr");
+    row.style.cursor = "pointer";
+    row.onclick = () =>
+      (window.location.href = `/src/pages/order-tracking/?id=${order.order_id}`);
+
     row.innerHTML = `
       <td>#${order.order_id}</td>
-      <td>${order.delivery ? formatDate(order.delivery): "In Transito"}</td>
+      <td>${order.delivery ? formatDate(order.delivery) : "In Transito"}</td>
       <td>
         <span class="status-badge ${order.status.toLowerCase()}">
           <i class="fa-solid ${order.icon}"></i>
           ${order.status}
         </span>
       </td>
-      <td>${new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(order.total)}</td>
+      <td>${new Intl.NumberFormat("it-IT", {
+        style: "currency",
+        currency: "EUR",
+      }).format(order.total)}</td>
       <td>${order.items.length} articoli</td>
     `;
-    
+
     ordersTableBody.appendChild(row);
   });
 }
@@ -115,38 +130,41 @@ async function initProfile() {
 }
 
 // Load profile data when page loads
-document.addEventListener('DOMContentLoaded', initProfile);
+document.addEventListener("DOMContentLoaded", initProfile);
 
 // Function to update profile
 async function updateProfile(profileData) {
   try {
-    const response = await fetch('http://localhost:8000/src/api/accounts/update.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(profileData)
-    });
+    const response = await fetch(
+      "http://localhost:8000/src/api/accounts/update.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(profileData),
+      }
+    );
 
-    if (!response.ok) throw new Error('Failed to update profile');
-    
+    if (!response.ok) throw new Error("Failed to update profile");
+
     // Refresh profile data
     profile = await fetchProfileData();
     updateProfileUI(profile, orders);
     return true;
   } catch (error) {
-    console.error('Error updating profile:', error);
+    console.error("Error updating profile:", error);
     return false;
   }
 }
 
 // Handle profile change button
-document.querySelector('.Cambioindirizzo').textContent = 'Modifica Profilo';
-document.querySelector('.Cambioindirizzo').addEventListener('click', () => {
+document.querySelector(".modifiche-profilo").textContent = "Modifica Profilo";
+document.querySelector(".modifiche-profilo").addEventListener("click", () => {
   // Create modal HTML
-  const modal = document.createElement('div');
-  modal.className = 'address-modal';
+  const modal = document.createElement("div");
+  modal.className = "backdrop-modal";
   modal.innerHTML = `
     <div class="modal-content">
       <h3>Modifica Profilo</h3>
@@ -188,8 +206,8 @@ document.querySelector('.Cambioindirizzo').addEventListener('click', () => {
           </div>
         </div>
         <div class="button-group">
-          <button type="submit" class="save-btn">Salva</button>
-          <button type="button" class="cancel-btn">Annulla</button>
+          <button type="submit">Salva</button>
+          <button type="button" class="secondary cancel-btn">Annulla</button>
         </div>
       </form>
     </div>
@@ -199,24 +217,24 @@ document.querySelector('.Cambioindirizzo').addEventListener('click', () => {
   document.body.appendChild(modal);
 
   // Add event listeners
-  const form = modal.querySelector('#profile-form');
-  const cancelBtn = modal.querySelector('.cancel-btn');
+  const form = modal.querySelector("#profile-form");
+  const cancelBtn = modal.querySelector(".cancel-btn");
 
-  cancelBtn.addEventListener('click', () => {
+  cancelBtn.addEventListener("click", () => {
     document.body.removeChild(modal);
   });
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const profileData = {
-      full_name: form.querySelector('#full_name').value,
-      email: form.querySelector('#email').value,
-      phone: form.querySelector('#phone').value,
-      address: form.querySelector('#address').value,
-      city: form.querySelector('#city').value,
-      province: form.querySelector('#province').value,
-      zip: form.querySelector('#zip').value,
-      country: form.querySelector('#country').value
+      full_name: form.querySelector("#full_name").value,
+      email: form.querySelector("#email").value,
+      phone: form.querySelector("#phone").value,
+      address: form.querySelector("#address").value,
+      city: form.querySelector("#city").value,
+      province: form.querySelector("#province").value,
+      zip: form.querySelector("#zip").value,
+      country: form.querySelector("#country").value,
     };
 
     const success = await updateProfile(profileData);
@@ -224,7 +242,9 @@ document.querySelector('.Cambioindirizzo').addEventListener('click', () => {
       document.body.removeChild(modal);
       window.location.reload();
     } else {
-      alert('Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.');
+      alert(
+        "Si è verificato un errore durante l'aggiornamento del profilo. Riprova più tardi."
+      );
     }
   });
 });

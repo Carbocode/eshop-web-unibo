@@ -19,18 +19,18 @@ html {
   --primary-color-contrast: #fff;
   --secondary-color: #62929e;
   --secondary-color-contrast: #fff;
-  --background-color: light-dark(#fff, #000);
+  --background-color: light-dark(#fff, #2c2c2c);
   --background-color-contrast: light-dark(#000, #fff);
   --light-color: #fff;
   --light-color-contrast: #000;
-  --medium-color: light-dark(#f2f2f2, #414141);
+  --medium-color: light-dark(#f6f6f6, #3f3f3f);
   --medium-color-contrast: light-dark(#000, #fff);
   --dark-color: #000;
   --dark-color-contrast: #fff;
   --overlay-color: #212121b5;
   --overlay-color-contrast: #fff;
-  --margin: 1rem;
-  --padding: 0.5rem;
+  --margin: 1.2rem;
+  --padding: 0.75rem;
 
   --border-radius: 0.7rem;
 
@@ -140,7 +140,7 @@ small {
 
 label {
   padding-inline: var(--padding);
-  margin-inline: var(--margin);
+  margin-inline: 0;
   display: block;
 }
 
@@ -424,10 +424,15 @@ header {
       nav {
         display: none;
         flex-direction: column;
-        background-color: #333;
+        background-color: var(--overlay-color);
+        color: var(--overlay-color-contrast);
+        border-radius: var(--border-radius);
+        margin: var(--margin);
         position: absolute;
         top: 70px;
-        width: 100vw;
+        width: calc(100vw - (var(--margin)) * 2);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--box-shadow);
         height: auto;
 
         a {

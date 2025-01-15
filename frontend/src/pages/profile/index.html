@@ -42,57 +42,61 @@
     </header>
 
     <main>
-      <div class="profilo-container">
-        <div class="profilo-header">
+      <div class="profilo-header">
+        <div class="left">
           <img
             src="https://dimages2.gazzettaobjects.it/files/og_thumbnail/uploads/2023/10/14/652b0784ca7e3.jpeg"
             alt="foto del profilo"
-            class="fotoProfilo"
           />
-          <div class="infoProfilo">
+
+          <div class="info-profilo">
             <h4>GianlucaScamacca</h4>
             <p>Membro</p>
           </div>
         </div>
+        <div class="bottoni-profilo"></div>
+      </div>
 
-        <div class="dettagliProfilo">
-          <p>Indirizzo:</p>
+      <div class="dettagli-profilo">
+        <div>
+          <h3>Indirizzo:</h3>
           <p>Via Amendola 10, Bergamo (BG)</p>
-          <button class="Cambioindirizzo">Cambia l'indirizzo</button>
         </div>
 
-        <div class="statisticheProfilo">
-          <div class="statistiche">
-            <p>I miei ordini</p>
-            <p>0</p>
-          </div>
-          <div class="statistiche">
-            <p>Consegnati</p>
-            <p>0</p>
-          </div>
-          <div class="statistiche">
-            <p>Notifiche</p>
-            <a href="/src/pages/notifications"></a><p>0</p></a>
-          </div>
-        </div>
+        <button class="modifiche-profilo">Modifica Profilo</button>
+      </div>
 
-        <div class="ordini-recenti">
-          <h3>I miei ordini</h3>
-          <table class="ordini-table">
-            <thead>
-              <tr>
-                <th>Ordine #</th>
-                <th>Data Ordine</th>
-                <th>Stato</th>
-                <th>Totale</th>
-                <th>Articoli</th>
-              </tr>
-            </thead>
-            <tbody id="ordini-list">
-              <!-- Orders will be populated here by JavaScript -->
-            </tbody>
-          </table>
+      <div class="statistiche-profilo">
+        <div class="statistiche">
+          <strong>I miei ordini</strong>
+          <p>0</p>
         </div>
+        <div class="statistiche">
+          <strong>Consegnati</strong>
+          <p>0</p>
+        </div>
+        <div class="statistiche">
+          <strong>Notifiche</strong>
+          <p>0</p>
+        </div>
+      </div>
+
+      <div class="ordini-recenti">
+        <h3>I miei ordini</h3>
+        <table class="ordini-table">
+          <thead>
+            <tr>
+              <th>Ordine #</th>
+              <th>Data Ordine</th>
+              <th>Stato</th>
+              <th>Totale</th>
+              <th>Articoli</th>
+            </tr>
+          </thead>
+          <tbody id="ordini-list">
+            <!-- Orders will be populated here by JavaScript -->
+          </tbody>
+        </table>
       </div>
     </main>
     <footer>
